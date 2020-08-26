@@ -36,6 +36,7 @@
                 <td>@game.GenreName</td>
                 <td>@game.Description</td>
                 <td>
+                    <a class="btn btn-block btn-primary" asp-action="Edit" asp-route-id="@game.GameId">Edit</a>
                     <a class="btn btn-block btn-info" asp-action="Details" asp-route-id="@game.GameId">Details</a>
                     <a class="btn btn-block btn-danger" asp-action="Delete" asp-route-id="@game.GameId">Delete</a>
                 </td>

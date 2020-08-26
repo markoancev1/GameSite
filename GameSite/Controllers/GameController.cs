@@ -86,6 +86,39 @@ namespace GameSite.Controllers
             return View(game);
         }
 
+        public IActionResult Edit(int id)
+        {
+
+            Game game = new Game();
+            if(game != null)
+            {
+                GameViewModel model = new GameViewModel
+                {
+                    GameId = game.GameId,
+                    GenreId = game.GenreId,
+                    GenreName = game.GenreName
+                };
+
+                _context.Update(model);
+            }
+
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, GameViewModel gameViewModel)
+        {
+            if(gameViewModel.GameId > 0)
+            {
+                Game game = _context.Games.SingleOrDefault(x => x.GameId == gameViewModel.GameId);
+                gameViewModel.GameId = game.GameId;
+                gameViewModel.GenreId = game.GenreId;
+                gameViewModel.GenreName = game.GenreName;
+
+            }
+            return View(gameViewModel);
+        }
+
         [HttpGet]
         public ActionResult Delete(int id)
         {
