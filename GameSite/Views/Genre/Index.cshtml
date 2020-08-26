@@ -1,0 +1,32 @@
+﻿@model IEnumerable<GameSite.Data.Entities.Genre>
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>Index</h1>
+<p>
+    <a asp-action="Create" class=" float-right btn-sm btn-primary rounded-0 text-uppercase"><i class="fas fa-plus-circle"></i> Add New Genre</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-center">@Html.DisplayNameFor(model => model.GenreName)</th>
+            <th class="text-center">@Html.DisplayNameFor(model => model.GenreDescription)</th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-center"> @Html.DisplayFor(modelitem => item.GenreName)</td>
+                <td class="text-center"> @Html.DisplayFor(modelitem => item.GenreDescription)</td>
+
+                <td>
+                    <a class="text-center" asp-action="Details" asp-route-id="@item.GenreId">Details</a>
+                    <a class="text-center" asp-action="Delete" asp-route-id="@item.GenreId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

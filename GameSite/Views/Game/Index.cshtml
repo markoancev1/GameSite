@@ -1,0 +1,45 @@
+﻿
+@model IEnumerable<GameSite.Data.Entities.Game>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h4 class="text-center text-uppercase">List of Games</h4>
+
+<p>
+    <a asp-action="Add" class="btn btn-sm btn-primary rounded-0 text-uppercase"><i class="fas fa-plus-circle"></i> Add New Game</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.GameName)</th>
+            <th>@Html.DisplayNameFor(model => model.GameCreator)</th>
+            <th>@Html.DisplayNameFor(model => model.Price)</th>
+            <th>@Html.DisplayNameFor(model => model.GenreName)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var game in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/images/@game.ImageUrl"
+                         class="rounded-circle"
+                         height="40" width="40"
+                         asp-append-version="true" />
+                    @game.GameName
+                </td>
+                <td>@game.GameCreator</td>
+                <td>@game.Price.ToString("c")</td>
+                <td>@game.GenreName</td>
+                <td>@game.Description</td>
+                <td>
+                    <a class="btn btn-block btn-info" asp-action="Details" asp-route-id="@game.GameId">Details</a>
+                    <a class="btn btn-block btn-danger" asp-action="Delete" asp-route-id="@game.GameId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

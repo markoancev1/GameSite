@@ -1,0 +1,102 @@
+﻿
+@model GameSite.Models.GameViewModel
+
+
+<div class="col-md-10 mx-auto py-4">
+    <div class="card">
+        <div class="card-header bg-primary text-uppercase text-white">
+            <h4>Add New Game</h4>
+        </div>
+        <div class="card-body">
+            <form enctype="multipart/form-data" asp-action="Add">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="GameName" class="control-label"></label>
+                            <input asp-for="GameName" class="form-control" />
+                            <span asp-validation-for="GameName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="GameCreator" class="control-label"></label>
+                            <input asp-for="GameCreator" class="form-control" />
+                            <span asp-validation-for="GameCreator" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="GenreId" class="control-label">Genre name</label>
+                        @Html.DropDownListFor(x => Model.GenreId, new SelectList(Model.Genres, "Value", "Text"), htmlAttributes: new { @class = "form-control", id = "Genre" })
+                        <span asp-validation-for="GenreId" class="text-danger"></span>
+                        <input asp-for="GenreName" class="form-control" hidden id="GenreName" />
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Price" class="control-label"></label>
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-5 text-center">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IsInStock" class="control-label"></label>
+                            @Html.CheckBoxFor(m => m.IsInStock, new { @checked = "checked" })
+                            <span asp-validation-for="IsInStock" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IsOnSale" class="control-label"></label>
+                            @Html.CheckBoxFor(m => m.IsOnSale, new { @checked = "checked" })
+                            <span asp-validation-for="IsOnSale" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label">Description</label>
+                    <textarea asp-for="Description" rows="12" class="form-control" placeholder="Enter Game description"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="ImageUrl" class="control-label"></label>
+                        <div class="custom-file">
+                            <input asp-for="ImageUrl" class="custom-file-input" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="submit" class="btn btn-sm btn-primary rounded-0 text-uppercase" />
+                    <a asp-action="Index" class="btn btn-sm btn-primary rounded-0 text-uppercase"><i class="fas fa-fast-backward"></i> Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+            // Add the following code if you want the name of the file appear on select
+            $(".custom-file-input").on("change", function () {
+                var FileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(FileName);
+            });
+
+        $("#Genre").change(function () {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+            var textSelected = optionSelected.text();
+            $("#GenreName").val(textSelected);
+            console.log($("#GenreName").val(textSelected));
+        });
+    </script>
+}
