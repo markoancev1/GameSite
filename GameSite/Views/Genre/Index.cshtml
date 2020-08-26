@@ -6,7 +6,7 @@
 <p>
     <a asp-action="Create" class=" float-right btn-sm btn-primary rounded-0 text-uppercase"><i class="fas fa-plus-circle"></i> Add New Genre</a>
 </p>
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th class="text-center">@Html.DisplayNameFor(model => model.GenreName)</th>
@@ -16,15 +16,16 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var genre in Model)
         {
             <tr>
-                <td class="text-center"> @Html.DisplayFor(modelitem => item.GenreName)</td>
-                <td class="text-center"> @Html.DisplayFor(modelitem => item.GenreDescription)</td>
+                <td class="text-center"> @Html.DisplayFor(modelitem => genre.GenreName)</td>
+                <td class="text-center"> @Html.DisplayFor(modelitem => genre.GenreDescription)</td>
 
                 <td>
-                    <a class="text-center" asp-action="Details" asp-route-id="@item.GenreId">Details</a>
-                    <a class="text-center" asp-action="Delete" asp-route-id="@item.GenreId">Delete</a>
+                    <a class="btn btn-block btn-primary" asp-action="Edit" asp-route-id="@genre.GenreId">Edit</a>
+                    <a class="btn btn-block btn-info" asp-action="Details" asp-route-id="@genre.GenreId">Details</a>
+                    <a class="btn btn-block btn-danger" asp-action="Delete" asp-route-id="@genre.GenreId">Delete</a>
                 </td>
             </tr>
         }

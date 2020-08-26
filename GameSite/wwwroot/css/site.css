@@ -118,3 +118,9 @@ body {
         color: #fff !important;
 
 }
+
+thead tr th,td {
+    color: white;
+    text-align: center;
+    margin-top: 100px;
+}

@@ -4,22 +4,22 @@
 
 <div class="col-md-10 mx-auto py-4">
     <div class="card">
-        <div class="card-header bg-primary text-uppercase text-white">
+        <div class="card-header text-uppercase text-white" style="background-color: #375a7f !important;" >
             <h4>Add New Game</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="background-color: #00a379">
             <form enctype="multipart/form-data" asp-action="Add">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="GameName" class="control-label"></label>
+                            <label asp-for="GameName" class="control-label text-center"></label>
                             <input asp-for="GameName" class="form-control" />
                             <span asp-validation-for="GameName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="GameCreator" class="control-label"></label>
+                            <label asp-for="GameCreator" class="control-label text-center"></label>
                             <input asp-for="GameCreator" class="form-control" />
                             <span asp-validation-for="GameCreator" class="text-danger"></span>
                         </div>
@@ -27,14 +27,14 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label asp-for="GenreId" class="control-label">Genre name</label>
+                        <label asp-for="GenreId" class="control-label text-center">Genre name</label>
                         @Html.DropDownListFor(x => Model.GenreId, new SelectList(Model.Genres, "Value", "Text"), htmlAttributes: new { @class = "form-control", id = "Genre" })
                         <span asp-validation-for="GenreId" class="text-danger"></span>
                         <input asp-for="GenreName" class="form-control" hidden id="GenreName" />
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Price" class="control-label"></label>
+                            <label asp-for="Price" class="control-label text-center"></label>
                             <input asp-for="Price" class="form-control" />
                             <span asp-validation-for="Price" class="text-danger"></span>
                         </div>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group text-center">
                     <input type="submit" value="submit" class="btn btn-sm btn-primary rounded-0 text-uppercase" />
                     <a asp-action="Index" class="btn btn-sm btn-primary rounded-0 text-uppercase"><i class="fas fa-fast-backward"></i> Back to List</a>
                 </div>

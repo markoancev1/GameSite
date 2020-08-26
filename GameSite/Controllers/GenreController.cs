@@ -40,6 +40,41 @@ namespace GameSite.Controllers
             return View();
         }
 
+        public IActionResult Edit(int id)
+        {
+            var genre= _genreRepository.GetGenreById(id);
+            if (genre == null)
+            {
+                return NotFound();
+            }
+            return View(genre);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Genre genre)
+        {
+            if (id != genre.GenreId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _genreRepository.Edit(genre);
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(genre);
+        }
+
         public IActionResult Details(int id)
         {
             var genre = _genreRepository.GetGenreById(id);
