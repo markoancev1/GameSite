@@ -39,7 +39,7 @@ namespace GameSite.Controllers
         }
         [HttpGet]
 
-        public ActionResult Add()
+        public IActionResult Add()
         {
             var model = new GameViewModel();
 
@@ -50,7 +50,7 @@ namespace GameSite.Controllers
 
 
         [HttpPost]
-        public ActionResult Add(GameViewModel model)
+        public IActionResult Add(GameViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace GameSite.Controllers
 
 
 
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             var game = _context.Games.Find(id);
             if (game == null)
@@ -112,7 +112,7 @@ namespace GameSite.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(GameEditViewModel model)
+        public IActionResult Edit(GameEditViewModel model)
         {
             if (ModelState.IsValid)
             {

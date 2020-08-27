@@ -124,3 +124,6 @@ thead tr th,td {
     text-align: center;
     margin-top: 100px;
 }
+.show-read-more .more-text {
+    display: none;
+}
