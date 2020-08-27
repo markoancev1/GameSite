@@ -10,6 +10,7 @@ using GameSite.Models;
 using GameSite.Repository;
 using GameSite.Repository.Interface;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Converters;
@@ -23,7 +24,7 @@ namespace GameSite.Controllers
         private readonly DataContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public GameController(IGameRepository gameRepository,IGenreRepository genreRepository,DataContext context, IWebHostEnvironment webHostEnvironment)
+        public GameController(IGameRepository gameRepository, IGenreRepository genreRepository, DataContext context, IWebHostEnvironment webHostEnvironment)
         {
             _gameRepository = gameRepository;
             _genreRepository = genreRepository;
@@ -37,25 +38,25 @@ namespace GameSite.Controllers
             return View(gameList);
         }
         [HttpGet]
-        public IActionResult Add()
+
+        public ActionResult Add()
         {
-            var Genres = _genreRepository.GetAllGenres();
+            var model = new GameViewModel();
 
-            GameViewModel GameVM = new GameViewModel();
-            GameVM.Genres = GetSelelectListItemsGenres(Genres);
+            PopulateChoices(model);
 
-            return View(GameVM);
+            return View(model);
         }
 
-        [HttpPost]
 
-        public async Task<IActionResult> Add(GameViewModel model)
+        [HttpPost]
+        public ActionResult Add(GameViewModel model)
         {
             if (ModelState.IsValid)
             {
                 string uniqueFileName = UploadedFile(model);
-
-                Game game = new Game
+                // map the data from model to your entity
+                var game = new Game
                 {
                     GameName = model.GameName,
                     GameCreator = model.GameCreator,
@@ -63,17 +64,95 @@ namespace GameSite.Controllers
                     Description = model.Description,
                     IsOnSale = model.IsOnSale,
                     IsInStock = model.IsInStock,
-                    GenreId = model.GenreId,
+                    Genre = _context.Genres.Find(model.GenreId),
                     GenreName = model.GenreName,
-                    ImageUrl = uniqueFileName
+                    PhotoPath = uniqueFileName
+
                 };
-                _context.Add(game);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+        
+                _context.Games.Add(game);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
             }
-            return View();
+            // Form has errors, repopulate choices and redisplay form
+
+            PopulateChoices(model);
+
+            return View(model);
         }
 
+
+
+
+        public ActionResult Edit(int id)
+        {
+            var game = _context.Games.Find(id);
+            if (game == null)
+            {
+                return NotFound();
+            }
+
+            var model = new GameEditViewModel
+            {
+                GameName = game.GameName,
+                GameCreator = game.GameCreator,
+                Price = game.Price,
+                Description = game.Description,
+                IsOnSale = game.IsOnSale,
+                IsInStock = game.IsInStock,
+                GenreId = game.GenreId,
+                GenreName = game.GenreName,
+                ExistingPhotoPath = game.PhotoPath
+            };
+
+            PopulateChoices(model);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(GameEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Game game = _gameRepository.GetGameByID(model.Id);
+                // Update the game object with the data in the model object
+                game.GameName = model.GameName;
+                game.GameCreator = model.GameCreator;
+                game.Price = model.Price;
+                game.Description = model.Description;
+                game.IsOnSale = model.IsOnSale;
+                game.IsInStock = model.IsInStock;
+                game.Genre = _context.Genres.Find(model.GenreId);
+                game.GenreName = model.GenreName;
+
+                if (model.Photo != null)
+                {
+                    // If a new photo is uploaded, the existing photo must be
+                    // deleted. So check if there is an existing photo and delete
+                    if (model.ExistingPhotoPath != null)
+                    {
+                        string filePath = Path.Combine(_webHostEnvironment.WebRootPath,
+                            "images", model.ExistingPhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+                    // Save the new photo in wwwroot/images folder and update
+                    // PhotoPath property of the employee object which will be
+                    // eventually saved in the database
+                    game.PhotoPath = UploadedFile(model);
+                }
+
+                _context.Games.Update(game);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            PopulateChoices(model);
+
+            return View(model);
+        }
 
         public IActionResult Details(int id)
         {
@@ -86,39 +165,6 @@ namespace GameSite.Controllers
             return View(game);
         }
 
-        public IActionResult Edit(int id)
-        {
-
-            Game game = new Game();
-            if(game != null)
-            {
-                GameViewModel model = new GameViewModel
-                {
-                    GameId = game.GameId,
-                    GenreId = game.GenreId,
-                    GenreName = game.GenreName
-                };
-
-                _context.Update(model);
-            }
-
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, GameViewModel gameViewModel)
-        {
-            if(gameViewModel.GameId > 0)
-            {
-                Game game = _context.Games.SingleOrDefault(x => x.GameId == gameViewModel.GameId);
-                gameViewModel.GameId = game.GameId;
-                gameViewModel.GenreId = game.GenreId;
-                gameViewModel.GenreName = game.GenreName;
-
-            }
-            return View(gameViewModel);
-        }
-
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -126,14 +172,14 @@ namespace GameSite.Controllers
             Game game = _gameRepository.GetGameByID(id);
 
 
-                return View(game);
+            return View(game);
         }
 
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
-            
-                
+
+
             _gameRepository.Delete(id);
 
             return RedirectToAction(nameof(Index));
@@ -146,38 +192,27 @@ namespace GameSite.Controllers
         {
             string uniqueFileName = null;
 
-            if (model.ImageUrl!= null)
+            if (model.Photo != null)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImageUrl.FileName;
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    model.ImageUrl.CopyTo(fileStream);
+                    model.Photo.CopyTo(fileStream);
                 }
             }
             return uniqueFileName;
         }
 
 
-        private IEnumerable<SelectListItem> GetSelelectListItemsGenres(IEnumerable<Genre> genres)
+        protected void PopulateChoices(GameViewModel model)
         {
-            var selectList = new List<SelectListItem>();
-            selectList.Add(new SelectListItem
+            model.Genres = _context.Genres.Select(m => new SelectListItem
             {
-                Value = "0",
-                Text = "Select genre..."
+                Value = m.GenreId.ToString(),
+                Text = m.GenreName
             });
-            foreach (var element in genres)
-            {
-                selectList.Add(new SelectListItem
-                {
-                    Value = element.GenreId.ToString(),
-                    Text = element.GenreName
-                });
-            }
-            return selectList;
         }
-
     }
 }

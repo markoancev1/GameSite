@@ -17,14 +17,14 @@ namespace GameSite.Models
         public string GameCreator { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public IFormFile ImageUrl { get; set; }
+        public IFormFile Photo { get; set; }
         public bool IsOnSale { get; set; }
         public bool IsInStock { get; set; }
 
 
         public Genre Genre { get; set; }
         public string GenreName { get; set; }
-        public int GenreId { get; set; }
+        public int? GenreId { get; set; }
         public IEnumerable<SelectListItem> Genres { get; set; }
     }
 }

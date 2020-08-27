@@ -14,7 +14,7 @@ namespace GameSite.Data.Entities
         public string GameCreator { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public string ImageUrl { get; set; }
+        public string PhotoPath { get; set; }
         public bool IsOnSale { get; set; }
         public bool IsInStock { get; set; }
         public Genre Genre  { get; set; }

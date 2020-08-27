@@ -10,6 +10,7 @@ namespace GameSite.Repository.Interface
     {
         void Add(Game game);
         void Delete(int gameId);
+        void Edit(Game game);
         IEnumerable<Game> GetAllGames();
         IEnumerable<Game> GetGamesOnSale();
         Game GetGameByID(int gameId);

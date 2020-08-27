@@ -1,4 +1,10 @@
-﻿@model GameSite.Models.GameViewModel
+﻿@model GameSite.Models.GameEditViewModel
+
+@{
+    ViewBag.Title = "Edit Game";
+    // Get the full path of the existing employee photo for display
+    var photoPath = "~/Images/" + (Model.ExistingPhotoPath);
+}
 
 <div class="col-md-10 mx-auto py-4">
     <div class="card">
@@ -6,7 +12,12 @@
             <h4>Add New Game</h4>
         </div>
         <div class="card-body" style="background-color: #00a379">
-            <form enctype="multipart/form-data" asp-action="Add">
+            <form enctype="multipart/form-data" method="post" asp-action="Edit">
+                @*Use hidden input elements to store employee id and ExistingPhotoPath
+        which we need when we submit the form and update data in the database*@
+                <input hidden asp-for="Id" />
+                <input hidden asp-for="ExistingPhotoPath" />
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -60,6 +71,22 @@
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
 
+                <div class="form-group row">
+                    <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <div class="custom-file">
+                            <input asp-for="Photo" class="custom-file-input form-control">
+                            <label class="custom-file-label">Click here to change photo</label>
+                        </div>
+                    </div>
+                </div>
+
+                @*Display the existing employee photo*@
+                <div class="form-group row col-sm-4 offset-4">
+                    <img class="imageThumbnail" src="@photoPath" asp-append-version="true" />
+                </div>
+
+
                 <div class="form-group text-center">
                     <input type="submit" value="submit" class="btn btn-sm btn-primary rounded-0 text-uppercase" />
                     <a asp-action="Index" class="btn btn-sm btn-primary rounded-0 text-uppercase"><i class="fas fa-fast-backward"></i> Back to List</a>
@@ -78,6 +105,13 @@
             var textSelected = optionSelected.text();
             $("#GenreName").val(textSelected);
             console.log($("#GenreName").val(textSelected));
+        });
+
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(fileName);
+            });
         });
     </script>
 }

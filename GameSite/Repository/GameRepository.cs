@@ -42,5 +42,11 @@ namespace GameSite.Repository
         {
             return _context.Games.FirstOrDefault(c => c.GameId == gameId);
         }
+
+        public void Edit(Game game)
+        {
+            _context.Games.Update(game);
+            _context.SaveChanges();
+        }
     }
 }

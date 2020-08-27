@@ -13,6 +13,7 @@
 <table class="table table-bordered">
     <thead>
         <tr>
+            <th>@Html.DisplayNameFor(model => model.PhotoPath)</th>
             <th>@Html.DisplayNameFor(model => model.GameName)</th>
             <th>@Html.DisplayNameFor(model => model.GameCreator)</th>
             <th>@Html.DisplayNameFor(model => model.Price)</th>
@@ -25,10 +26,12 @@
         {
             <tr>
                 <td>
-                    <img src="~/images/@game.ImageUrl"
+                    <img src="~/images/@game.PhotoPath"
                          class="rounded-circle"
                          height="40" width="40"
                          asp-append-version="true" />
+                </td>
+                <td>
                     @game.GameName
                 </td>
                 <td>@game.GameCreator</td>
