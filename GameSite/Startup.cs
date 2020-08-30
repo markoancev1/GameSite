@@ -33,7 +33,11 @@ namespace GameSite
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<DataContext>();
+               .AddRoles<IdentityRole>()
+               .AddEntityFrameworkStores<DataContext>();
+            services
+                .AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
             services.AddControllersWithViews();
             services.AddRazorPages();
 
