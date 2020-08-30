@@ -108,14 +108,14 @@ namespace GameSite.Migrations
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
-                            ConcurrencyStamp = "f3ae9dd3-b082-421b-8523-05b4cb6f97e0",
+                            ConcurrencyStamp = "fe2993c4-19b3-484c-b17d-80b037364bc3",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
-                            ConcurrencyStamp = "e0ac65dc-72f8-4ac2-b5c1-fdedebd29a46",
+                            ConcurrencyStamp = "a9e60570-67f9-45ef-b573-e51338d4b896",
                             Name = "guest",
                             NormalizedName = "GUEST"
                         });
@@ -220,7 +220,7 @@ namespace GameSite.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MOVIESTORE.COM",
                             NormalizedUserName = "ADMIN@MOVIESTORE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBBidxrN431BCawAPWJBw9fw4Itgzm9D18Lb6XIn8qmLCbfPAIn9hfSsBHlh9IveLQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH3cgZ0d7i5EzKKhgvmcBkOvOhaGlYKYws9YNIuYMm/OoTjdH7LTVxL8YyX3xgkPdA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

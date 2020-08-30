@@ -21,46 +21,6 @@ namespace GameSite.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            const string ADMIN_ID = "b4280b6a-0613-4cbd-a9e6-f1701e926e73";
-            const string ROLE_ID = ADMIN_ID;
-            const string password = "admin123abc";
-
-
-            modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole
-                {
-                    Id = ROLE_ID,
-                    Name = "admin",
-                    NormalizedName = "ADMIN"
-                },
-                new IdentityRole
-                {
-                    Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
-                    Name = "guest",
-                    NormalizedName = "GUEST"
-                }
-            );
-
-            var hasher = new PasswordHasher<IdentityUser>();
-
-            modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser
-            {
-                Id = ADMIN_ID,
-                UserName = "admin@moviestore.com",
-                NormalizedUserName = "ADMIN@MOVIESTORE.COM",
-                Email = "admin@moviestore.com",
-                NormalizedEmail = "ADMIN@MOVIESTORE.COM",
-                EmailConfirmed = true,
-                PasswordHash = hasher.HashPassword(null, password),
-                SecurityStamp = string.Empty,
-                ConcurrencyStamp = "c8554266-b401-4519-9aeb-a9283053fc58"
-            });
-
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
-            {
-                RoleId = ROLE_ID,
-                UserId = ADMIN_ID
-            });
             base.OnModelCreating(modelBuilder);
         }
     }

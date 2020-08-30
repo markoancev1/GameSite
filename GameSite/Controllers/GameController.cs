@@ -50,7 +50,7 @@ namespace GameSite.Controllers
 
 
         [HttpPost]
-        public IActionResult Add(GameViewModel model)
+        public  IActionResult Add(GameViewModel model)
         {
             if (ModelState.IsValid)
             {
