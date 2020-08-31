@@ -1,8 +1,23 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model GameViewModel
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="custom-container pt-5">
+    <h2 class="text-center">Popular Games!</h2>
+    <h6 class="text-center"><em>Some of our most sold games!</em></h6>
+    <div class="row">
+        @foreach (var item in Model.GamesOnSale)
+            {
+                <div class="col-12 col-md-4 mt-5">
+                    <div class="card h-100">
+                        <img src="~/images/@item.PhotoPath" class=" card-img-top" />
+                        <div class="card-body" style="background-color: #222;">
+                            <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
+                            <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
+                            <hr style="background-color:white;"/>
+                            <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
+                            <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
+                        </div>
+                    </div>
+                </div>
+            }
+    </div>
 </div>

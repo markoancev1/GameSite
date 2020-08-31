@@ -75,7 +75,30 @@ namespace GameSite.Migrations
 
                     b.HasKey("GenreId");
 
-                    b.ToTable("Genre");
+                    b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("GameSite.Data.Entities.ShoppingCartItem", b =>
+                {
+                    b.Property<int>("ShoppingCartItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShoppingCartId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ShoppingCartItemId");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -108,14 +131,14 @@ namespace GameSite.Migrations
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
-                            ConcurrencyStamp = "fe2993c4-19b3-484c-b17d-80b037364bc3",
+                            ConcurrencyStamp = "eac325b9-396f-498e-87f5-f4837e8db9bc",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
-                            ConcurrencyStamp = "a9e60570-67f9-45ef-b573-e51338d4b896",
+                            ConcurrencyStamp = "5faacd0b-8825-4169-b78c-afd28541f6fa",
                             Name = "guest",
                             NormalizedName = "GUEST"
                         });
@@ -215,16 +238,16 @@ namespace GameSite.Migrations
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "c8554266-b401-4519-9aeb-a9283053fc58",
-                            Email = "admin@moviestore.com",
+                            Email = "admin@gamestore.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@MOVIESTORE.COM",
-                            NormalizedUserName = "ADMIN@MOVIESTORE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEH3cgZ0d7i5EzKKhgvmcBkOvOhaGlYKYws9YNIuYMm/OoTjdH7LTVxL8YyX3xgkPdA==",
+                            NormalizedEmail = "ADMIN@GAMESTORE.COM",
+                            NormalizedUserName = "ADMIN@GAMESTORE.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIzLpL6ExdVnN88hyW4SMI1aSfZpTG99C3nz7N3KkiiPJY26xRaXiWvnV5D8W0n49Q==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
-                            UserName = "admin@moviestore.com"
+                            UserName = "admin@gamestore.com"
                         });
                 });
 
@@ -326,6 +349,13 @@ namespace GameSite.Migrations
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GameSite.Data.Entities.ShoppingCartItem", b =>
+                {
+                    b.HasOne("GameSite.Data.Entities.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

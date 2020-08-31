@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameSite.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200830142204_Users")]
+    [Migration("20200830224040_Users")]
     partial class Users
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,7 +77,25 @@ namespace GameSite.Migrations
 
                     b.HasKey("GenreId");
 
-                    b.ToTable("Genre");
+                    b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("GameSite.Data.Entities.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -110,14 +128,21 @@ namespace GameSite.Migrations
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
-                            ConcurrencyStamp = "fe2993c4-19b3-484c-b17d-80b037364bc3",
+                            ConcurrencyStamp = "f592be78-bd08-467a-b0d4-b17383284692",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
+                            Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e74",
+                            ConcurrencyStamp = "fb314441-4be9-4936-98e4-3e254f826b3c",
+                            Name = "editor",
+                            NormalizedName = "EDITOR"
+                        },
+                        new
+                        {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
-                            ConcurrencyStamp = "a9e60570-67f9-45ef-b573-e51338d4b896",
+                            ConcurrencyStamp = "244b40d9-50a7-437a-8b78-32c52817d6b1",
                             Name = "guest",
                             NormalizedName = "GUEST"
                         });
@@ -217,16 +242,16 @@ namespace GameSite.Migrations
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "c8554266-b401-4519-9aeb-a9283053fc58",
-                            Email = "admin@moviestore.com",
+                            Email = "admin@gamestore.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@MOVIESTORE.COM",
-                            NormalizedUserName = "ADMIN@MOVIESTORE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEH3cgZ0d7i5EzKKhgvmcBkOvOhaGlYKYws9YNIuYMm/OoTjdH7LTVxL8YyX3xgkPdA==",
+                            NormalizedEmail = "ADMIN@GAMESTORE.COM",
+                            NormalizedUserName = "ADMIN@GAMESTORE.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDcFtYVP4Ex4G/uuV4Xz1foVNXUZ/B4nh4j31Qeo73TdGnJPV44w4m4RprSKazetsw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
-                            UserName = "admin@moviestore.com"
+                            UserName = "admin@gamestore.com"
                         });
                 });
 

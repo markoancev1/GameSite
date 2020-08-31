@@ -127,3 +127,7 @@ thead,tbody tr th,td {
 .show-read-more .more-text {
     display: none;
 }
+.card-img-top {
+    height: 350px;
+}
+

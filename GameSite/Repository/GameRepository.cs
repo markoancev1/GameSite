@@ -33,6 +33,7 @@ namespace GameSite.Repository
 
 
         public IEnumerable<Game> GetGamesOnSale() => _context.Games.Include(p => p.Genre).Where(s => s.IsOnSale);
+        public IEnumerable<Game> GetGamesInStock() => _context.Games.Include(p => p.Genre).Where(s => s.IsInStock);
         public IEnumerable<Game> GetAllGames()
         {
             var result = _context.Games.AsEnumerable();

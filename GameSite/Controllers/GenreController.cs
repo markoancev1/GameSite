@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameSite.Data.Entities;
 using GameSite.Repository.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameSite.Controllers
 {
+    [Authorize(Roles = "admin, guest")]
     public class GenreController : Controller
     {
         private readonly IGenreRepository _genreRepository;
@@ -22,12 +24,14 @@ namespace GameSite.Controllers
             return View(genreList);
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
 
             return View();
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
 
         public IActionResult Create(Genre genre)
@@ -40,6 +44,7 @@ namespace GameSite.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
             var genre= _genreRepository.GetGenreById(id);
@@ -50,7 +55,7 @@ namespace GameSite.Controllers
             return View(genre);
         }
 
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Genre genre)
@@ -75,6 +80,7 @@ namespace GameSite.Controllers
             return View(genre);
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Details(int id)
         {
             var genre = _genreRepository.GetGenreById(id);
@@ -87,6 +93,7 @@ namespace GameSite.Controllers
             return View(genre);
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int id)
         {
             Genre genre = _genreRepository.GetGenreById(id);
@@ -94,6 +101,7 @@ namespace GameSite.Controllers
             return View(genre);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
 
         public IActionResult DeleteConfirmed(int id)

@@ -26,5 +26,8 @@ namespace GameSite.Models
         public string GenreName { get; set; }
         public int? GenreId { get; set; }
         public IEnumerable<SelectListItem> Genres { get; set; }
+
+        public IEnumerable<Game> GamesOnSale { get; set; }
+        public IEnumerable<Game> GamesInStock { get; set; }
     }
 }

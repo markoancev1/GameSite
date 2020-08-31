@@ -47,7 +47,7 @@ namespace GameSite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Genre",
+                name: "Genres",
                 columns: table => new
                 {
                     GenreId = table.Column<int>(nullable: false)
@@ -57,7 +57,21 @@ namespace GameSite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Genre", x => x.GenreId);
+                    table.PrimaryKey("PK_Genres", x => x.GenreId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -186,9 +200,9 @@ namespace GameSite.Migrations
                 {
                     table.PrimaryKey("PK_Games", x => x.GameId);
                     table.ForeignKey(
-                        name: "FK_Games_Genre_GenreId",
+                        name: "FK_Games_Genres_GenreId",
                         column: x => x.GenreId,
-                        principalTable: "Genre",
+                        principalTable: "Genres",
                         principalColumn: "GenreId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -196,17 +210,17 @@ namespace GameSite.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", "fe2993c4-19b3-484c-b17d-80b037364bc3", "admin", "ADMIN" });
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e75", "a9e60570-67f9-45ef-b573-e51338d4b896", "guest", "GUEST" });
+                values: new object[,]
+                {
+                    { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", "f592be78-bd08-467a-b0d4-b17383284692", "admin", "ADMIN" },
+                    { "b4280b6a-0613-4cbd-a9e6-f1701e926e74", "fb314441-4be9-4936-98e4-3e254f826b3c", "editor", "EDITOR" },
+                    { "b4280b6a-0613-4cbd-a9e6-f1701e926e75", "244b40d9-50a7-437a-8b78-32c52817d6b1", "guest", "GUEST" }
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", 0, "c8554266-b401-4519-9aeb-a9283053fc58", "admin@moviestore.com", true, false, null, "ADMIN@MOVIESTORE.COM", "ADMIN@MOVIESTORE.COM", "AQAAAAEAACcQAAAAEH3cgZ0d7i5EzKKhgvmcBkOvOhaGlYKYws9YNIuYMm/OoTjdH7LTVxL8YyX3xgkPdA==", null, false, "", false, "admin@moviestore.com" });
+                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", 0, "c8554266-b401-4519-9aeb-a9283053fc58", "admin@gamestore.com", true, false, null, "ADMIN@GAMESTORE.COM", "ADMIN@GAMESTORE.COM", "AQAAAAEAACcQAAAAEDcFtYVP4Ex4G/uuV4Xz1foVNXUZ/B4nh4j31Qeo73TdGnJPV44w4m4RprSKazetsw==", null, false, "", false, "admin@gamestore.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -279,13 +293,16 @@ namespace GameSite.Migrations
                 name: "Games");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Genre");
+                name: "Genres");
         }
     }
 }

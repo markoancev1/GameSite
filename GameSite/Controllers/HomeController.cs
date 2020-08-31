@@ -30,12 +30,15 @@ namespace GameSite.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
+            var getGamesOnSale = _gameRepository.GetGamesOnSale();
+            var getGameInStock = _gameRepository.GetGamesInStock();
+            var gameViewModel = new GameViewModel
+            {
+                GamesInStock = getGameInStock,
+                GamesOnSale = getGamesOnSale
+            };
 
-        public IActionResult Privacy()
-        {
-            return View();
+            return View(gameViewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

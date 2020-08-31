@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameSite.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameSite.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -99,64 +101,6 @@ namespace GameSite.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("index", "home");
-        }
-
-        public async Task<IActionResult> EditUser(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user == null)
-            {
-                ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
-                return View("NotFound");
-            }
-
-            // GetClaimsAsync retunrs the list of user Claims
-            var userClaims = await _userManager.GetClaimsAsync(user);
-            // GetRolesAsync returns the list of user Roles
-            var userRoles = await _userManager.GetRolesAsync(user);
-
-            var model = new EditUserModel
-            {
-                Id = user.Id,
-                Email = user.Email,
-                UserName = user.UserName,
-                Roles = userRoles
-            };
-
-            return View(model);
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> EditUser(EditUserModel model)
-        {
-            var user = await _userManager.FindByIdAsync(model.Id);
-
-            if (user == null)
-            {
-                ViewBag.ErrorMessage = $"User with Id = {model.Id} cannot be found";
-                return View("NotFound");
-            }
-            else
-            {
-                user.Email = model.Email;
-                user.UserName = model.UserName;
-
-                var result = await _userManager.UpdateAsync(user);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-
-                return View(model);
-            }
         }
 
         [HttpPost]

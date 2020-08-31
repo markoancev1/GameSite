@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using GameSite.Repository;
 using GameSite.Repository.Interface;
+using GameSite.Data.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace GameSite
 {
@@ -43,6 +45,13 @@ namespace GameSite
 
             services.AddTransient<IGameRepository, GameRepository>();
             services.AddTransient<IGenreRepository, GenreRepository>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(sp => ShoppingCart.GetCart(sp));
+
+            services.AddMvc();
+            services.AddMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,7 +72,7 @@ namespace GameSite
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
 

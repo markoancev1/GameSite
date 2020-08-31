@@ -13,6 +13,7 @@ namespace GameSite.Repository.Interface
         void Edit(Game game);
         IEnumerable<Game> GetAllGames();
         IEnumerable<Game> GetGamesOnSale();
+        IEnumerable<Game> GetGamesInStock();
         Game GetGameByID(int gameId);
 
     }

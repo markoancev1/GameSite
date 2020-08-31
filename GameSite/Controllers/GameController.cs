@@ -9,6 +9,7 @@ using GameSite.Data.Entities;
 using GameSite.Models;
 using GameSite.Repository;
 using GameSite.Repository.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ using Newtonsoft.Json.Converters;
 
 namespace GameSite.Controllers
 {
+    [Authorize(Roles = "admin, guest")]
     public class GameController : Controller
     {
         private readonly IGameRepository _gameRepository;
@@ -37,6 +39,8 @@ namespace GameSite.Controllers
             var gameList = _gameRepository.GetAllGames();
             return View(gameList);
         }
+
+        [Authorize(Roles = "admin")]
         [HttpGet]
 
         public IActionResult Add()
@@ -48,9 +52,9 @@ namespace GameSite.Controllers
             return View(model);
         }
 
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
-        public  IActionResult Add(GameViewModel model)
+        public ActionResult Add(GameViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -83,8 +87,7 @@ namespace GameSite.Controllers
         }
 
 
-
-
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
             var game = _context.Games.Find(id);
@@ -111,6 +114,7 @@ namespace GameSite.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult Edit(GameEditViewModel model)
         {
@@ -154,6 +158,7 @@ namespace GameSite.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Details(int id)
         {
             var game = _gameRepository.GetGameByID(id);
@@ -165,6 +170,7 @@ namespace GameSite.Controllers
             return View(game);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -175,6 +181,7 @@ namespace GameSite.Controllers
             return View(game);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
@@ -185,8 +192,6 @@ namespace GameSite.Controllers
             return RedirectToAction(nameof(Index));
 
         }
-
-
 
         private string UploadedFile(GameViewModel model)
         {
@@ -204,8 +209,6 @@ namespace GameSite.Controllers
             }
             return uniqueFileName;
         }
-
-
         protected void PopulateChoices(GameViewModel model)
         {
             model.Genres = _context.Genres.Select(m => new SelectListItem
