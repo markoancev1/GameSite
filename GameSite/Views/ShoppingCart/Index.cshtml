@@ -7,12 +7,11 @@
 
 <div class="custom-container mt-4">
     <h1>Shopping Cart (@Model.AllGamesAddedToCartByLoggedInUser.Count())</h1>
-    @*<partial name="_CounterPartial" />*@
     <div class="row">
-        <div class="col-12 col-md-9">
+        <div class="col-12 col-md-9" >
             @foreach (var game in Model.AllGamesAddedToCartByLoggedInUser)
             {
-                <div class="card mt-3">
+                <div class="card mt-3 table-borderless"  style="background-color: #222;" >
                     <div class="card-body row">
                         <div class="col-2 col-md-2 borderStyle">
                             <img src="~/images/@game.PhotoPath" class="img-fluid" />
@@ -21,10 +20,10 @@
                             <h4 class="card-title"> @Html.DisplayFor(modelItem => game.GameName)</h4>
                             <div class="row">
                                 <div class="col-12 col-md-12">
-                                    <h6>Author: @Html.DisplayFor(modelItem => game.GenreName) </h6>
-                                    <h6>BookType: @Html.DisplayFor(modelItem => game.IsInStock)</h6>
-                                    <h6>Dimensions: @Html.DisplayFor(modelItem => game.IsOnSale)</h6>
-                                    <h6>Weight: @Html.DisplayFor(modelItem => game.Description) </h6>>
+                                    <h6>Genre Name: @Html.DisplayFor(modelItem => game.GenreName) </h6>
+                                    <h6>Available: @Html.DisplayFor(modelItem => game.IsInStock)</h6>
+                                    <h6>Purchasable: @Html.DisplayFor(modelItem => game.IsOnSale)</h6>
+                                    <h6>Description: @Html.DisplayFor(modelItem => game.Description) </h6>
 
                                 </div>
                             </div>
@@ -33,13 +32,12 @@
                     <div class="card-footer text-muted">
                         <div class="row">
                             <div class="col-9 col-md-9">
-                                @*<a class="btn btn-danger" asp-action="Delete" asp-route-id="@book.Id">Delete</a>*@
                                 <button class="btn btn-danger" onclick="DeleteItemFromCart(@game.GameId)">
                                     <i class="fas fa-trash-alt"></i> &nbsp; Delete
                                 </button>
                             </div>
                             <div class="col-3 col-md-3 text-right">
-                                <h6 class="pt-1">Price: &#36; @Html.DisplayFor(modelItem => game.Price)</h6>
+                                <h6 class="pt-1 text-white">Price: &#36; @Html.DisplayFor(modelItem => game.Price)</h6>
                             </div>
                         </div>
 
@@ -47,8 +45,8 @@
                 </div>
             }
         </div>
-        <div class="col-12 col-md-3">
-            <div class="card mt-3">
+        <div class="col-12 col-md-3"  style="background-color: #222;">
+            <div class="card mt-3 table-borderless" style="background-color: #222;">
                 <div class="card-body">
                     <h4 class="card-title">Order Summary</h4>
                     <table class="table table-borderless">
