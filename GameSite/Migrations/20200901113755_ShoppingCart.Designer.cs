@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameSite.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200830224040_Users")]
-    partial class Users
+    [Migration("20200901113755_ShoppingCart")]
+    partial class ShoppingCart
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,8 +52,8 @@ namespace GameSite.Migrations
                     b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.HasKey("GameId");
 
@@ -80,22 +80,28 @@ namespace GameSite.Migrations
                     b.ToTable("Genres");
                 });
 
-            modelBuilder.Entity("GameSite.Data.Entities.User", b =>
+            modelBuilder.Entity("GameSite.Data.Entities.ShoppingCart", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Email")
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
 
-                    b.HasKey("UserId");
-
-                    b.ToTable("Users");
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -128,21 +134,14 @@ namespace GameSite.Migrations
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
-                            ConcurrencyStamp = "f592be78-bd08-467a-b0d4-b17383284692",
+                            ConcurrencyStamp = "0c6bfb82-6a83-4873-b995-efb9e71ab903",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e74",
-                            ConcurrencyStamp = "fb314441-4be9-4936-98e4-3e254f826b3c",
-                            Name = "editor",
-                            NormalizedName = "EDITOR"
-                        },
-                        new
-                        {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
-                            ConcurrencyStamp = "244b40d9-50a7-437a-8b78-32c52817d6b1",
+                            ConcurrencyStamp = "c79c6bd4-04df-4722-acf2-4256956e1f22",
                             Name = "guest",
                             NormalizedName = "GUEST"
                         });
@@ -247,7 +246,7 @@ namespace GameSite.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GAMESTORE.COM",
                             NormalizedUserName = "ADMIN@GAMESTORE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDcFtYVP4Ex4G/uuV4Xz1foVNXUZ/B4nh4j31Qeo73TdGnJPV44w4m4RprSKazetsw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEE+TBXF4eYKBO7EFuri5vIa+uh4hu5BEH58KlJTcGK+HiOUk/qadC7PgpuER3aHCnw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

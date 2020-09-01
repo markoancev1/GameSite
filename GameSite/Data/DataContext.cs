@@ -17,7 +17,8 @@ namespace GameSite.Data
 
         public DbSet<Game> Games { get; set; }
         public DbSet<Genre> Genres { get; set; }
-        public DbSet <ShoppingCartItem> ShoppingCartItems { get; set; }
+
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

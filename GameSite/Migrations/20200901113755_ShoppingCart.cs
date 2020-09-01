@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GameSite.Migrations
 {
-    public partial class Users : Migration
+    public partial class ShoppingCart : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -61,17 +61,19 @@ namespace GameSite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "ShoppingCarts",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true),
+                    GameId = table.Column<int>(nullable: false),
+                    Price = table.Column<double>(nullable: false),
+                    DateAdded = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -189,7 +191,7 @@ namespace GameSite.Migrations
                     GameName = table.Column<string>(nullable: true),
                     GameCreator = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Price = table.Column<decimal>(nullable: false),
+                    Price = table.Column<double>(nullable: false),
                     PhotoPath = table.Column<string>(nullable: true),
                     IsOnSale = table.Column<bool>(nullable: false),
                     IsInStock = table.Column<bool>(nullable: false),
@@ -210,17 +212,17 @@ namespace GameSite.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[,]
-                {
-                    { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", "f592be78-bd08-467a-b0d4-b17383284692", "admin", "ADMIN" },
-                    { "b4280b6a-0613-4cbd-a9e6-f1701e926e74", "fb314441-4be9-4936-98e4-3e254f826b3c", "editor", "EDITOR" },
-                    { "b4280b6a-0613-4cbd-a9e6-f1701e926e75", "244b40d9-50a7-437a-8b78-32c52817d6b1", "guest", "GUEST" }
-                });
+                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", "0c6bfb82-6a83-4873-b995-efb9e71ab903", "admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e75", "c79c6bd4-04df-4722-acf2-4256956e1f22", "guest", "GUEST" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", 0, "c8554266-b401-4519-9aeb-a9283053fc58", "admin@gamestore.com", true, false, null, "ADMIN@GAMESTORE.COM", "ADMIN@GAMESTORE.COM", "AQAAAAEAACcQAAAAEDcFtYVP4Ex4G/uuV4Xz1foVNXUZ/B4nh4j31Qeo73TdGnJPV44w4m4RprSKazetsw==", null, false, "", false, "admin@gamestore.com" });
+                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", 0, "c8554266-b401-4519-9aeb-a9283053fc58", "admin@gamestore.com", true, false, null, "ADMIN@GAMESTORE.COM", "ADMIN@GAMESTORE.COM", "AQAAAAEAACcQAAAAEE+TBXF4eYKBO7EFuri5vIa+uh4hu5BEH58KlJTcGK+HiOUk/qadC7PgpuER3aHCnw==", null, false, "", false, "admin@gamestore.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -293,7 +295,7 @@ namespace GameSite.Migrations
                 name: "Games");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "ShoppingCarts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

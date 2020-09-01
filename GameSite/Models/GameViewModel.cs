@@ -16,11 +16,12 @@ namespace GameSite.Models
         public string GameName { get; set; }
         public string GameCreator { get; set; }
         public string Description { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         public IFormFile Photo { get; set; }
         public bool IsOnSale { get; set; }
         public bool IsInStock { get; set; }
 
+        public int AddToCartTotalCounter { get; set; }
 
         public Genre Genre { get; set; }
         public string GenreName { get; set; }

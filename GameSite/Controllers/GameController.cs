@@ -128,7 +128,7 @@ namespace GameSite.Controllers
                 game.Description = model.Description;
                 game.IsOnSale = model.IsOnSale;
                 game.IsInStock = model.IsInStock;
-                game.Genre = _context.Genres.Find(model.GenreId);
+                game.Genre = _context.Genres.Find(model.GenreId + 1);
                 game.GenreName = model.GenreName;
 
                 if (model.Photo != null)

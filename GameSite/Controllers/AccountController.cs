@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GameSite.Controllers
 {
-    [Authorize(Roles = "admin")]
+    
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -22,6 +22,7 @@ namespace GameSite.Controllers
             _signInManager = signInManager;
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Index()
         {
             var users = _userManager.Users;
@@ -85,7 +86,7 @@ namespace GameSite.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("index", "home");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
@@ -103,6 +104,7 @@ namespace GameSite.Controllers
             return RedirectToAction("index", "home");
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
         {
