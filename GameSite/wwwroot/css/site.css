@@ -130,3 +130,27 @@ thead,tbody tr th,td {
 .card-img-top {
     height: 350px;
 }
+
+#myBtn {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    right: 40px;
+    z-index: 99;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: grey;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+    #myBtn:hover {
+        background-color: #375a7f;
+        -webkit-transition: all 500ms ease;
+        -moz-transition: all 500ms ease;
+        -o-transition: all 500ms ease;
+        transition: all 500ms ease;
+    }

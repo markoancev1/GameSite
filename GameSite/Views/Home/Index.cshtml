@@ -1,12 +1,17 @@
 ﻿@model GameViewModel
 
+    <partial name="_Carousel" />
+
+
+    <button id="myBtn" title="Go to top">Top</button>
+
 <div class="custom-container pt-5">
     <h2 class="text-center">Popular Games!</h2>
     <h6 class="text-center"><em>Some of our most sold games!</em></h6>
     <div class="row">
         @foreach (var item in Model.GamesOnSale)
         {
-            <div class="col-12 col-md-4 mt-5">
+            <div class="col-12 col-md-6 col-lg-4 mt-5">
                 <div class="card h-100">
                     <img src="~/images/@item.PhotoPath" class=" card-img-top" />
                     <div class="card-body" style="background-color: #222;">
@@ -41,13 +46,29 @@
                         layout: 'bottomLeft',
                         timeout: 3000,
                         text: 'Added To Cart',
-                        theme: 'sunset'
+                        theme: 'sunset',
                     }).show();
+                    location.reload();
                 },
+
                 error: function () {
                     alert("error");
                 }
             });
         }
+
+        jQuery(document).ready(function ($) {
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 50) {
+                    $('#myBtn').fadeIn('slow');
+                } else {
+                    $('#myBtn').fadeOut('slow');
+                }
+            });
+            $('#myBtn').click(function () {
+                $("html, body").animate({ scrollTop: 0 }, 500);
+                return false;
+            });
+        });
     </script>
 }

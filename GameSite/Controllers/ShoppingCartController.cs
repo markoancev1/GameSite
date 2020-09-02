@@ -80,7 +80,7 @@ namespace GameSite.Controllers
                 UserId = userId,
                 GameId = gameId,
                 GenreId = genreId,
-                Price = price,
+                Price = price++,
                 DateAdded = DateTime.Now
             };
 
