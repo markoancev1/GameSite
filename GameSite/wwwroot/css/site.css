@@ -147,10 +147,17 @@ thead,tbody tr th,td {
     border-radius: 4px;
 }
 
-    #myBtn:hover {
-        background-color: #375a7f;
-        -webkit-transition: all 500ms ease;
-        -moz-transition: all 500ms ease;
-        -o-transition: all 500ms ease;
-        transition: all 500ms ease;
+#myBtn:hover {
+    background-color: #375a7f;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+
+@media (min-width: 768px) {
+    img {
+        width: 150px;
+        max-height:500px;
     }
+}

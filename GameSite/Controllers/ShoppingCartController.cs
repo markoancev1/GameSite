@@ -86,7 +86,7 @@ namespace GameSite.Controllers
 
             _shoppingCartRepository.Add(shoppingCart);
 
-            return new JsonResult(new { data = shoppingCart });
+            return new JsonResult(new { data = shoppingCart, url = Url.Action("Index", "Home") });
         }
 
 
