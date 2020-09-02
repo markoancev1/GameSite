@@ -1,35 +1,50 @@
 ﻿@model GameViewModel
 
-    <partial name="_Carousel" />
+<partial name="_Carousel" />
 
 
-    <button id="myBtn" title="Go to top">Top</button>
+<button id="myBtn" title="Go to top">Top</button>
 
-<div class="custom-container pt-5">
-    <h2 class="text-center">Popular Games!</h2>
-    <h6 class="text-center"><em>Some of our most sold games!</em></h6>
-    <div class="row">
-        @foreach (var item in Model.GamesOnSale)
-        {
-            <div class="col-12 col-md-6 col-lg-4 mt-5">
-                <div class="card h-100">
-                    <img src="~/images/@item.PhotoPath" class=" card-img-top" />
-                    <div class="card-body" style="background-color: #222;">
-                        <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
-                        <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
-                        <hr style="background-color:white;" />
-                        <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
-                        <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
-                        <hr style="background-color:white;" />
-                        <button class="btn btn-success btn-block" id="addToCart" onclick="AddToCart(@item.GameId)">
-                            <i class="fas fa-cart-plus"></i> &nbsp; Add To Cart
-                        </button>
+
+<partial name="_Carousel" />
+
+<h2>Games On Sale</h2>
+
+<div class="row">
+
+    @foreach (var game in Model.GamesOnSale)
+    {
+        <partial name="_gameCard" model="game" />
+    }
+
+</div>
+
+
+@*<div class="custom-container pt-5">
+        <h2 class="text-center">Popular Games!</h2>
+        <h6 class="text-center"><em>Some of our most sold games!</em></h6>
+        <div class="row">
+            @foreach (var item in Model.GamesOnSale)
+            {
+                <div class="col-12 col-md-6 col-lg-4 mt-5">
+                    <div class="card h-100">
+                        <img src="~/images/@item.PhotoPath" class=" card-img-top" />
+                        <div class="card-body" style="background-color: #222;">
+                            <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
+                            <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
+                            <hr style="background-color:white;" />
+                            <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
+                            <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
+                            <hr style="background-color:white;" />
+                            <button class="btn btn-success btn-block" id="addToCart" onclick="AddToCart(@item.GameId)">
+                                <i class="fas fa-cart-plus"></i> &nbsp; Add To Cart
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
-</div>
+            }
+        </div>
+    </div>*@
 
 @section Scripts {
 
@@ -46,15 +61,15 @@
                         layout: 'bottomLeft',
                         timeout: 3000,
                         text: 'Added To Cart',
-                        theme: 'sunset',
+                        theme: 'sunset'
                     }).show();
-                    location.reload();
+                    setTimeout(function () { location.reload(); }, 4000);
                 },
-
                 error: function () {
                     alert("error");
                 }
             });
+
         }
 
         jQuery(document).ready(function ($) {
