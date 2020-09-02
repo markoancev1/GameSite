@@ -6,7 +6,7 @@ using GameSite.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace GameSite.Views.Shared
+namespace BookStore.Views.Shared
 {
     public class NotificationsModel : PageModel
     {
