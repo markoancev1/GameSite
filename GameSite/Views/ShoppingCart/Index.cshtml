@@ -1,39 +1,110 @@
-﻿@model ShoppingCartViewModel
+﻿@model GameSite.Models.ShoppingCartViewModel
 
-<h2>Shopping Cart: All your candy you love</h2>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>&nbsp;</th>
-            <th>Selected Amount</th>
-            <th>Game</th>
-            <th class="text-right">Price</th>
-            <th class="text-right">Subtotal</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
-        {
-            <tr>
-                <td class="text-left"><a asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-gameId="@item.Game.GameId" alt="">Decrease Amount</a></td>
-                <td class="text-center">@item.Amount</td>
-                <td class="text-left">@item.Game.GameName</td>
-                <td class="text-right">@item.Game.Price.ToString("c")</td>
-                <td class="text-right">
-                    @((item.Amount * item.Game.Price).ToString("c"))
-                </td>
-            </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="4" class="text-right">Total</td>
-            <td class="text-right">@Model.ShoppingCartTotal.ToString("c")</td>
-        </tr>
-    </tfoot>
-</table>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<div class="text-center">
-    <a class="btn btn-primary" asp-controller="ShoppingCart" asp-action="ClearCart">Clear Cart</a>
-    <a class="btn btn-primary" asp-controller="Order" asp-action="Checkout">Checkout</a>
+<div class="custom-container mt-4">
+    <h1>Shopping Cart (@Model.AllGamesAddedToCartByLoggedInUser.Count())</h1>
+    <div class="row">
+        <div class="col-12 col-md-8" >
+            @foreach (var game in Model.AllGamesAddedToCartByLoggedInUser)
+            {
+                <div class="card mt-3 table-borderless"  style="background-color: #222;" >
+                    <div class="card-body row">
+                        <div class="col-2 col-md-2 borderStyle">
+                            <img src="~/images/@game.PhotoPath" class="img-fluid" />
+                        </div>
+                        <div class="col-10 col-md-10">
+                            <h4 class="card-title"> @Html.DisplayFor(modelItem => game.GameName)</h4>
+                            <div class="row">
+                                <div class="col-12 col-md-12">
+                                    <h6>Genre Name: @Html.DisplayFor(modelItem => game.GenreName) </h6>
+                                    <h6>Available: @Html.DisplayFor(modelItem => game.IsInStock)</h6>
+                                    <h6>Purchasable: @Html.DisplayFor(modelItem => game.IsOnSale)</h6>
+                                    <h6>Description: @Html.DisplayFor(modelItem => game.Description) </h6>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <div class="row">
+                            <div class="col-9 col-md-9">
+                                <button class="btn btn-danger" onclick="DeleteItemFromCart(@game.GameId)">
+                                    <i class="fas fa-trash-alt"></i> &nbsp; Delete
+                                </button>
+                            </div>
+                            <div class="col-3 col-md-3 text-right">
+                                <h6 class="pt-1 text-white">Price: &#36; @Html.DisplayFor(modelItem => game.Price)</h6>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-12 col-md-4"  style="background-color: #222;">
+            <div class="card mt-3 table-borderless" style="background-color: #222;">
+                <div class="card-body">
+                    <h4 class="card-title">Order Summary</h4>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td>Subtotal</td>
+                                <td>&#36 @Model.SubTotal</td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td>&#36 @Model.TotalPrice</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a asp-action="Buy" class="btn btn-success btn-block"> <i class="far fa-credit-card"></i> &nbsp; Buy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+        function DeleteItemFromCart(id) {
+            $.ajax({
+                type: "POST",
+                url: "/ShoppingCart/Delete/" + id,
+                success: function (data) {
+                    console.log(data);
+                    new Noty({
+                        type: 'warning',
+                        layout: 'bottomLeft',
+                        timeout: 3000,
+                        progressBar: true,
+                        text: 'Successfully Deleted Game' + data.data.title + ' From Cart',
+                        theme: 'sunset'
+                    }).show();
+                    setTimeout(function () {
+                        if (data) {
+                            window.location = data.url;
+                        }
+                    }, 3500);
+                },
+                error: function () {
+                    new Noty({
+                        type: 'error',
+                        layout: 'bottomLeft',
+                        timeout: 3000,
+                        progressBar: true,
+                        text: 'Error Delete Game From Cart',
+                        theme: 'sunset'
+                    }).show();
+                }
+            });
+        };
+    </script>
+
+}

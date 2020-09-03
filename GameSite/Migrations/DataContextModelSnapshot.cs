@@ -50,8 +50,8 @@ namespace GameSite.Migrations
                     b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.HasKey("GameId");
 
@@ -80,40 +80,29 @@ namespace GameSite.Migrations
 
             modelBuilder.Entity("GameSite.Data.Entities.ShoppingCart", b =>
                 {
-                    b.Property<string>("ShoppingCartId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ShoppingCartId");
-
-                    b.ToTable("ShoppingCarts");
-                });
-
-            modelBuilder.Entity("GameSite.Data.Entities.ShoppingCartItem", b =>
-                {
-                    b.Property<int>("ShoppingCartItemId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Amount")
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GameId")
+                    b.Property<int>("GenreId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ShoppingCartId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ShoppingCartItemId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("GameId");
-
-                    b.HasIndex("ShoppingCartId");
-
-                    b.ToTable("ShoppingCartItems");
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -146,14 +135,14 @@ namespace GameSite.Migrations
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
-                            ConcurrencyStamp = "bb93b757-2f13-4b65-97ee-23ddf8e4cb54",
+                            ConcurrencyStamp = "b7cfec84-63cf-4b1c-b14f-e1a37f1c85ad",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
-                            ConcurrencyStamp = "d188ae58-296f-4581-a7c1-b673c6665e9a",
+                            ConcurrencyStamp = "29fbdad3-d7af-46de-bd33-016ee0ecf7eb",
                             Name = "guest",
                             NormalizedName = "GUEST"
                         });
@@ -258,7 +247,7 @@ namespace GameSite.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GAMESTORE.COM",
                             NormalizedUserName = "ADMIN@GAMESTORE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBPmGdOz68y/RULIZTS4+ZneAM0EJU5f1lhVfD/VVwsrnrgzNtO+SMEbiWxQ3Ic8VQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELuNZ0ryelYcUfNKv6TxpAJNc4K5bav+e2vxlxrrccqR+Mo8+tf2CpkIwjNg5ef7jA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -364,17 +353,6 @@ namespace GameSite.Migrations
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("GameSite.Data.Entities.ShoppingCartItem", b =>
-                {
-                    b.HasOne("GameSite.Data.Entities.Game", "Game")
-                        .WithMany()
-                        .HasForeignKey("GameId");
-
-                    b.HasOne("GameSite.Data.Entities.ShoppingCart", null)
-                        .WithMany("ShoppingCartItems")
-                        .HasForeignKey("ShoppingCartId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

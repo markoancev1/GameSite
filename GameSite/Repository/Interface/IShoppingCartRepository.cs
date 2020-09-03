@@ -8,13 +8,13 @@ namespace GameSite.Repository.Interface
 {
     public interface IShoppingCartRepository
     {
-        //void Add(ShoppingCart shoppingCart);
-        //void Delete(int id);
-        //void DeleteByGameId(int gameId);
+        void Add(ShoppingCart shoppingCart);
+        void Delete(int id);
+        void DeleteByGameId(int gameId);
 
-        //ShoppingCart GetShoppingCartById(int id);
+        ShoppingCart GetShoppingCartById(int id);
 
-        //IEnumerable<ShoppingCart> GetAllItemsInCart();
-        //IEnumerable<ShoppingCart> GetAllItemsInCartByUserId(string userId);
+        IEnumerable<ShoppingCart> GetAllItemsInCart();
+        IEnumerable<ShoppingCart> GetAllItemsInCartByUserId(string userId);
     }
 }

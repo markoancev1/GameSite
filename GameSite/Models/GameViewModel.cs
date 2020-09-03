@@ -16,7 +16,7 @@ namespace GameSite.Models
         public string GameName { get; set; }
         public string GameCreator { get; set; }
         public string Description { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         public IFormFile Photo { get; set; }
         public bool IsOnSale { get; set; }
         public bool IsInStock { get; set; }
@@ -27,6 +27,7 @@ namespace GameSite.Models
         public string GenreName { get; set; }
         public int? GenreId { get; set; }
         public IEnumerable<SelectListItem> Genres { get; set; }
+
         public IEnumerable<Game> GamesOnSale { get; set; }
         public IEnumerable<Game> GamesInStock { get; set; }
     }
