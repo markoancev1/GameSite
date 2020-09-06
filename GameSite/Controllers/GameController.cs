@@ -23,13 +23,15 @@ namespace GameSite.Controllers
     {
         private readonly IGameRepository _gameRepository;
         private readonly IGenreRepository _genreRepository;
+        private readonly IConsoleRepository _consoleRepository;
         private readonly DataContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public GameController(IGameRepository gameRepository, IGenreRepository genreRepository, DataContext context, IWebHostEnvironment webHostEnvironment)
+        public GameController(IGameRepository gameRepository, IGenreRepository genreRepository, IConsoleRepository consoleRepository, DataContext context, IWebHostEnvironment webHostEnvironment)
         {
             _gameRepository = gameRepository;
             _genreRepository = genreRepository;
+            _consoleRepository = consoleRepository;
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -70,6 +72,8 @@ namespace GameSite.Controllers
                     IsInStock = model.IsInStock,
                     Genre = _context.Genres.Find(model.GenreId),
                     GenreName = model.GenreName,
+                    Console = _context.Consoles.Find(model.ConsoleId),
+                    ConsoleName = model.ConsoleName,
                     PhotoPath = uniqueFileName
 
                 };
@@ -104,8 +108,10 @@ namespace GameSite.Controllers
                 Description = game.Description,
                 IsOnSale = game.IsOnSale,
                 IsInStock = game.IsInStock,
-                GenreId = game.GenreId,
+                Genre = _context.Genres.Find(game.GenreId),
                 GenreName = game.GenreName,
+                Console = _context.Consoles.Find(game.ConsoleId),
+                ConsoleName = game.ConsoleName,
                 ExistingPhotoPath = game.PhotoPath
             };
 
@@ -128,8 +134,10 @@ namespace GameSite.Controllers
                 game.Description = model.Description;
                 game.IsOnSale = model.IsOnSale;
                 game.IsInStock = model.IsInStock;
-                game.Genre = _context.Genres.Find(model.GenreId + 1);
+                game.Genre = _context.Genres.Find(game.GenreId);
                 game.GenreName = model.GenreName;
+                game.Console = _context.Consoles.Find(game.ConsoleId);
+                game.ConsoleName = model.ConsoleName;
 
                 if (model.Photo != null)
                 {
@@ -216,6 +224,12 @@ namespace GameSite.Controllers
                 Value = m.GenreId.ToString(),
                 Text = m.GenreName
             });
+            model.Consoles = _context.Consoles.Select(m => new SelectListItem
+            {
+                Value = m.ConsoleId.ToString(),
+                Text = m.ConsoleName
+            });
+
         }
     }
 }

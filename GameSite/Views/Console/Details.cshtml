@@ -1,4 +1,4 @@
-﻿@model GameSite.Data.Entities.Genre
+﻿@model GameSite.Data.Entities.ConsoleUnit
 
 @{
     ViewData["Title"] = "Details";
@@ -8,20 +8,20 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Genre</h4>
+    <h4>Console</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.GenreName)
+            @Html.DisplayNameFor(model => model.ConsoleName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.GenreName)
+            @Html.DisplayFor(model => model.ConsoleName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.GenreDescription)
+            @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.GenreDescription)
+            @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
 </div>

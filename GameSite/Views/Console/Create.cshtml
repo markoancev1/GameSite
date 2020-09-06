@@ -1,0 +1,34 @@
+﻿@model GameSite.Data.Entities.ConsoleUnit
+@{
+    ViewData["Title"] = "Create";
+}
+<h1>Create</h1>
+<div class="container">
+    <h3 class="crud-title">Add a new Console</h3>
+    <hr />
+    <div class="wrapper">
+        <div class="row">
+            <div class="col-12 col-md-12">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="ConsoleName" class="control-label">Name</label>
+                        <input asp-for="ConsoleName" class="form-control" placeholder="Enter Name" />
+                        <span asp-validation-for="ConsoleName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label">Short Description</label>
+                        <input asp-for="Description" class="form-control" placeholder="Enter short description" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-block btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

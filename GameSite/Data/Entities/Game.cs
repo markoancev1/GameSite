@@ -18,9 +18,10 @@ namespace GameSite.Data.Entities
         public bool IsOnSale { get; set; }
         public bool IsInStock { get; set; }
         public Genre Genre  { get; set; }
-
+        public ConsoleUnit Console { get; set; }
         public int GenreId { get; set; }
         public string GenreName { get; set; }
-
+        public int ConsoleId { get; set; }
+        public string ConsoleName { get; set; }
     }
 }

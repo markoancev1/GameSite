@@ -46,6 +46,8 @@ namespace GameSite
             services.AddTransient<IGameRepository, GameRepository>();
             services.AddTransient<IGenreRepository, GenreRepository>();
             services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IConsoleRepository, ConsoleRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddMvc();

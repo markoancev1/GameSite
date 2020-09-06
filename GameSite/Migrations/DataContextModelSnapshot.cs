@@ -19,12 +19,36 @@ namespace GameSite.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("GameSite.Data.Entities.ConsoleUnit", b =>
+                {
+                    b.Property<int>("ConsoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ConsoleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ConsoleId");
+
+                    b.ToTable("Consoles");
+                });
+
             modelBuilder.Entity("GameSite.Data.Entities.Game", b =>
                 {
                     b.Property<int>("GameId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ConsoleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConsoleName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -55,6 +79,8 @@ namespace GameSite.Migrations
 
                     b.HasKey("GameId");
 
+                    b.HasIndex("ConsoleId");
+
                     b.HasIndex("GenreId");
 
                     b.ToTable("Games");
@@ -78,6 +104,50 @@ namespace GameSite.Migrations
                     b.ToTable("Genres");
                 });
 
+            modelBuilder.Entity("GameSite.Data.Entities.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("GiftWrap")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Line1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Line2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Line3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Zip")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OrderId");
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("GameSite.Data.Entities.ShoppingCart", b =>
                 {
                     b.Property<int>("Id")
@@ -94,6 +164,9 @@ namespace GameSite.Migrations
                     b.Property<int>("GenreId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -101,6 +174,8 @@ namespace GameSite.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("ShoppingCarts");
                 });
@@ -135,14 +210,14 @@ namespace GameSite.Migrations
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
-                            ConcurrencyStamp = "b7cfec84-63cf-4b1c-b14f-e1a37f1c85ad",
+                            ConcurrencyStamp = "d1338f87-2615-42de-b204-710f9411e196",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
-                            ConcurrencyStamp = "29fbdad3-d7af-46de-bd33-016ee0ecf7eb",
+                            ConcurrencyStamp = "882ac1f3-fa10-402e-9c4a-1bc3bf6993d0",
                             Name = "guest",
                             NormalizedName = "GUEST"
                         });
@@ -247,7 +322,7 @@ namespace GameSite.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GAMESTORE.COM",
                             NormalizedUserName = "ADMIN@GAMESTORE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELuNZ0ryelYcUfNKv6TxpAJNc4K5bav+e2vxlxrrccqR+Mo8+tf2CpkIwjNg5ef7jA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAYwOgwaMc707oVYbgWWvy+dcUGmn8YIIv0nfzIY/RpTWrqdpvoRpm4EUEMN7a/3Ug==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -348,11 +423,24 @@ namespace GameSite.Migrations
 
             modelBuilder.Entity("GameSite.Data.Entities.Game", b =>
                 {
+                    b.HasOne("GameSite.Data.Entities.ConsoleUnit", "Console")
+                        .WithMany("Games")
+                        .HasForeignKey("ConsoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GameSite.Data.Entities.Genre", "Genre")
                         .WithMany("Games")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GameSite.Data.Entities.ShoppingCart", b =>
+                {
+                    b.HasOne("GameSite.Data.Entities.Order", null)
+                        .WithMany("Carts")
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

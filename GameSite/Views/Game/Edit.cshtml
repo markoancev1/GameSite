@@ -37,10 +37,19 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label asp-for="GenreId" class="control-label text-center">Genre name</label>
-                        @Html.DropDownListFor(x => Model.GenreId, new SelectList(Model.Genres, "Value", "Text"), htmlAttributes: new { @class = "form-control", id = "Genre" })
+                        @Html.DropDownListFor(x => Model.GenreId, new SelectList(Model.Genres, "Value", "Text"), "Select a Genre", htmlAttributes: new { @class = "form-control", id = "Genre" })
                         <span asp-validation-for="GenreId" class="text-danger"></span>
                         <input asp-for="GenreName" class="form-control" hidden id="GenreName" />
                     </div>
+                    <div class="col-md-6">
+                        <label asp-for="ConsoleId" class="control-label text-center">Genre name</label>
+                        @Html.DropDownListFor(x => Model.ConsoleId, new SelectList(Model.Consoles, "Value", "Text"), "Select a Console", htmlAttributes: new { @class = "form-control", id = "Console" })
+                        <span asp-validation-for="ConsoleId" class="text-danger"></span>
+                        <input asp-for="ConsoleName" class="form-control" hidden id="ConsoleName" />
+                    </div>
+                    
+                </div>
+                <div class="row pt-5 text-center">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="Price" class="control-label text-center"></label>
@@ -48,19 +57,17 @@
                             <span asp-validation-for="Price" class="text-danger"></span>
                         </div>
                     </div>
-                </div>
-                <div class="row pt-5 text-center">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label asp-for="IsInStock" class="control-label"></label>
-                            @Html.CheckBoxFor(m => m.IsInStock, new { @checked = "checked" })
+                            @Html.CheckBoxFor(m => m.IsInStock, new { @checked = "checked", @class = "form-control" })
                             <span asp-validation-for="IsInStock" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label asp-for="IsOnSale" class="control-label"></label>
-                            @Html.CheckBoxFor(m => m.IsOnSale, new { @checked = "checked" })
+                            @Html.CheckBoxFor(m => m.IsOnSale, new { @checked = "checked", @class = "form-control" })
                             <span asp-validation-for="IsOnSale" class="text-danger"></span>
                         </div>
                     </div>
@@ -105,6 +112,13 @@
             var textSelected = optionSelected.text();
             $("#GenreName").val(textSelected);
             console.log($("#GenreName").val(textSelected));
+        });
+        $("#Console").change(function () {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+            var textSelected = optionSelected.text();
+            $("#ConsoleName").val(textSelected);
+            console.log($("#ConsoleName").val(textSelected));
         });
 
         $(document).ready(function () {

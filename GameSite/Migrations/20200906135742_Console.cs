@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GameSite.Migrations
 {
-    public partial class ShoppingCart : Migration
+    public partial class Console : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,6 +47,20 @@ namespace GameSite.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Consoles",
+                columns: table => new
+                {
+                    ConsoleId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ConsoleName = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Consoles", x => x.ConsoleId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Genres",
                 columns: table => new
                 {
@@ -61,19 +75,24 @@ namespace GameSite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShoppingCarts",
+                name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    OrderId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(nullable: true),
-                    GameId = table.Column<int>(nullable: false),
-                    Price = table.Column<double>(nullable: false),
-                    DateAdded = table.Column<DateTime>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    Line1 = table.Column<string>(nullable: false),
+                    Line2 = table.Column<string>(nullable: true),
+                    Line3 = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: false),
+                    State = table.Column<string>(nullable: false),
+                    Zip = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: false),
+                    GiftWrap = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,11 +215,19 @@ namespace GameSite.Migrations
                     IsOnSale = table.Column<bool>(nullable: false),
                     IsInStock = table.Column<bool>(nullable: false),
                     GenreId = table.Column<int>(nullable: false),
-                    GenreName = table.Column<string>(nullable: true)
+                    GenreName = table.Column<string>(nullable: true),
+                    ConsoleId = table.Column<int>(nullable: false),
+                    ConsoleName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Games", x => x.GameId);
+                    table.ForeignKey(
+                        name: "FK_Games_Consoles_ConsoleId",
+                        column: x => x.ConsoleId,
+                        principalTable: "Consoles",
+                        principalColumn: "ConsoleId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Games_Genres_GenreId",
                         column: x => x.GenreId,
@@ -209,20 +236,44 @@ namespace GameSite.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", "0c6bfb82-6a83-4873-b995-efb9e71ab903", "admin", "ADMIN" });
+            migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(nullable: true),
+                    GenreId = table.Column<int>(nullable: false),
+                    GameId = table.Column<int>(nullable: false),
+                    Price = table.Column<double>(nullable: false),
+                    DateAdded = table.Column<DateTime>(nullable: false),
+                    OrderId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e75", "c79c6bd4-04df-4722-acf2-4256956e1f22", "guest", "GUEST" });
+                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", "d1338f87-2615-42de-b204-710f9411e196", "admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e75", "882ac1f3-fa10-402e-9c4a-1bc3bf6993d0", "guest", "GUEST" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", 0, "c8554266-b401-4519-9aeb-a9283053fc58", "admin@gamestore.com", true, false, null, "ADMIN@GAMESTORE.COM", "ADMIN@GAMESTORE.COM", "AQAAAAEAACcQAAAAEE+TBXF4eYKBO7EFuri5vIa+uh4hu5BEH58KlJTcGK+HiOUk/qadC7PgpuER3aHCnw==", null, false, "", false, "admin@gamestore.com" });
+                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", 0, "c8554266-b401-4519-9aeb-a9283053fc58", "admin@gamestore.com", true, false, null, "ADMIN@GAMESTORE.COM", "ADMIN@GAMESTORE.COM", "AQAAAAEAACcQAAAAEAYwOgwaMc707oVYbgWWvy+dcUGmn8YIIv0nfzIY/RpTWrqdpvoRpm4EUEMN7a/3Ug==", null, false, "", false, "admin@gamestore.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -269,9 +320,19 @@ namespace GameSite.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Games_ConsoleId",
+                table: "Games",
+                column: "ConsoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Games_GenreId",
                 table: "Games",
                 column: "GenreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_OrderId",
+                table: "ShoppingCarts",
+                column: "OrderId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -304,7 +365,13 @@ namespace GameSite.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Consoles");
+
+            migrationBuilder.DropTable(
                 name: "Genres");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
         }
     }
 }

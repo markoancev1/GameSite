@@ -1,4 +1,5 @@
-﻿using GameSite.Data;
+﻿using AspNetCore;
+using GameSite.Data;
 using GameSite.Data.Entities;
 using GameSite.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -32,8 +33,12 @@ namespace GameSite.Repository
         }
 
 
-        public IEnumerable<Game> GetGamesOnSale() => _context.Games.Include(p => p.Genre).Where(s => s.IsOnSale);
-        public IEnumerable<Game> GetGamesInStock() => _context.Games.Include(p => p.Genre).Where(s => s.IsInStock);
+        public IEnumerable<Game> GetGamesOnSale() => _context.Games
+            .Where(s => s.IsOnSale);
+
+        public IEnumerable<Game> GetGamesInStock() => _context.Games
+            .Where(s => s.IsInStock);
+
         public IEnumerable<Game> GetAllGames()
         {
             var result = _context.Games.AsEnumerable();
@@ -48,6 +53,12 @@ namespace GameSite.Repository
         {
             _context.Games.Update(game);
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Game> GetAllGamesByConsoleId(int ConsoleId)
+        {
+            var result = _context.Games.Where(x => x.ConsoleId == ConsoleId).AsEnumerable();
+            return result;
         }
     }
 }

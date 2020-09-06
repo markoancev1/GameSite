@@ -5,13 +5,13 @@
 
     <button id="myBtn" title="Go to top">Top</button>
 
-<div class="custom-container pt-5">
+<div class=" pt-5">
     <h2 class="text-center">Popular Games!</h2>
     <h6 class="text-center"><em>Some of our most sold games!</em></h6>
     <div class="row">
         @foreach (var item in Model.GamesOnSale)
         {
-            <div class="col-12 col-md-6 col-lg-4 mt-5">
+            <div class="col-12 col-md-6 col-lg-3 mt-5">
                 <div class="card h-100">
                     <img src="~/images/@item.PhotoPath" class=" card-img-top" />
                     <div class="card-body" style="background-color: #222;">
@@ -48,7 +48,7 @@
                         text: 'Added To Cart',
                         theme: 'sunset',
                     }).show();
-                    location.reload();
+                    setTimeout(function () { location.reload(); }, 4000);
                 },
 
                 error: function () {

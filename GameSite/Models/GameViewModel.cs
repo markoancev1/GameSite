@@ -26,7 +26,14 @@ namespace GameSite.Models
         public Genre Genre { get; set; }
         public string GenreName { get; set; }
         public int? GenreId { get; set; }
+
+        public ConsoleUnit Console { get; set; }
+        public string ConsoleName { get; set; }
+        public int? ConsoleId { get; set; }
+
+
         public IEnumerable<SelectListItem> Genres { get; set; }
+        public IEnumerable<SelectListItem> Consoles { get; set; }
 
         public IEnumerable<Game> GamesOnSale { get; set; }
         public IEnumerable<Game> GamesInStock { get; set; }

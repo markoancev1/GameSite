@@ -1,0 +1,14 @@
+﻿using GameSite.Data.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace GameSite.Repository.Interface
+{
+    public interface IOrderRepository
+    {
+        IQueryable<Order> Orders { get; }
+        void SaveOrder(Order order);
+    }
+}

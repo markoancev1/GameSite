@@ -8,10 +8,10 @@
 <div class="custom-container mt-4">
     <h1>Shopping Cart (@Model.AllGamesAddedToCartByLoggedInUser.Count())</h1>
     <div class="row">
-        <div class="col-12 col-md-8" >
+        <div class="col-12 col-md-8">
             @foreach (var game in Model.AllGamesAddedToCartByLoggedInUser)
             {
-                <div class="card mt-3 table-borderless"  style="background-color: #222;" >
+                <div class="card mt-3 table-borderless" style="background-color: #222;">
                     <div class="card-body row">
                         <div class="col-2 col-md-2 borderStyle">
                             <img src="~/images/@game.PhotoPath" class="img-fluid" />
@@ -45,7 +45,7 @@
                 </div>
             }
         </div>
-        <div class="col-12 col-md-4"  style="background-color: #222;">
+        <div class="col-12 col-md-4" style="background-color: #222;">
             <div class="card mt-3 table-borderless" style="background-color: #222;">
                 <div class="card-body">
                     <h4 class="card-title">Order Summary</h4>
@@ -61,7 +61,9 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a asp-action="Buy" class="btn btn-success btn-block"> <i class="far fa-credit-card"></i> &nbsp; Buy</a>
+                    <a class="btn btn-primary" asp-action="Checkout" asp-controller="Order">
+                        Checkout
+                    </a>
                 </div>
             </div>
         </div>
@@ -84,7 +86,7 @@
                         layout: 'bottomLeft',
                         timeout: 3000,
                         progressBar: true,
-                        text: 'Successfully Deleted Game' + data.data.title + ' From Cart',
+                        text: 'Successfully Deleted From Cart',
                         theme: 'sunset'
                     }).show();
                     setTimeout(function () {
