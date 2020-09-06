@@ -89,11 +89,9 @@
                         text: 'Successfully Deleted From Cart',
                         theme: 'sunset'
                     }).show();
-                    setTimeout(function () {
-                        if (data) {
-                            window.location = data.url;
-                        }
-                    }, 3500);
+                    setTimeout(function (data) {
+                        location.reload(data);
+                    }, 4000);
                 },
                 error: function () {
                     new Noty({
