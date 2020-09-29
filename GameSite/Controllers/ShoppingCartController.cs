@@ -4,10 +4,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GameSite.Data.Entities;
+using GameSite.Logger;
 using GameSite.Models;
 using GameSite.Repository.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace GameSite.Controllers
 {
@@ -17,17 +19,20 @@ namespace GameSite.Controllers
         private readonly IGenreRepository _genreRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly ILogger<ShoppingCartController> _logger;
 
         public ShoppingCartController(
             IGameRepository gameRepository,
             IGenreRepository genreRepository,
             IHttpContextAccessor httpContextAccessor,
-            IShoppingCartRepository shoppingCartRepository)
+            IShoppingCartRepository shoppingCartRepository,
+            ILogger<ShoppingCartController> logger)
         {
             _gameRepository = gameRepository;
             _genreRepository = genreRepository;
             _httpContextAccessor = httpContextAccessor;
             _shoppingCartRepository = shoppingCartRepository;
+            _logger = logger;
         }
 
         // GET: ShopCart
@@ -37,6 +42,7 @@ namespace GameSite.Controllers
             var TotalPriceCount = 0.0;
             var TotalShipping = 0.0;
             var NotificationCounter = 0;
+
 
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -63,8 +69,9 @@ namespace GameSite.Controllers
             };
 
             ViewData["Counter"] = NotificationCounter;
-
+            _logger.LogInformation(LoggerMessageDisplay.ShoppingCartListed);
             return View(shopCartViewModel);
+
         }
 
         public JsonResult AddToCart(int id)
@@ -85,9 +92,10 @@ namespace GameSite.Controllers
             };
 
             _shoppingCartRepository.Add(shoppingCart);
-
+            _logger.LogInformation(LoggerMessageDisplay.GameAddedToShoppingCart);
             return new JsonResult(new { data = shoppingCart, url = Url.Action("Index", "Home") });
         }
+
 
 
         [HttpPost]
@@ -96,6 +104,7 @@ namespace GameSite.Controllers
             var getGame = _gameRepository.GetGameByID(Id);
 
             _shoppingCartRepository.DeleteByGameId(Id);
+            _logger.LogInformation(LoggerMessageDisplay.GameDeletedFromShoppingCart);
             return new JsonResult(new { data = getGame, url = Url.Action("Index", "ShoppingCart") });
         }
 

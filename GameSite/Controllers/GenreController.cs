@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameSite.Data.Entities;
+using GameSite.Logger;
 using GameSite.Repository.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace GameSite.Controllers
 {
@@ -13,14 +15,23 @@ namespace GameSite.Controllers
     public class GenreController : Controller
     {
         private readonly IGenreRepository _genreRepository;
-
-        public GenreController(IGenreRepository genreRepository)
+        private readonly ILogger<GenreController> _logger;
+        public GenreController(IGenreRepository genreRepository, ILogger<GenreController> logger)
         {
             _genreRepository = genreRepository;
+            _logger = logger;
         }
         public IActionResult Index()
         {
             var genreList = _genreRepository.GetAllGenres();
+            if (genreList != null)
+            {
+                _logger.LogInformation(LoggerMessageDisplay.GenresListed);
+            }
+            else
+            {
+                _logger.LogInformation(LoggerMessageDisplay.NoGenresInDB);
+            }
             return View(genreList);
         }
 
@@ -39,7 +50,13 @@ namespace GameSite.Controllers
             if (ModelState.IsValid)
             {
                 _genreRepository.Add(genre);
+                _logger.LogInformation(LoggerMessageDisplay.GenreCreated);
                 return RedirectToAction(nameof(Index));
+                
+            }
+            else
+            {
+                _logger.LogInformation(LoggerMessageDisplay.GenreNotCreatedModelStateInvalid);
             }
             return View();
         }
@@ -70,13 +87,16 @@ namespace GameSite.Controllers
                 try
                 {
                     _genreRepository.Edit(genre);
+                    _logger.LogInformation(LoggerMessageDisplay.GenreEdited);
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogError(LoggerMessageDisplay.GenreEditErrorModelStateInvalid + "---> " + ex);
                     throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
+            
             return View(genre);
         }
 
@@ -87,9 +107,10 @@ namespace GameSite.Controllers
 
             if (genre == null)
             {
+                _logger.LogWarning(LoggerMessageDisplay.NoGameFound);
                 return NotFound();
             }
-
+            _logger.LogInformation(LoggerMessageDisplay.GenreFoundDisplayDetails);
             return View(genre);
         }
 
@@ -106,9 +127,18 @@ namespace GameSite.Controllers
 
         public IActionResult DeleteConfirmed(int id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _genreRepository.Delete(id);
+                if (ModelState.IsValid)
+                {
+                    _genreRepository.Delete(id);
+                    _logger.LogInformation(LoggerMessageDisplay.GenreDeleted);
+                }
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(LoggerMessageDisplay.GenreDeleted + "---> " + ex);
+                throw;
             }
 
             return RedirectToAction(nameof(Index));

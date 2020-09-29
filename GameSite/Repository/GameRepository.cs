@@ -1,8 +1,9 @@
-﻿using AspNetCore;
-using GameSite.Data;
+﻿using GameSite.Data;
 using GameSite.Data.Entities;
+using GameSite.Logger;
 using GameSite.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,6 @@ namespace GameSite.Repository
     public class GameRepository : IGameRepository
     {
         private readonly DataContext _context;
-
         public GameRepository(DataContext context)
         {
             _context = context;

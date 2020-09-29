@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameSite.Logger;
 using GameSite.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace GameSite.Controllers
 {
@@ -14,18 +16,28 @@ namespace GameSite.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-
+        private readonly ILogger<AccountController> _logger;
         public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         [Authorize(Roles = "admin")]
         public IActionResult Index()
         {
             var users = _userManager.Users;
+            if (users != null)
+            {
+                _logger.LogInformation(LoggerMessageDisplay.UsersListed);
+            }
+            else
+            {
+                _logger.LogInformation(LoggerMessageDisplay.NoUsersInDB);
+            }
             return View(users);
         }
 
@@ -56,15 +68,21 @@ namespace GameSite.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation(LoggerMessageDisplay.RegisterUserModelStateValid);
                     return RedirectToAction("index", "home");
                 }
 
+                
                 // If there are any errors, add them to the ModelState object
                 // which will be displayed by the validation summary tag helper
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                //foreach (var error in result.Errors)
+                //{
+                //    ModelState.AddModelError(string.Empty, error.Description);
+                //}
+            }
+            else
+            {
+                _logger.LogWarning(LoggerMessageDisplay.RegisterUserModelStateValidError);
             }
 
             return View(model);
@@ -86,10 +104,13 @@ namespace GameSite.Controllers
 
                 if (result.Succeeded)
                 {
+                    _logger.LogInformation(LoggerMessageDisplay.LoginUserModelStateValid);
                     return RedirectToAction("Index", "Home");
                 }
-
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                else
+                {
+                    _logger.LogWarning(LoggerMessageDisplay.LoginUserModelStateValidError);
+                }
             }
 
             return View(model);
@@ -101,6 +122,7 @@ namespace GameSite.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            _logger.LogInformation(LoggerMessageDisplay.LogoutUser);
             return RedirectToAction("index", "home");
         }
 
@@ -110,27 +132,19 @@ namespace GameSite.Controllers
         {
             var user = await _userManager.FindByIdAsync(id);
 
-            if (user == null)
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
             {
-                ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
-                return View("NotFound");
+                _logger.LogInformation(LoggerMessageDisplay.UserDeleted);
+                return RedirectToAction("Index");
             }
             else
             {
-                var result = await _userManager.DeleteAsync(user);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-
-                return View("Index");
+                _logger.LogWarning(LoggerMessageDisplay.UserDeleteError);
             }
+
+            return View("Index");
         }
     }
 

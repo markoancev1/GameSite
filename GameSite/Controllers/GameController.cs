@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using GameSite.Data;
 using GameSite.Data.Entities;
+using GameSite.Logger;
 using GameSite.Models;
 using GameSite.Repository;
 using GameSite.Repository.Interface;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Converters;
 
 namespace GameSite.Controllers
@@ -26,19 +28,35 @@ namespace GameSite.Controllers
         private readonly IConsoleRepository _consoleRepository;
         private readonly DataContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ILogger<GameController> _logger;
 
-        public GameController(IGameRepository gameRepository, IGenreRepository genreRepository, IConsoleRepository consoleRepository, DataContext context, IWebHostEnvironment webHostEnvironment)
+        public GameController(IGameRepository gameRepository,
+            IGenreRepository genreRepository,
+            IConsoleRepository consoleRepository,
+            DataContext context,
+            IWebHostEnvironment webHostEnvironment,
+            ILogger<GameController> logger
+            )
         {
             _gameRepository = gameRepository;
             _genreRepository = genreRepository;
             _consoleRepository = consoleRepository;
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
             var gameList = _gameRepository.GetAllGames();
+            if (gameList != null)
+            {
+                _logger.LogInformation(LoggerMessageDisplay.GamesListed);
+            }
+            else
+            {
+                _logger.LogInformation(LoggerMessageDisplay.NoGamesInDB);
+            }
             return View(gameList);
         }
 
@@ -80,11 +98,14 @@ namespace GameSite.Controllers
         
                 _context.Games.Add(game);
                 _context.SaveChanges();
-
+                _logger.LogInformation(LoggerMessageDisplay.GameCreated);
                 return RedirectToAction("Index");
             }
-            // Form has errors, repopulate choices and redisplay form
+            else
+            {
+                _logger.LogInformation(LoggerMessageDisplay.GamesNotCreatedModelStateInvalid);
 
+            }
             PopulateChoices(model);
 
             return View(model);
@@ -126,39 +147,51 @@ namespace GameSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                Game game = _gameRepository.GetGameByID(model.Id);
-                // Update the game object with the data in the model object
-                game.GameName = model.GameName;
-                game.GameCreator = model.GameCreator;
-                game.Price = model.Price;
-                game.Description = model.Description;
-                game.IsOnSale = model.IsOnSale;
-                game.IsInStock = model.IsInStock;
-                game.Genre = _context.Genres.Find(game.GenreId);
-                game.GenreName = model.GenreName;
-                game.Console = _context.Consoles.Find(game.ConsoleId);
-                game.ConsoleName = model.ConsoleName;
-
-                if (model.Photo != null)
+                try
                 {
-                    // If a new photo is uploaded, the existing photo must be
-                    // deleted. So check if there is an existing photo and delete
-                    if (model.ExistingPhotoPath != null)
+                    Game game = _gameRepository.GetGameByID(model.Id);
+                    // Update the game object with the data in the model object
+                    game.GameName = model.GameName;
+                    game.GameCreator = model.GameCreator;
+                    game.Price = model.Price;
+                    game.Description = model.Description;
+                    game.IsOnSale = model.IsOnSale;
+                    game.IsInStock = model.IsInStock;
+                    game.Genre = _context.Genres.Find(game.GenreId);
+                    game.GenreName = model.GenreName;
+                    game.Console = _context.Consoles.Find(game.ConsoleId);
+                    game.ConsoleName = model.ConsoleName;
+
+                    if (model.Photo != null)
                     {
-                        string filePath = Path.Combine(_webHostEnvironment.WebRootPath,
-                            "images", model.ExistingPhotoPath);
-                        System.IO.File.Delete(filePath);
+                        // If a new photo is uploaded, the existing photo must be
+                        // deleted. So check if there is an existing photo and delete
+                        if (model.ExistingPhotoPath != null)
+                        {
+                            string filePath = Path.Combine(_webHostEnvironment.WebRootPath,
+                                "images", model.ExistingPhotoPath);
+                            System.IO.File.Delete(filePath);
+                        }
+                        // Save the new photo in wwwroot/images folder and update
+                        // PhotoPath property of the employee object which will be
+                        // eventually saved in the database
+                        game.PhotoPath = UploadedFile(model);
+                        _logger.LogInformation(LoggerMessageDisplay.PhotoEdited);
                     }
-                    // Save the new photo in wwwroot/images folder and update
-                    // PhotoPath property of the employee object which will be
-                    // eventually saved in the database
-                    game.PhotoPath = UploadedFile(model);
+
+                    _context.Games.Update(game);
+                    _logger.LogInformation(LoggerMessageDisplay.GameEdited);
+                    _context.SaveChanges();
+
+                    return RedirectToAction("Index");
+                
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation(LoggerMessageDisplay.GameEditErrorModelStateInvalid + "---> " + ex);
+                    throw;
                 }
 
-                _context.Games.Update(game);
-                _context.SaveChanges();
-
-                return RedirectToAction("Index");
             }
 
             PopulateChoices(model);
@@ -170,8 +203,10 @@ namespace GameSite.Controllers
         public IActionResult Details(int id)
         {
             var game = _gameRepository.GetGameByID(id);
+            _logger.LogInformation(LoggerMessageDisplay.GameFoundDisplayDetails);
             if (game == null)
             {
+                _logger.LogWarning(LoggerMessageDisplay.NoGameFound);
                 return NotFound();
             }
 
@@ -194,9 +229,16 @@ namespace GameSite.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
 
-
-            _gameRepository.Delete(id);
-
+            try
+            {
+                _gameRepository.Delete(id);
+                _logger.LogInformation(LoggerMessageDisplay.GameDeleted);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(LoggerMessageDisplay.GameDeletedError + "---> " + ex);
+                throw;
+            }
             return RedirectToAction(nameof(Index));
 
         }
@@ -214,7 +256,13 @@ namespace GameSite.Controllers
                 {
                     model.Photo.CopyTo(fileStream);
                 }
+                
             }
+            else
+            {
+                _logger.LogError(LoggerMessageDisplay.PhotoUploadedError);
+            }
+            _logger.LogInformation(LoggerMessageDisplay.PhotoUploaded);
             return uniqueFileName;
         }
         protected void PopulateChoices(GameViewModel model)

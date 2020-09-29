@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameSite.Logger;
 using GameSite.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace GameSite.Controllers
 {
@@ -14,16 +16,28 @@ namespace GameSite.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        private readonly ILogger<AdministrationController> _logger;
+        public AdministrationController(RoleManager<IdentityRole> roleManager, 
+            UserManager<IdentityUser> userManager,
+            ILogger<AdministrationController> logger)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _logger = logger;
         }
 
         
         public IActionResult ListRoles()
         {
             var roles = _roleManager.Roles;
+            if (roles != null)
+            {
+                _logger.LogInformation(LoggerMessageDisplay.RolesListed);
+            }
+            else
+            {
+                _logger.LogInformation(LoggerMessageDisplay.NoRolesInDB);
+            }
             return View(roles);
         }
 
@@ -49,13 +63,14 @@ namespace GameSite.Controllers
 
                 if (result.Succeeded)
                 {
+                    _logger.LogInformation(LoggerMessageDisplay.RoleCreated);
                     return RedirectToAction("index", "home");
                 }
-
-                foreach (IdentityError error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                
+            }
+            else
+            {
+                _logger.LogInformation(LoggerMessageDisplay.RolesNotCreatedModelStateInvalid);
             }
 
             return View(model);
@@ -99,30 +114,22 @@ namespace GameSite.Controllers
         {
             var role = await _roleManager.FindByIdAsync(model.Id);
 
-            if (role == null)
+            role.Name = model.RoleName;
+
+            // Update the Role using UpdateAsync
+            var result = await _roleManager.UpdateAsync(role);
+
+            if (result.Succeeded)
             {
-                ViewBag.ErrorMessage = $"Role with Id = {model.Id} cannot be found";
-                return View("NotFound");
+                _logger.LogInformation(LoggerMessageDisplay.RoleEdited);
+                return RedirectToAction("ListRoles");
             }
             else
             {
-                role.Name = model.RoleName;
-
-                // Update the Role using UpdateAsync
-                var result = await _roleManager.UpdateAsync(role);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("ListRoles");
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-
-                return View(model);
+                _logger.LogWarning(LoggerMessageDisplay.RoleEditError);
             }
+
+            return View(model);
         }
 
 
@@ -132,12 +139,6 @@ namespace GameSite.Controllers
             ViewBag.roleId = roleId;
 
             var role = await _roleManager.FindByIdAsync(roleId);
-
-            if (role == null)
-            {
-                ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
-                return View("NotFound");
-            }
 
             var model = new List<UserRoleModel>();
 
@@ -169,12 +170,6 @@ namespace GameSite.Controllers
         public async Task<IActionResult> EditUsersInRole(List<UserRoleModel> model, string roleId)
         {
             var role = await _roleManager.FindByIdAsync(roleId);
-
-            if (role == null)
-            {
-                ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
-                return View("NotFound");
-            }
 
             for (int i = 0; i < model.Count; i++)
             {
@@ -212,27 +207,19 @@ namespace GameSite.Controllers
         {
             var role = await _roleManager.FindByIdAsync(id);
 
-            if (role == null)
+            var result = await _roleManager.DeleteAsync(role);
+
+            if (result.Succeeded)
             {
-                ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
-                return View("NotFound");
+                _logger.LogInformation(LoggerMessageDisplay.RoleDeleted);
+                return RedirectToAction("ListRoles");
             }
             else
             {
-                var result = await _roleManager.DeleteAsync(role);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("ListRoles");
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-
-                return View("ListRoles");
+                _logger.LogWarning(LoggerMessageDisplay.RoleDeleteError);
             }
+
+            return View("ListRoles");
         }
     }
 

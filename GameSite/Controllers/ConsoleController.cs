@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameSite.Data.Entities;
+using GameSite.Logger;
 using GameSite.Repository.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace GameSite.Controllers
 {
@@ -13,14 +15,24 @@ namespace GameSite.Controllers
     public class ConsoleController : Controller
     {
         private readonly IConsoleRepository _consoleRepository;
+        private readonly ILogger<ConsoleController> _logger;
 
-        public ConsoleController(IConsoleRepository consoleRepository)
+        public ConsoleController(IConsoleRepository consoleRepository, ILogger<ConsoleController> logger)
         {
             _consoleRepository= consoleRepository;
+            _logger = logger;
         }
         public IActionResult Index()
         {
             var consoleList = _consoleRepository.GetAllConsoles();
+            if (consoleList != null)
+            {
+                _logger.LogInformation(LoggerMessageDisplay.GenresListed);
+            }
+            else
+            {
+                _logger.LogInformation(LoggerMessageDisplay.NoGenresInDB);
+            }
             return View(consoleList);
         }
 
@@ -39,7 +51,12 @@ namespace GameSite.Controllers
             if (ModelState.IsValid)
             {
                 _consoleRepository.Add(console);
+                _logger.LogInformation(LoggerMessageDisplay.ConsoleCreated);
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                _logger.LogInformation(LoggerMessageDisplay.ConsoleNotCreatedModelStateInvalid);
             }
             return View();
         }
@@ -70,9 +87,11 @@ namespace GameSite.Controllers
                 try
                 {
                     _consoleRepository.Edit(console);
+                    _logger.LogInformation(LoggerMessageDisplay.ConsoleEdited);
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogInformation(LoggerMessageDisplay.ConsoleEditErrorModelStateInvalid + "---->" + ex);
                     throw;
                 }
                 return RedirectToAction(nameof(Index));
@@ -87,9 +106,10 @@ namespace GameSite.Controllers
 
             if (console == null)
             {
+                _logger.LogWarning(LoggerMessageDisplay.NoConsoleFound);
                 return NotFound();
             }
-
+            _logger.LogInformation(LoggerMessageDisplay.ConsoleFoundDisplayDetails);
             return View(console);
         }
 
@@ -106,11 +126,19 @@ namespace GameSite.Controllers
 
         public IActionResult DeleteConfirmed(int id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _consoleRepository.Delete(id);
+                if (ModelState.IsValid)
+                {
+                    _consoleRepository.Delete(id);
+                    _logger.LogInformation(LoggerMessageDisplay.ConsoleDeleted);
+                }
             }
-
+            catch(Exception ex)
+            {
+                _logger.LogError(LoggerMessageDisplay.ConsoleDeletedError + "---> " + ex);
+                throw;
+            }
             return RedirectToAction(nameof(Index));
 
         }

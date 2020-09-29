@@ -94,9 +94,13 @@ body {
     padding: 15px 15px;
     font-size: 40px;
     line-height: 20px;
-    font-family: 'Facebook Letter Faces';
-    
-}  
+    font-family: 'Facebook Letter Faces';    
+}
+
+.navbar-fixed-top {
+    width: 100%;
+    position: absolute;
+}
 
 body {
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -134,10 +138,9 @@ thead,tbody tr th,td {
 #myBtn {
     display: none;
     position: fixed;
-    bottom: 100px;
-    right: 40px;
+    bottom: 20px;
+    right: 20px;
     z-index: 99;
-    font-size: 18px;
     border: none;
     outline: none;
     background-color: grey;
@@ -159,5 +162,11 @@ thead,tbody tr th,td {
     img {
         width: 150px;
         max-height:500px;
+    }
+}
+
+@media (max-width: 1150px) {
+    .card-img-top {
+        height: 450px;
     }
 }

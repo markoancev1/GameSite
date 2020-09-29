@@ -8,7 +8,7 @@
 <div class="custom-container mt-4">
     <h1>Shopping Cart (@Model.AllGamesAddedToCartByLoggedInUser.Count())</h1>
     <div class="row">
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-lg-8">
             @foreach (var game in Model.AllGamesAddedToCartByLoggedInUser)
             {
                 <div class="card mt-3 table-borderless" style="background-color: #222;">
@@ -30,14 +30,15 @@
                         </div>
                     </div>
                     <div class="card-footer text-muted">
-                        <div class="row">
-                            <div class="col-9 col-md-9">
-                                <button class="btn btn-danger" onclick="DeleteItemFromCart(@game.GameId)">
+                        <div class="row text-center">
+
+                            <div class="col-12 col-md-6 text-center">
+                                <h6 class="pt-1 text-white">Price: &#36; @Html.DisplayFor(modelItem => game.Price)</h6>
+                            </div>
+                            <div class="col-12 col-md-6 text-center">
+                                <button class="btn btn-danger btn-block" onclick="DeleteItemFromCart(@game.GameId)">
                                     <i class="fas fa-trash-alt"></i> &nbsp; Delete
                                 </button>
-                            </div>
-                            <div class="col-3 col-md-3 text-right">
-                                <h6 class="pt-1 text-white">Price: &#36; @Html.DisplayFor(modelItem => game.Price)</h6>
                             </div>
                         </div>
 
@@ -45,7 +46,7 @@
                 </div>
             }
         </div>
-        <div class="col-12 col-md-4" style="background-color: #222;">
+        <div class="col-12 col-lg-4" style="background-color: #222;">
             <div class="card mt-3 table-borderless" style="background-color: #222;">
                 <div class="card-body">
                     <h4 class="card-title">Order Summary</h4>
@@ -61,8 +62,11 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a class="btn btn-primary" asp-action="Checkout" asp-controller="Order">
+                    <a class="btn btn-success text-center btn-block col-12" asp-action="Checkout" asp-controller="Order">
                         Checkout
+                    </a>
+                    <a class="btn btn-primary text-center btn-block col-12" asp-action="Index" asp-controller="Home">
+                        Back to Shopping
                     </a>
                 </div>
             </div>

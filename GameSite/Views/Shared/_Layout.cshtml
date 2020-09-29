@@ -13,14 +13,14 @@
 <body style="background-color: #222;">
     <header>
 
-        <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-light border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-xl navbar-toggleable-xl navbar-light border-bottom navbar-fixed-top box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">GameSite</a>
                 <button class="navbar-toggler text-right" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-lg-inline-flex flex-lg-row-reverse">
+                <div class="navbar-collapse collapse d-xl-inline-flex flex-xl-row-reverse">
 
                     <ul class="navbar-nav flex-grow-1">
                         @if (ViewContext.HttpContext.User.IsInRole("admin") || ViewContext.HttpContext.User.IsInRole("guest"))
@@ -50,7 +50,7 @@
                             </li>
                         }
 
-                        <li class="ml-lg-auto">
+                        <li class="ml-xl-auto">
                             <partial name="_LoginPartial" />
                         </li>
 
