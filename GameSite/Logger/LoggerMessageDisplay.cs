@@ -48,18 +48,6 @@ namespace GameSite.Logger
         public const string ConsoleDeleted = "Console is deleted successfully";
         public const string ConsoleDeletedError = "Console is NOT deleted, error happend in process of deletion";
 
-        // Category Messages
-        public const string CategoriesListed = "All categories listed successfully!";
-        public const string NoCategoriesInDB = "There is no categories in the DB!";
-        public const string CategoryFoundDisplayDetails = "Category was found in the DB, show the details of the category";
-        public const string NoCategoryFound = "This is no category found in the DB!";
-        public const string CategoryCreated = "New category is created in the DB";
-        public const string CategoryNotCreatedModelStateInvalid = "New category is NOT created in the DB, ModelState is not valid";
-        public const string CategoryEdited = "Category is edited successfully";
-        public const string CategoryEditErrorModelStateInvalid = "Category is not edited, ModelState is not valid";
-        public const string CategoryDeleted = "Category is deleted successfully";
-        public const string CategoryDeletedError = "Category is NOT deleted, error happend in process of deletion";
-
         // Upload Photo Messages
         public const string PhotoUploaded = "Photo is successfully uploaded";
         public const string PhotoUploadedError = "Photo is NOT uploaded";
@@ -101,6 +89,16 @@ namespace GameSite.Logger
         public const string ShoppingCartListed = "All games in the shopping cart listed successfully!";
         public const string GameAddedToShoppingCart = "A game has been added to your Shopping Cart";
         public const string GameDeletedFromShoppingCart = "The game has been deleted from the shopping cart";
+
+        // Order Messages
+
+        public const string OrderListed = "All orders listed successfully!";
+        public const string NoOrdersInDB = "There are no orders in the DB!";
+        public const string OrderCreated = "New order is created in the DB";
+        public const string OrdersNotCreatedModelStateInvalid = "New order is NOT created in the DB, ModelState is not valid";
+        public const string OrderDeleted = "Game is deleted successfully";
+        public const string OrderNotDeleted = "Game is not deleted successfully";
+        public const string OrderDeletedError = "Game is NOT deleted, error happend in process of deletion";
     }
 }
 

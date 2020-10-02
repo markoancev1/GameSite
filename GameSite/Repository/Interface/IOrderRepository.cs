@@ -8,7 +8,9 @@ namespace GameSite.Repository.Interface
 {
     public interface IOrderRepository
     {
-        IQueryable<Order> Orders { get; }
-        void SaveOrder(Order order);
+        void Add(Order order);
+        void Delete(int OrderID);
+        Order GetOrderById(int id);
+        IEnumerable<Order> GetAllOrders();
     }
 }

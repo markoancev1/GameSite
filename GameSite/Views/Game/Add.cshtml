@@ -1,14 +1,18 @@
 ﻿
 @model GameSite.Models.GameViewModel
 
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <div class="col-md-10 mx-auto py-4">
     <div class="card">
-        <div class="card-header text-uppercase text-white" style="background-color: #375a7f !important;" >
+        <div class="card-header text-uppercase text-white" style="background-color: #375a7f !important;">
             <h4>Add New Game</h4>
         </div>
         <div class="card-body" style="background-color: #00a379">
-            <form enctype="multipart/form-data" asp-action="Add">
+            <form  asp-action="Add" name="gameadd">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -28,36 +32,36 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label asp-for="GenreId" class="control-label text-center">Genre name</label>
-                        @Html.DropDownListFor(x => Model.GenreId, new SelectList(Model.Genres, "Value", "Text"), "Select a genre" ,htmlAttributes: new { @class = "form-control", id = "Genre" })
+                        @Html.DropDownListFor(x => Model.GenreId, new SelectList(Model.Genres, "Value", "Text"), "Select a genre", htmlAttributes: new { @class = "form-control", id = "Genre" })
                         <span asp-validation-for="GenreId" class="text-danger"></span>
                         <input asp-for="GenreName" class="form-control" hidden id="GenreName" />
                     </div>
                     <div class="col-md-6">
                         <label asp-for="ConsoleId" class="control-label text-center">Console name</label>
-                        @Html.DropDownListFor(x => Model.ConsoleId, new SelectList(Model.Consoles, "Value", "Text"),"Select a console" ,htmlAttributes: new { @class = "form-control", id = "Console" })
+                        @Html.DropDownListFor(x => Model.ConsoleId, new SelectList(Model.Consoles, "Value", "Text"), "Select a console", htmlAttributes: new { @class = "form-control", id = "Console" })
                         <span asp-validation-for="ConsoleId" class="text-danger"></span>
                         <input asp-for="ConsoleName" class="form-control" hidden id="ConsoleName" />
                     </div>
-                    
+
                 </div>
-                <div class="row pt-5 text-center">
+                <div class="row pt-5 ">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Price" class="control-label text-center"></label>
+                            <label asp-for="Price" class="control-label"></label>
                             <input asp-for="Price" class="form-control" />
                             <span asp-validation-for="Price" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="form-group">
+                        <div class="form-group text-center">
                             <label asp-for="IsInStock" class="control-label"></label>
                             @Html.CheckBoxFor(m => m.IsInStock, new { @checked = "checked", @class = "form-control" })
                             <span asp-validation-for="IsInStock" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="form-group">
-                            <label asp-for="IsOnSale" class="control-label"></label>
+                        <div class="form-group text-center">
+                            <label asp-for="IsOnSale" class="control-label text-center"></label>
                             @Html.CheckBoxFor(m => m.IsOnSale, new { @checked = "checked", @class = "form-control" })
                             <span asp-validation-for="IsOnSale" class="text-danger"></span>
                         </div>
@@ -92,11 +96,11 @@
 @section scripts{
     <script type="text/javascript">
 
-            // Add the following code if you want the name of the file appear on select
-            $(".custom-file-input").on("change", function () {
-                var FileName = $(this).val().split("\\").pop();
-                $(this).siblings(".custom-file-label").addClass("selected").html(FileName);
-            });
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function () {
+            var FileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(FileName);
+        });
 
         $("#Genre").change(function () {
             var optionSelected = $("option:selected", this);

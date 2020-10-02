@@ -170,3 +170,9 @@ thead,tbody tr th,td {
         height: 450px;
     }
 }
+
+.error{
+    color: red;
+    
+}
+

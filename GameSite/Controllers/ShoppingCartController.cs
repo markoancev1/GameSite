@@ -67,7 +67,6 @@ namespace GameSite.Controllers
                 AllGamesAddedToCartByLoggedInUser = AllGamesListFromCartByLoggedInUser,
                 AddToCartTotalCounter = NotificationCounter
             };
-
             ViewData["Counter"] = NotificationCounter;
             _logger.LogInformation(LoggerMessageDisplay.ShoppingCartListed);
             return View(shopCartViewModel);
