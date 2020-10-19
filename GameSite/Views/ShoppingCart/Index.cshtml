@@ -1,9 +1,6 @@
 ﻿@model GameSite.Models.ShoppingCartViewModel
 
-@{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+
 
 <div class="custom-container mt-4">
     <h1>Shopping Cart</h1>
@@ -62,9 +59,13 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a class="btn btn-success text-center btn-block col-12" asp-action="Checkout" asp-controller="Order">
-                        Checkout
-                    </a>
+                    @if (Model.TotalPrice > 0)
+                    {
+                        <a class="btn btn-success text-center btn-block col-12" asp-action="Checkout" asp-controller="Order">
+                            Checkout
+                        </a>
+                    }
+
                     <a class="btn btn-primary text-center btn-block col-12" asp-action="Index" asp-controller="Home">
                         Back to Shopping
                     </a>

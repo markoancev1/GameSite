@@ -34,16 +34,12 @@ namespace GameSite.Controllers
         {
             var getGamesOnSale = _gameRepository.GetGamesOnSale();
             var getGameInStock = _gameRepository.GetGamesInStock();
-            var notificationCounters = _cart.GetAllItemsInCart().Count();
 
             var gameViewModel = new GameViewModel
             {
                 GamesInStock = getGameInStock,
                 GamesOnSale = getGamesOnSale,
-                AddToCartTotalCounter = notificationCounters
             };
-            ViewData["Counter"] = notificationCounters;
-
             return View(gameViewModel);
         }
 

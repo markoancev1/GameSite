@@ -2,13 +2,42 @@
 
 namespace GameSite.Migrations
 {
-    public partial class Initial1 : Migration
+    public partial class Order2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "Price",
+                table: "Orders");
+
+            migrationBuilder.UpdateData(
+                table: "AspNetRoles",
+                keyColumn: "Id",
+                keyValue: "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
+                column: "ConcurrencyStamp",
+                value: "e2819aac-b960-4ea3-b755-f2c95697897e");
+
+            migrationBuilder.UpdateData(
+                table: "AspNetRoles",
+                keyColumn: "Id",
+                keyValue: "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
+                column: "ConcurrencyStamp",
+                value: "7f127f5d-f800-4314-a6d0-fbb8733b988c");
+
+            migrationBuilder.UpdateData(
+                table: "AspNetUsers",
+                keyColumn: "Id",
+                keyValue: "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
+                column: "PasswordHash",
+                value: "AQAAAAEAACcQAAAAEIoHGofXBQZgpEAudp9PkcIMZmakrArPaNbUlED1vO6WDq33hV+nGywSdBjqKwFANw==");
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
             migrationBuilder.AddColumn<double>(
-                name: "Total",
-                table: "ShoppingCarts",
+                name: "Price",
+                table: "Orders",
+                type: "float",
                 nullable: false,
                 defaultValue: 0.0);
 
@@ -17,49 +46,21 @@ namespace GameSite.Migrations
                 keyColumn: "Id",
                 keyValue: "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
                 column: "ConcurrencyStamp",
-                value: "a94357a4-7d38-44ef-b0af-4fb8213e0a6c");
+                value: "c74214ae-b7f3-4d14-9440-4b48d38cfd7b");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
                 column: "ConcurrencyStamp",
-                value: "a47e5462-82ae-4a3b-9c67-c8ef8b01d556");
+                value: "74f729e8-bf70-4972-ba8f-25fdff929a4f");
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
                 column: "PasswordHash",
-                value: "AQAAAAEAACcQAAAAEDnenT83XIdcZ7J4MAGmw3JTWlAHI0FZ/qjVb91z5fHNPMcpEUPksaHVuFDVyuBchw==");
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Total",
-                table: "ShoppingCarts");
-
-            migrationBuilder.UpdateData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
-                column: "ConcurrencyStamp",
-                value: "6ade1915-17c8-43b8-b280-26e16a1a3534");
-
-            migrationBuilder.UpdateData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
-                column: "ConcurrencyStamp",
-                value: "e5c7d4cf-c304-4e29-a2ab-8f16a6fed1b9");
-
-            migrationBuilder.UpdateData(
-                table: "AspNetUsers",
-                keyColumn: "Id",
-                keyValue: "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
-                column: "PasswordHash",
-                value: "AQAAAAEAACcQAAAAEAi/gOQTe0Jp0aoZa0+etRYE+AnsAlWt7s3xFw7S/2m+jvN+jIdBo7qmPcYONTW43A==");
+                value: "AQAAAAEAACcQAAAAEEhpU1lrfvgCpO6MUjXW+eLGg6pivREhp3MnRmb0ZzAFE5KaLWi3GvKekAVGxVJkBw==");
         }
     }
 }

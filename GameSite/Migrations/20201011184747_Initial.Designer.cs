@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameSite.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200930135311_Initial2")]
-    partial class Initial2
+    [Migration("20201011184747_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -220,14 +220,14 @@ namespace GameSite.Migrations
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
-                            ConcurrencyStamp = "8bf58400-22b9-44d0-9cf2-1216de19f500",
+                            ConcurrencyStamp = "b3274000-308e-48b9-97fa-c4fa1533af25",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
-                            ConcurrencyStamp = "a5996464-36fb-447f-b89e-46b826e0dc1c",
+                            ConcurrencyStamp = "75578616-eb60-4af4-af84-16e886e36bd3",
                             Name = "guest",
                             NormalizedName = "GUEST"
                         });
@@ -332,7 +332,7 @@ namespace GameSite.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GAMESTORE.COM",
                             NormalizedUserName = "ADMIN@GAMESTORE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOFk7KDIN16vW/GWsW0eh0GiqumWPDDZ+WAheMIZ8aUw0GQt4wPV2EdQqoiPNxTJDA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIMO3wtuSQIEDQPhTEsez7s1aa5IDLAiz+xvbk+Oa3ZeYteuCyjNJint0dMh9FHh/w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

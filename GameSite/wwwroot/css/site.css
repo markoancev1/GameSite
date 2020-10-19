@@ -176,3 +176,12 @@ thead,tbody tr th,td {
     
 }
 
+.navbar-fixed-top{
+    position: fixed !important
+}
+
+.navbar {
+    z-index: 9999;
+    top:0;
+    left:0;
+}

@@ -41,7 +41,6 @@ namespace GameSite.Controllers
             List<Game> AllGamesListFromCartByLoggedInUser = new List<Game>();
             var TotalPriceCount = 0.0;
             var TotalShipping = 0.0;
-            var NotificationCounter = 0;
 
 
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -58,16 +57,13 @@ namespace GameSite.Controllers
             }
 
             TotalPriceCount = TotalShipping + Math.Round(AllGamesListFromCartByLoggedInUser.Sum(x => x.Price));
-            NotificationCounter = _shoppingCartRepository.GetAllItemsInCart().Count();
 
             var shopCartViewModel = new ShoppingCartViewModel()
             {
                 SubTotal = Math.Round(AllGamesListFromCartByLoggedInUser.Sum(x => x.Price), 2),
                 TotalPrice = TotalPriceCount,
                 AllGamesAddedToCartByLoggedInUser = AllGamesListFromCartByLoggedInUser,
-                AddToCartTotalCounter = NotificationCounter
             };
-            ViewData["Counter"] = NotificationCounter;
             _logger.LogInformation(LoggerMessageDisplay.ShoppingCartListed);
             return View(shopCartViewModel);
 

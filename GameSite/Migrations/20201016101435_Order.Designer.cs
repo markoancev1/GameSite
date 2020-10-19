@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameSite.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200930133319_Initial")]
-    partial class Initial
+    [Migration("20201016101435_Order")]
+    partial class Order
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -149,6 +149,9 @@ namespace GameSite.Migrations
                         .HasColumnType("nvarchar(25)")
                         .HasMaxLength(25);
 
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
@@ -220,14 +223,14 @@ namespace GameSite.Migrations
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
-                            ConcurrencyStamp = "6ade1915-17c8-43b8-b280-26e16a1a3534",
+                            ConcurrencyStamp = "c74214ae-b7f3-4d14-9440-4b48d38cfd7b",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
-                            ConcurrencyStamp = "e5c7d4cf-c304-4e29-a2ab-8f16a6fed1b9",
+                            ConcurrencyStamp = "74f729e8-bf70-4972-ba8f-25fdff929a4f",
                             Name = "guest",
                             NormalizedName = "GUEST"
                         });
@@ -332,7 +335,7 @@ namespace GameSite.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GAMESTORE.COM",
                             NormalizedUserName = "ADMIN@GAMESTORE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAi/gOQTe0Jp0aoZa0+etRYE+AnsAlWt7s3xFw7S/2m+jvN+jIdBo7qmPcYONTW43A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEhpU1lrfvgCpO6MUjXW+eLGg6pivREhp3MnRmb0ZzAFE5KaLWi3GvKekAVGxVJkBw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

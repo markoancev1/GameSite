@@ -22,10 +22,7 @@
             <th>@Html.DisplayNameFor(model => model.GenreName)</th>
             <th>@Html.DisplayNameFor(model => model.ConsoleName)</th>
             <th>@Html.DisplayNameFor(model => model.Description)</th>
-            @if (ViewContext.HttpContext.User.IsInRole("admin"))
-            {
-                <th>Action</th>
-            }
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -45,14 +42,11 @@
             <td>@game.GenreName</td>
             <td>@game.ConsoleName</td>
             <td>@game.Description</td>
-            @if (ViewContext.HttpContext.User.IsInRole("admin"))
-            {
                 <td>
                     <a class="btn btn-block btn-primary" asp-action="Edit" asp-route-id="@game.GameId">Edit</a>
                     <a class="btn btn-block btn-info" asp-action="Details" asp-route-id="@game.GameId">Details</a>
                     <a class="btn btn-block btn-danger" asp-action="Delete" asp-route-id="@game.GameId">Delete</a>
                 </td>
-            }
         </tr>
 
         }

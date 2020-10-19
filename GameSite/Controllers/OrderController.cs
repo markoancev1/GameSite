@@ -14,21 +14,21 @@ using Microsoft.Extensions.Logging;
 
 namespace GameSite.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin, guest")]
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IShoppingCartRepository _shoppingCartRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<OrderController> _logger;
 
-        public OrderController(IOrderRepository orderRepository, IShoppingCartRepository shoppingCartRepository, ILogger<OrderController> logger , IHttpContextAccessor httpContextAccessor)
+        public OrderController(IOrderRepository orderRepository, IShoppingCartRepository shoppingCartRepository, ILogger<OrderController> logger)
         {
             _orderRepository = orderRepository;
             _shoppingCartRepository = shoppingCartRepository;
-            _httpContextAccessor = httpContextAccessor;
             _logger = logger;
         }
+
+        [Authorize(Roles = "admin")]
 
         public IActionResult Index()
         {
@@ -46,23 +46,20 @@ namespace GameSite.Controllers
             return View(orderList);
         }
 
-        [Authorize]
         public IActionResult Checkout()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Checkout(Order order)
         {
             if (ModelState.IsValid)
             {
                 order.OrderPlaced = DateTime.Now;
-                order.Email = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 _orderRepository.Add(order);
                 _logger.LogInformation(LoggerMessageDisplay.OrderCreated);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
 
             }
             else
@@ -72,6 +69,7 @@ namespace GameSite.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int id)
         {
             Order order = _orderRepository.GetOrderById(id);

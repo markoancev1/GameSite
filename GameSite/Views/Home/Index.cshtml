@@ -1,13 +1,13 @@
 ﻿@model GameViewModel
 
 
-<div class="container">
-    <partial name="_Carousel" />
+<div class="container mt-5">
+    <partial name="_Carousel" class=""/>
 
 
     <button id="myBtn" title="Go to top"><span class="fa fa-arrow-up"></span></button>
 
-<div class=" pt-5">
+<div class="pt-5">
     <h2 class="text-center">Popular Games!</h2>
     <h6 class="text-center"><em>Some of our most sold games!</em></h6>
     <div class="row">
@@ -21,6 +21,8 @@
                         <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
                         <hr style="background-color:white;" />
                         <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
+                        <p class="card-text">Console: @Html.DisplayFor(modelItem => item.ConsoleName)</p>
+                        <hr style="background-color:white;" />
                         <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
                         <hr style="background-color:white;" />
                         <button class="btn btn-success btn-block" id="addToCart" onclick="AddToCart(@item.GameId)">

@@ -18,7 +18,6 @@ namespace GameSite.Models
 
         public double SubTotal { get; set; }
         public double TotalPrice { get; set; }
-        public double AddToCartTotalCounter { get; set; }
 
         public IEnumerable<Game> AllGames { get; set; }
         public IEnumerable<Game> AllGamesAddedToCartByLoggedInUser { get; set; }

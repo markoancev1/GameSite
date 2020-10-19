@@ -257,17 +257,17 @@ namespace GameSite.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", "6ade1915-17c8-43b8-b280-26e16a1a3534", "admin", "ADMIN" });
+                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", "b3274000-308e-48b9-97fa-c4fa1533af25", "admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e75", "e5c7d4cf-c304-4e29-a2ab-8f16a6fed1b9", "guest", "GUEST" });
+                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e75", "75578616-eb60-4af4-af84-16e886e36bd3", "guest", "GUEST" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", 0, "c8554266-b401-4519-9aeb-a9283053fc58", "admin@gamestore.com", true, false, null, "ADMIN@GAMESTORE.COM", "ADMIN@GAMESTORE.COM", "AQAAAAEAACcQAAAAEAi/gOQTe0Jp0aoZa0+etRYE+AnsAlWt7s3xFw7S/2m+jvN+jIdBo7qmPcYONTW43A==", null, false, "", false, "admin@gamestore.com" });
+                values: new object[] { "b4280b6a-0613-4cbd-a9e6-f1701e926e73", 0, "c8554266-b401-4519-9aeb-a9283053fc58", "admin@gamestore.com", true, false, null, "ADMIN@GAMESTORE.COM", "ADMIN@GAMESTORE.COM", "AQAAAAEAACcQAAAAEIMO3wtuSQIEDQPhTEsez7s1aa5IDLAiz+xvbk+Oa3ZeYteuCyjNJint0dMh9FHh/w==", null, false, "", false, "admin@gamestore.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
