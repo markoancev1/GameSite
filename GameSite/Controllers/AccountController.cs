@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace GameSite.Controllers
 {
-    
+    [Authorize(Roles = "admin")]
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;

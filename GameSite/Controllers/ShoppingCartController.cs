@@ -7,12 +7,14 @@ using GameSite.Data.Entities;
 using GameSite.Logger;
 using GameSite.Models;
 using GameSite.Repository.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace GameSite.Controllers
 {
+    [Authorize(Roles = "admin, guest")]
     public class ShoppingCartController : Controller
     {
         private readonly IGameRepository _gameRepository;
