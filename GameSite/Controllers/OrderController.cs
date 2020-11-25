@@ -19,12 +19,17 @@ namespace GameSite.Controllers
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<OrderController> _logger;
 
-        public OrderController(IOrderRepository orderRepository, IShoppingCartRepository shoppingCartRepository, ILogger<OrderController> logger)
+        public OrderController(IOrderRepository orderRepository,
+            IShoppingCartRepository shoppingCartRepository,
+            ILogger<OrderController> logger,
+            IHttpContextAccessor httpContextAccessor)
         {
             _orderRepository = orderRepository;
             _shoppingCartRepository = shoppingCartRepository;
+            _httpContextAccessor = httpContextAccessor;
             _logger = logger;
         }
 
@@ -56,6 +61,20 @@ namespace GameSite.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                var shoppingCartItems = _shoppingCartRepository.GetAllItemsInCartByUserId(userId);
+
+                var TotalPriceCount = Math.Round(shoppingCartItems.Sum(x => x.Price));
+                //foreach (var item in shoppingCartItems)
+                //{
+                //    var finalPrice = item.Price;
+                //    finalPrice += finalPrice;
+
+
+                //}
+                order.UserId = userId;
+                order.Price = TotalPriceCount;
                 order.OrderPlaced = DateTime.Now;
                 _orderRepository.Add(order);
                 _logger.LogInformation(LoggerMessageDisplay.OrderCreated);

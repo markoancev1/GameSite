@@ -39,6 +39,12 @@ namespace GameSite.Repository
         public IEnumerable<Game> GetGamesInStock() => _context.Games
             .Where(s => s.IsInStock);
 
+        public IEnumerable<Game> GetGamesNotOnSale() => _context.Games
+            .Where(s => s.IsOnSale == false);
+
+        public IEnumerable<Game> GetGamesNotInStock() => _context.Games
+            .Where(s => s.IsInStock == false);
+
         public IEnumerable<Game> GetAllGames()
         {
             var result = _context.Games.AsEnumerable();

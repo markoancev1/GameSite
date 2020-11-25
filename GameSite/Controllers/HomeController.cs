@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using GameSite.Models;
 using GameSite.Repository.Interface;
-
+using GameSite.Data;
+using GameSite.Data.Entities;
+using DevExpress.Xpo.Helpers;
 
 namespace GameSite.Controllers
 {
@@ -16,17 +18,20 @@ namespace GameSite.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IGameRepository _gameRepository;
         private readonly IGenreRepository _genreRepository;
-        private readonly IShoppingCartRepository _cart;
-
-        public HomeController(ILogger<HomeController> logger, 
+        private readonly IConsoleRepository _consoleRepository;
+        private readonly DataContext _context
+;
+        public HomeController(ILogger<HomeController> logger,
             IGameRepository gameRepository,
             IGenreRepository genreRepository,
-            IShoppingCartRepository cart)
+            IConsoleRepository consoleRepository,
+            DataContext context)
         {
             _logger = logger;
             _gameRepository = gameRepository;
             _genreRepository = genreRepository;
-            _cart = cart;
+            _consoleRepository = consoleRepository;
+            _context = context;
         }
 
         
@@ -34,27 +39,20 @@ namespace GameSite.Controllers
         {
             var getGamesOnSale = _gameRepository.GetGamesOnSale();
             var getGameInStock = _gameRepository.GetGamesInStock();
+            var getGameNotInStock = _gameRepository.GetGamesNotInStock();
+            var getGameNotOnSale = _gameRepository.GetGamesNotOnSale();
+
 
             var gameViewModel = new GameViewModel
             {
                 GamesInStock = getGameInStock,
                 GamesOnSale = getGamesOnSale,
+                GamesNotInStock = getGameNotInStock,
+                GamesNotOnSale = getGameNotOnSale
             };
             return View(gameViewModel);
         }
 
-        public IActionResult RefreshPartialViewNotification()
-        {
-            var notificationCounters = _cart.GetAllItemsInCart().Count();
-            ViewData["Counter"] = notificationCounters;
-            return PartialView("Notification");
-        }
-
-        public int AddToCartNotificationsCounterTest()
-        {
-            var notificationCounters = _cart.GetAllItemsInCart().Count();
-            return notificationCounters;
-        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

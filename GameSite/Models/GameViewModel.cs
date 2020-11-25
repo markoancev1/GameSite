@@ -21,15 +21,13 @@ namespace GameSite.Models
         public bool IsOnSale { get; set; }
         public bool IsInStock { get; set; }
 
-        public int AddToCartTotalCounter { get; set; }
-
         public Genre Genre { get; set; }
         public string GenreName { get; set; }
-        public int? GenreId { get; set; }
+        public int GenreId { get; set; }
 
         public ConsoleUnit Console { get; set; }
         public string ConsoleName { get; set; }
-        public int? ConsoleId { get; set; }
+        public int ConsoleId { get; set; }
 
 
         public IEnumerable<SelectListItem> Genres { get; set; }
@@ -37,5 +35,8 @@ namespace GameSite.Models
 
         public IEnumerable<Game> GamesOnSale { get; set; }
         public IEnumerable<Game> GamesInStock { get; set; }
+        public IEnumerable<Game> GamesNotOnSale { get; set; }
+        public IEnumerable<Game> GamesNotInStock { get; set; }
+
     }
 }

@@ -7,6 +7,7 @@ using GameSite.Logger;
 using GameSite.Repository.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace GameSite.Controllers
@@ -77,11 +78,6 @@ namespace GameSite.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Genre genre)
         {
-            if (id != genre.GenreId)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
@@ -135,10 +131,12 @@ namespace GameSite.Controllers
                     _logger.LogInformation(LoggerMessageDisplay.GenreDeleted);
                 }
             }
-            catch(Exception ex)
+            catch(DbUpdateException ex)
             {
-                _logger.LogError(LoggerMessageDisplay.GenreDeleted + "---> " + ex);
-                throw;
+                _logger.LogError($"Exception Occured : {ex}");
+                ViewBag.ErrorTitle = "Genre is in use";
+                ViewBag.ErrorMessage = " Genre cannot be deleted as there are games using this genre. If you want to delete this genre, please remove the games using this genre";
+                return View("Error");
             }
 
             return RedirectToAction(nameof(Index));

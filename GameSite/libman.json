@@ -16,7 +16,7 @@
     },
     {
       "library": "jquery-validate@1.19.2",
-      "destination": "wwwroot/jquery-validate/"
+      "destination": "wwwroot/lib/jquery-validate/"
     }
   ]
 }

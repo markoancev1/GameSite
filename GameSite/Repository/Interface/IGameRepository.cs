@@ -15,6 +15,8 @@ namespace GameSite.Repository.Interface
         IEnumerable<Game> GetAllGamesByConsoleId(int ConsoleId);
         IEnumerable<Game> GetGamesOnSale();
         IEnumerable<Game> GetGamesInStock();
+        IEnumerable<Game> GetGamesNotOnSale();
+        IEnumerable<Game> GetGamesNotInStock();
         Game GetGameByID(int gameId);
 
     }

@@ -158,6 +158,12 @@ thead,tbody tr th,td {
     transition: all 500ms ease;
 }
 
+.game-image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media (min-width: 768px) {
     img {
         width: 150px;
@@ -172,8 +178,7 @@ thead,tbody tr th,td {
 }
 
 .error{
-    color: red;
-    
+    color: crimson;
 }
 
 .navbar-fixed-top{

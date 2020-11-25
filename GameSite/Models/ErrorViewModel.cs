@@ -1,5 +1,3 @@
-using System;
-
 namespace GameSite.Models
 {
     public class ErrorViewModel

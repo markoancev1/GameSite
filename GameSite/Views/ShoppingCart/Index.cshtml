@@ -10,11 +10,12 @@
             {
                 <div class="card mt-3 table-borderless" style="background-color: #222;">
                     <div class="card-body row">
-                        <div class="col-2 col-md-2 borderStyle">
+                        <div class="col-sm-4 col-12 col-md-4 borderStyle">
                             <img src="~/images/@game.PhotoPath" class="img-fluid" />
                         </div>
-                        <div class="col-10 col-md-10">
+                        <div class="card-body col-sm-8 col-12 col-md-8">
                             <h4 class="card-title"> @Html.DisplayFor(modelItem => game.GameName)</h4>
+                            <hr style="background-color:white;" />
                             <div class="row">
                                 <div class="col-12 col-md-12">
                                     <h6>Genre Name: @Html.DisplayFor(modelItem => game.GenreName) </h6>

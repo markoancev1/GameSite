@@ -7,6 +7,7 @@ using GameSite.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace GameSite.Controllers
@@ -17,7 +18,7 @@ namespace GameSite.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<AdministrationController> _logger;
-        public AdministrationController(RoleManager<IdentityRole> roleManager, 
+        public AdministrationController(RoleManager<IdentityRole> roleManager,
             UserManager<IdentityUser> userManager,
             ILogger<AdministrationController> logger)
         {
@@ -26,7 +27,7 @@ namespace GameSite.Controllers
             _logger = logger;
         }
 
-        
+
         public IActionResult ListRoles()
         {
             var roles = _roleManager.Roles;
@@ -52,13 +53,11 @@ namespace GameSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                // We just need to specify a unique role name to create a new role
                 IdentityRole identityRole = new IdentityRole
                 {
                     Name = model.RoleName
                 };
 
-                // Saves the role in the underlying AspNetRoles table
                 IdentityResult result = await _roleManager.CreateAsync(identityRole);
 
                 if (result.Succeeded)
@@ -66,7 +65,7 @@ namespace GameSite.Controllers
                     _logger.LogInformation(LoggerMessageDisplay.RoleCreated);
                     return RedirectToAction("index", "home");
                 }
-                
+
             }
             else
             {
@@ -78,7 +77,6 @@ namespace GameSite.Controllers
         [HttpGet]
         public async Task<IActionResult> EditRole(string id)
         {
-            // Find the role by Role ID
             var role = await _roleManager.FindByIdAsync(id);
 
             if (role == null)
@@ -93,12 +91,8 @@ namespace GameSite.Controllers
                 RoleName = role.Name
             };
 
-            // Retrieve all the Users
             foreach (var user in _userManager.Users.ToList())
             {
-                // If the user is in this role, add the username to
-                // Users property of EditRoleModel. This model
-                // object is then passed to the view for display
                 if (await _userManager.IsInRoleAsync(user, role.Name))
                 {
                     model.Users.Add(user.UserName);
@@ -108,7 +102,6 @@ namespace GameSite.Controllers
             return View(model);
         }
 
-        // This action responds to HttpPost and receives EditRoleViewModel
         [HttpPost]
         public async Task<IActionResult> EditRole(EditRoleModel model)
         {
@@ -207,21 +200,41 @@ namespace GameSite.Controllers
         {
             var role = await _roleManager.FindByIdAsync(id);
 
-            var result = await _roleManager.DeleteAsync(role);
-
-            if (result.Succeeded)
+            if (role == null)
             {
-                _logger.LogInformation(LoggerMessageDisplay.RoleDeleted);
-                return RedirectToAction("ListRoles");
+                ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
+                return View("NotFound");
             }
             else
             {
-                _logger.LogWarning(LoggerMessageDisplay.RoleDeleteError);
+                try
+                {
+                    var result = await _roleManager.DeleteAsync(role);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("ListRoles");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+                    return View("ListRoles");
+                }
+
+                catch (DbUpdateException ex)
+                {
+                    _logger.LogError($"Exception Occured : {ex}");
+                    ViewBag.ErrorTitle = $"{role.Name} role is in use";
+                    ViewBag.ErrorMessage = $"{role.Name} role cannot be deleted as there are users in this role. If you want to delete this role, please remove the users from the role and then try to delete";
+                    return View("Error");
+                }
             }
 
-            return View("ListRoles");
+
         }
     }
-
 }
 

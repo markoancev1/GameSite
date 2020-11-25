@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameSite.Data;
 using GameSite.Data.Entities;
 using GameSite.Logger;
 using GameSite.Repository.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace GameSite.Controllers
@@ -16,11 +18,13 @@ namespace GameSite.Controllers
     {
         private readonly IConsoleRepository _consoleRepository;
         private readonly ILogger<ConsoleController> _logger;
+        private readonly DataContext _context;
 
-        public ConsoleController(IConsoleRepository consoleRepository, ILogger<ConsoleController> logger)
+        public ConsoleController(IConsoleRepository consoleRepository, ILogger<ConsoleController> logger, DataContext context)
         {
             _consoleRepository= consoleRepository;
             _logger = logger;
+            _context = context;
         }
         public IActionResult Index()
         {
@@ -134,10 +138,12 @@ namespace GameSite.Controllers
                     _logger.LogInformation(LoggerMessageDisplay.ConsoleDeleted);
                 }
             }
-            catch(Exception ex)
+            catch (DbUpdateException ex)
             {
-                _logger.LogError(LoggerMessageDisplay.ConsoleDeletedError + "---> " + ex);
-                throw;
+                _logger.LogError($"Exception Occured : {ex}");
+                ViewBag.ErrorTitle = "Console is in use";
+                ViewBag.ErrorMessage = " Console cannot be deleted as there are games using this console. If you want to delete this console, please remove the games using this console and then try to delete";
+                return View("Error");
             }
             return RedirectToAction(nameof(Index));
 

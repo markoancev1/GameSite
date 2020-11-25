@@ -13,14 +13,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ConsoleId" />
             <div class="form-group">
-                <label asp-for="ConsoleName" class="control-label"></label>
-                <input asp-for="ConsoleName" class="form-control" />
-                <span asp-validation-for="ConsoleName" class="text-danger"></span>
+                <label asp-for="ConsoleName" class="control-label" id="ConsoleName"></label>
+                <input asp-for="ConsoleName" class="form-control" id="ConsoleName" />
+                <span asp-validation-for="ConsoleName" class="text-danger" id="ConsoleName"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Description" class="control-label" id="Description"></label>
+                <input asp-for="Description" class="form-control" id="Description" />
+                <span asp-validation-for="Description" class="text-danger" id="Description"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -32,3 +32,7 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

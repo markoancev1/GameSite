@@ -1,14 +1,18 @@
-﻿$(function () {
-    // Initialize form validation on the game create form.
-    // It has the name attribute "gameadd"
+﻿// Wait for the DOM to be ready
+$(function () {
+    // Initialize form validation on the book create form.
+    // It has the name attribute "bookcreate"
     $("form[name='gameadd']").validate({
         success: "valid",
         // validation as we type data in the fields
-        onkeyup: true,
+        onkeyup: false,
+        errorElement: 'div',
+
         // add css error class
         errorClass: "error",
         // focus field when invalid
         focusInvalid: true,
+
         // highlight filds when error
         highlight: function (element, errorClass) {
             $(element).fadeOut(function () {
@@ -29,14 +33,6 @@
                 required: true,
                 minlength: 2
             },
-            GenreId: {
-                required: true,
-                min: 1
-            },
-            ConsoleId: {
-                required: true,
-                min: 1
-            },
             Price: {
                 required: true,
                 number: true
@@ -44,7 +40,16 @@
             Description: "required",
             Photo: {
                 required: true
+            },
+            GenreId: {
+                required: true,
+                min: 1
+            },
+            ConsoleId: {
+                required: true,
+                min: 1
             }
+
         },
 
         // Specify validation error messages
@@ -54,8 +59,16 @@
                 minlength: jQuery.validator.format("At least {0} characters required!")
             },
             GameCreator: {
-                required: "Please enter the game creator",
+                required: "Please enter your game creator",
                 minlength: jQuery.validator.format("At least {0} characters required!")
+            },
+            Price: {
+                required: "Please enter the price of the game",
+                number: "Please enter numbers only"
+            },
+            Description: "Please enter description",
+            Photo: {
+                required: "Please enter the image you want",
             },
             GenreId: {
                 required: "Please choose genre",
@@ -65,14 +78,7 @@
                 required: "Please choose console",
                 min: "Please select one console from the dropdown"
             },
-            Price: {
-                required: "Please enter the price of the game",
-                number: "Please enter numbers only"
-            },
-            Description: "Please enter description",
-            Photo: {
-                required: "Please enter the image you want",
-            }
+
         },
 
         // Make sure the form is submitted to the destination defined
@@ -82,15 +88,18 @@
         }
     });
 });
+
+// Wait for the DOM to be ready
 $(function () {
-    // Initialize form validation on the game create form.
-    // It has the name attribute "gameadd"
+    // Initialize form validation on the book create form.
+    // It has the name attribute "bookcreate"
     $("form[name='gameedit']").validate({
         success: "valid",
         // validation as we type data in the fields
-        onkeyup: true,
+        onkeyup: false,
         // add css error class
         errorClass: "error",
+        errorElement: 'div',
         // focus field when invalid
         focusInvalid: true,
         // highlight filds when error
@@ -113,6 +122,11 @@ $(function () {
                 required: true,
                 minlength: 2
             },
+            Price: {
+                required: true,
+                number: true
+            },
+            Description: "required",
             GenreId: {
                 required: true,
                 min: 1
@@ -120,15 +134,8 @@ $(function () {
             ConsoleId: {
                 required: true,
                 min: 1
-            },
-            Price: {
-                required: true,
-                number: true
-            },
-            Description: "required",
-            Photo: {
-                required: true
             }
+
         },
 
         // Specify validation error messages
@@ -138,9 +145,14 @@ $(function () {
                 minlength: jQuery.validator.format("At least {0} characters required!")
             },
             GameCreator: {
-                required: "Please enter the game creator",
+                required: "Please enter your game creator",
                 minlength: jQuery.validator.format("At least {0} characters required!")
             },
+            Price: {
+                required: "Please enter the price of the game",
+                number: "Please enter numbers only"
+            },
+            Description: "Please enter description",
             GenreId: {
                 required: "Please choose genre",
                 min: "Please select one genre from the dropdown"
@@ -149,14 +161,7 @@ $(function () {
                 required: "Please choose console",
                 min: "Please select one console from the dropdown"
             },
-            Price: {
-                required: "Please enter the price of the game",
-                number: "Please enter numbers only"
-            },
-            Description: "Please enter description",
-            Photo: {
-                required: "Please enter the image you want",
-            }
+
         },
 
         // Make sure the form is submitted to the destination defined
@@ -166,15 +171,18 @@ $(function () {
         }
     });
 });
+
+// Wait for the DOM to be ready
 $(function () {
-    // Initialize form validation on the game create form.
-    // It has the name attribute "gameadd"
+    // Initialize form validation on the book create form.
+    // It has the name attribute "bookcreate"
     $("form[name='consolecreate']").validate({
         success: "valid",
         // validation as we type data in the fields
-        onkeyup: true,
+        onkeyup: false,
         // add css error class
         errorClass: "error",
+        errorElement: 'div',
         // focus field when invalid
         focusInvalid: true,
         // highlight filds when error
@@ -193,7 +201,8 @@ $(function () {
                 required: true,
                 minlength: 2
             },
-            Description: "required"
+            Description: "required",
+
         },
 
         // Specify validation error messages
@@ -203,6 +212,7 @@ $(function () {
                 minlength: jQuery.validator.format("At least {0} characters required!")
             },
             Description: "Please enter description",
+
         },
 
         // Make sure the form is submitted to the destination defined
@@ -212,15 +222,17 @@ $(function () {
         }
     });
 });
+
 $(function () {
-    // Initialize form validation on the game create form.
-    // It has the name attribute "gameadd"
+    // Initialize form validation on the book create form.
+    // It has the name attribute "bookcreate"
     $("form[name='consoleedit']").validate({
         success: "valid",
         // validation as we type data in the fields
-        onkeyup: true,
+        onkeyup: false,
         // add css error class
         errorClass: "error",
+        errorElement: 'div',
         // focus field when invalid
         focusInvalid: true,
         // highlight filds when error
@@ -239,7 +251,8 @@ $(function () {
                 required: true,
                 minlength: 2
             },
-            Description: "required"
+            Description: "required",
+
         },
 
         // Specify validation error messages
@@ -249,6 +262,7 @@ $(function () {
                 minlength: jQuery.validator.format("At least {0} characters required!")
             },
             Description: "Please enter description",
+
         },
 
         // Make sure the form is submitted to the destination defined
@@ -258,15 +272,17 @@ $(function () {
         }
     });
 });
+
 $(function () {
-    // Initialize form validation on the game create form.
-    // It has the name attribute "gameadd"
+    // Initialize form validation on the book create form.
+    // It has the name attribute "bookcreate"
     $("form[name='genrecreate']").validate({
         success: "valid",
         // validation as we type data in the fields
-        onkeyup: true,
+        onkeyup: false,
         // add css error class
         errorClass: "error",
+        errorElement: 'div',
         // focus field when invalid
         focusInvalid: true,
         // highlight filds when error
@@ -285,7 +301,8 @@ $(function () {
                 required: true,
                 minlength: 2
             },
-            GenreDescription: "required"
+            GenreDescription: "required",
+
         },
 
         // Specify validation error messages
@@ -295,6 +312,7 @@ $(function () {
                 minlength: jQuery.validator.format("At least {0} characters required!")
             },
             GenreDescription: "Please enter description",
+
         },
 
         // Make sure the form is submitted to the destination defined
@@ -304,15 +322,17 @@ $(function () {
         }
     });
 });
+
 $(function () {
-    // Initialize form validation on the game create form.
-    // It has the name attribute "gameadd"
+    // Initialize form validation on the book create form.
+    // It has the name attribute "bookcreate"
     $("form[name='genreedit']").validate({
         success: "valid",
         // validation as we type data in the fields
-        onkeyup: true,
+        onkeyup: false,
         // add css error class
         errorClass: "error",
+        errorElement: 'div',
         // focus field when invalid
         focusInvalid: true,
         // highlight filds when error
@@ -331,7 +351,8 @@ $(function () {
                 required: true,
                 minlength: 2
             },
-            GenreDescription: "required"
+            GenreDescription: "required",
+
         },
 
         // Specify validation error messages
@@ -341,6 +362,7 @@ $(function () {
                 minlength: jQuery.validator.format("At least {0} characters required!")
             },
             GenreDescription: "Please enter description",
+
         },
 
         // Make sure the form is submitted to the destination defined

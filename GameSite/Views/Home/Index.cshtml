@@ -7,34 +7,82 @@
 
     <button id="myBtn" title="Go to top"><span class="fa fa-arrow-up"></span></button>
 
-<div class="pt-5">
-    <h2 class="text-center">Popular Games!</h2>
-    <h6 class="text-center"><em>Some of our most sold games!</em></h6>
-    <div class="row">
-        @foreach (var item in Model.GamesOnSale)
-        {
-            <div class="col-12 col-md-6 col-lg-3 mt-5">
-                <div class="card h-100">
-                    <img src="~/images/@item.PhotoPath" class=" card-img-top" />
-                    <div class="card-body" style="background-color: #222;">
-                        <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
-                        <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
-                        <hr style="background-color:white;" />
-                        <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
-                        <p class="card-text">Console: @Html.DisplayFor(modelItem => item.ConsoleName)</p>
-                        <hr style="background-color:white;" />
-                        <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
-                        <hr style="background-color:white;" />
-                        <button class="btn btn-success btn-block" id="addToCart" onclick="AddToCart(@item.GameId)">
-                            <i class="fas fa-cart-plus"></i> &nbsp; Add To Cart
-                        </button>
+    <div class="pt-5">
+        <h2 class="text-center">Popular Games!</h2>
+        <h6 class="text-center"><em>Some of our most sold games!</em></h6>
+        <div class="row">
+
+            @foreach (var item in Model.GamesOnSale.Intersect(Model.GamesInStock))
+            {
+
+                <div class="col-12 col-md-6 col-lg-3 mt-5">
+                    <div class="card h-100">
+                        <img src="~/images/@item.PhotoPath" class=" card-img-top" />
+                        <div class="card-body" style="background-color: #222;">
+                            <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
+                            <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
+                            <hr style="background-color:white;" />
+                            <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
+                            <p class="card-text">Console: @Html.DisplayFor(modelItem => item.ConsoleName)</p>
+                            <hr style="background-color:white;" />
+                            <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
+                            <hr style="background-color:white;" />
+                            <button class="btn btn-success btn-block" id="addToCart" onclick="AddToCart(@item.GameId)">
+                                <i class="fas fa-cart-plus"></i> &nbsp; Add To Cart
+                            </button>
+                            @if (ViewContext.HttpContext.User.IsInRole("admin"))
+                            {
+                                @using (Html.BeginForm("Edit", "Game", new { Id = item.GameId }, FormMethod.Get))
+                                {
+                                    <button class="btn btn-info btn-block mt-2">
+                                        <i class="fas fa-edit"></i> &nbsp; Edit
+                                    </button>
+                                }
+                            }
+                        </div>
                     </div>
                 </div>
+            }
+        </div>
+        <div class="pt-5">
+            <h2 class="text-center">Unavailable Games!</h2>
+            <h6 class="text-center"><em>Games that are not in stock or on sale!</em></h6>
+            <div class="row">
+                @if (ViewContext.HttpContext.User.IsInRole("admin"))
+                {
+                    @foreach (var item in Model.GamesNotOnSale.Union(Model.GamesNotInStock))
+                    {
+
+                        <div class="col-12 col-md-6 col-lg-3 mt-5">
+                            <div class="card h-100">
+                                <img src="~/images/@item.PhotoPath" class=" card-img-top" />
+                                <div class="card-body" style="background-color: #222;">
+                                    <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
+                                    <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
+                                    <hr style="background-color:white;" />
+                                    <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
+                                    <p class="card-text">Console: @Html.DisplayFor(modelItem => item.ConsoleName)</p>
+                                    <hr style="background-color:white;" />
+                                    <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
+                                    <hr style="background-color:white;" />
+
+                                    @using (Html.BeginForm("Edit", "Game", new { Id = item.GameId }, FormMethod.Get))
+                                    {
+                                        <button class="btn btn-info btn-block">
+                                            <i class="fas fa-edit"></i> &nbsp; Edit
+                                        </button>
+                                    }
+
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
-        }
+        </div>
     </div>
 </div>
-    </div>
 @section Scripts {
 
     <script type="text/javascript">

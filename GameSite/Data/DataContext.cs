@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using GameSite.Data.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -63,7 +64,16 @@ namespace GameSite.Data
                 UserId = ADMIN_ID
             });
 
+
+
             base.OnModelCreating(modelBuilder);
+
+
+            foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
         }
     }
 }

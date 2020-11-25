@@ -4,47 +4,48 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="col-md-10 mx-auto py-4">
     <div class="card">
         <div class="card-header text-uppercase text-white" style="background-color: #375a7f !important;">
             <h4>Add New Game</h4>
         </div>
         <div class="card-body" style="background-color: #00a379">
-            <form  asp-action="Add" name="gameadd">
+            <form enctype="multipart/form-data" asp-action="Add" name="gameadd">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row">
+                <div class="row form-group">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="GameName" class="control-label text-center"></label>
-                            <input asp-for="GameName" class="form-control" />
+                            <input asp-for="GameName" class="form-control" placeholder="Enter Game Name"/>
                             <span asp-validation-for="GameName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="GameCreator" class="control-label text-center"></label>
-                            <input asp-for="GameCreator" class="form-control" />
+                            <label asp-for="GameCreator" class="control-label text-center" ></label>
+                            <input asp-for="GameCreator" class="form-control" placeholder="Enter Game Creator"/>
                             <span asp-validation-for="GameCreator" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row form-group">
                     <div class="col-md-6">
                         <label asp-for="GenreId" class="control-label text-center">Genre name</label>
-                        @Html.DropDownListFor(x => Model.GenreId, new SelectList(Model.Genres, "Value", "Text"), "Select a genre", htmlAttributes: new { @class = "form-control", id = "Genre" })
+                        @Html.DropDownListFor(x => Model.GenreId, new SelectList(Model.Genres, "Value", "Text"), "Select a Genre",
+                        htmlAttributes: new { @class = "form-control", id = "Genre" })
                         <span asp-validation-for="GenreId" class="text-danger"></span>
                         <input asp-for="GenreName" class="form-control" hidden id="GenreName" />
                     </div>
                     <div class="col-md-6">
                         <label asp-for="ConsoleId" class="control-label text-center">Console name</label>
-                        @Html.DropDownListFor(x => Model.ConsoleId, new SelectList(Model.Consoles, "Value", "Text"), "Select a console", htmlAttributes: new { @class = "form-control", id = "Console" })
+                        @Html.DropDownListFor(x => Model.ConsoleId, new SelectList(Model.Consoles, "Value", "Text"), "Select a Console",
+                       htmlAttributes: new { @class = "form-control", id = "Console" })
                         <span asp-validation-for="ConsoleId" class="text-danger"></span>
                         <input asp-for="ConsoleName" class="form-control" hidden id="ConsoleName" />
                     </div>
 
                 </div>
-                <div class="row pt-5 ">
+                <div class="row form-group pt-5 ">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="Price" class="control-label"></label>
@@ -73,20 +74,21 @@
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
 
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label asp-for="Photo" class="control-label"></label>
+                <div class="form-group row">
+                    <label asp-for="Photo" class="col-12 col-form-label">Photo:</label>
+                    <div class="col-12">
                         <div class="custom-file">
-                            <input asp-for="Photo" class="custom-file-input" id="customFile">
-                            <label class="custom-file-label" for="customFile">Choose file</label>
+                            <input asp-for="Photo" class="form-control custom-file-input">
+                            <label class="custom-file-label">Choose File...</label>
+                            <span asp-validation-for="Photo" class="text-danger"></span>
                         </div>
-                        <span asp-validation-for="Photo" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group text-center">
                     <input type="submit" value="submit" class="btn btn-sm btn-primary rounded-0 text-uppercase" />
                     <a asp-action="Index" class="btn btn-sm btn-primary rounded-0 text-uppercase"><i class="fas fa-fast-backward"></i> Back to List</a>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-success rounded-0 text-uppercase"><i class="fas fa-fast-backward"></i> Home Page </a>
                 </div>
             </form>
         </div>
@@ -94,12 +96,16 @@
 </div>
 
 @section scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
     <script type="text/javascript">
 
         // Add the following code if you want the name of the file appear on select
-        $(".custom-file-input").on("change", function () {
-            var FileName = $(this).val().split("\\").pop();
-            $(this).siblings(".custom-file-label").addClass("selected").html(FileName);
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(fileName);
+            });
         });
 
         $("#Genre").change(function () {

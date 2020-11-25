@@ -8,13 +8,12 @@
 
 <div class="col-md-10 mx-auto py-4">
     <div class="card">
-        <div class="card-header text-uppercase text-white" style="background-color: #375a7f !important;">
-            <h4>Add New Game</h4>
+        <div class="card-header text-white" style="background-color: #375a7f !important;">
+            <h6>Edit your Game</h6>
         </div>
         <div class="card-body" style="background-color: #00a379">
             <form enctype="multipart/form-data" method="post" asp-action="Edit" name="gameedit">
-                @*Use hidden input elements to store employee id and ExistingPhotoPath
-        which we need when we submit the form and update data in the database*@
+             
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input hidden asp-for="Id" />
                 <input hidden asp-for="ExistingPhotoPath" />
@@ -22,14 +21,14 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="GameName" class="control-label text-center"></label>
+                            <label asp-for="GameName" class="control-label text-center">Game Name</label>
                             <input asp-for="GameName" class="form-control" />
                             <span asp-validation-for="GameName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="GameCreator" class="control-label text-center"></label>
+                            <label asp-for="GameCreator" class="control-label text-center">Game Creator</label>
                             <input asp-for="GameCreator" class="form-control" />
                             <span asp-validation-for="GameCreator" class="text-danger"></span>
                         </div>
@@ -37,18 +36,18 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label asp-for="GenreId" class="control-label text-center">Genre name</label>
+                        <label asp-for="GenreId" class="control-label text-center">Genre Name</label>
                         @Html.DropDownListFor(x => Model.GenreId, new SelectList(Model.Genres, "Value", "Text"), "Select a Genre", htmlAttributes: new { @class = "form-control", id = "Genre" })
                         <span asp-validation-for="GenreId" class="text-danger"></span>
                         <input asp-for="GenreName" class="form-control" hidden id="GenreName" />
                     </div>
                     <div class="col-md-6">
-                        <label asp-for="ConsoleId" class="control-label text-center">Genre name</label>
+                        <label asp-for="ConsoleId" class="control-label text-center">Genre Name</label>
                         @Html.DropDownListFor(x => Model.ConsoleId, new SelectList(Model.Consoles, "Value", "Text"), "Select a Console", htmlAttributes: new { @class = "form-control", id = "Console" })
                         <span asp-validation-for="ConsoleId" class="text-danger"></span>
                         <input asp-for="ConsoleName" class="form-control" hidden id="ConsoleName" />
                     </div>
-                    
+
                 </div>
                 <div class="row pt-5 text-center">
                     <div class="col-md-6">
@@ -60,14 +59,14 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label asp-for="IsInStock" class="control-label"></label>
+                            <label asp-for="IsInStock" class="control-label">In Stock?</label>
                             @Html.CheckBoxFor(m => m.IsInStock, new { @checked = "checked", @class = "form-control" })
                             <span asp-validation-for="IsInStock" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label asp-for="IsOnSale" class="control-label"></label>
+                            <label asp-for="IsOnSale" class="control-label">On Sale?</label>
                             @Html.CheckBoxFor(m => m.IsOnSale, new { @checked = "checked", @class = "form-control" })
                             <span asp-validation-for="IsOnSale" class="text-danger"></span>
                         </div>
@@ -80,8 +79,8 @@
                 </div>
 
                 <div class="form-group row">
-                    <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <label asp-for="Photo" class="col-12 col-form-label"></label>
+                    <div class="col-12">
                         <div class="custom-file">
                             <input asp-for="Photo" class="custom-file-input form-control">
                             <label class="custom-file-label">Click here to change photo</label>
@@ -90,14 +89,15 @@
                 </div>
 
                 @*Display the existing employee photo*@
-                <div class="form-group row col-sm-4 offset-4">
-                    <img class="imageThumbnail" src="@photoPath" asp-append-version="true" />
+                <div class="form-group row game-image">
+                    <img class="card-img-top col-12 col-sm-4" src="@photoPath" asp-append-version="true" />
                 </div>
 
 
                 <div class="form-group text-center">
                     <input type="submit" value="submit" class="btn btn-sm btn-primary rounded-0 text-uppercase" />
                     <a asp-action="Index" class="btn btn-sm btn-primary rounded-0 text-uppercase"><i class="fas fa-fast-backward"></i> Back to List</a>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-success rounded-0 text-uppercase"><i class="fas fa-fast-backward"></i> Home Page </a>
                 </div>
             </form>
         </div>
@@ -105,6 +105,9 @@
 </div>
 
 @section scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
     <script type="text/javascript">
 
         $("#Genre").change(function () {

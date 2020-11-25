@@ -7,6 +7,7 @@ using GameSite.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace GameSite.Controllers
@@ -51,7 +52,6 @@ namespace GameSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Copy data from RegisterViewModel to IdentityUser
                 var user = new IdentityUser
                 {
                     UserName = model.Email,
@@ -59,11 +59,8 @@ namespace GameSite.Controllers
                     EmailConfirmed = true
                 };
 
-                // Store user data in AspNetUsers database table
                 var result = await _userManager.CreateAsync(user, model.Password);
 
-                // If user is successfully created, sign-in the user using
-                // SignInManager and redirect to index action of HomeController
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
@@ -71,13 +68,7 @@ namespace GameSite.Controllers
                     return RedirectToAction("index", "home");
                 }
 
-                
-                // If there are any errors, add them to the ModelState object
-                // which will be displayed by the validation summary tag helper
-                //foreach (var error in result.Errors)
-                //{
-                //    ModelState.AddModelError(string.Empty, error.Description);
-                //}
+              
             }
             else
             {
@@ -130,19 +121,25 @@ namespace GameSite.Controllers
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-
-            var result = await _userManager.DeleteAsync(user);
-
-            if (result.Succeeded)
+            try
             {
-                _logger.LogInformation(LoggerMessageDisplay.UserDeleted);
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                _logger.LogWarning(LoggerMessageDisplay.UserDeleteError);
-            }
+                
 
+                var result = await _userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation(LoggerMessageDisplay.UserDeleted);
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError($"Exception Occured : {ex}");
+                ViewBag.ErrorTitle = $"{user.Email} is in use";
+                ViewBag.ErrorMessage = $"{user.Email} cannot be deleted. If you want to delete this user, please remove the users from the role";
+                return View("Error");
+            }
             return View("Index");
         }
     }

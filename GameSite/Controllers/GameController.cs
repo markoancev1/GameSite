@@ -45,7 +45,7 @@ namespace GameSite.Controllers
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
         }
-
+        [Authorize(Roles = "admin, guest")]
         public IActionResult Index()
         {
             var gameList = _gameRepository.GetAllGames();
@@ -74,7 +74,7 @@ namespace GameSite.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public ActionResult Add(GameViewModel model)
+        public IActionResult Add(GameViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -88,9 +88,9 @@ namespace GameSite.Controllers
                     Description = model.Description,
                     IsOnSale = model.IsOnSale,
                     IsInStock = model.IsInStock,
-                    Genre = _context.Genres.Find(model.GenreId),
+                    GenreId = model.GenreId,
                     GenreName = model.GenreName,
-                    Console = _context.Consoles.Find(model.ConsoleId),
+                    ConsoleId = model.ConsoleId,
                     ConsoleName = model.ConsoleName,
                     PhotoPath = uniqueFileName
 
@@ -115,7 +115,8 @@ namespace GameSite.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
-            var game = _context.Games.Find(id);
+            var game = _gameRepository.GetGameByID(id);
+           
             if (game == null)
             {
                 return NotFound();
@@ -129,14 +130,14 @@ namespace GameSite.Controllers
                 Description = game.Description,
                 IsOnSale = game.IsOnSale,
                 IsInStock = game.IsInStock,
-                Genre = _context.Genres.Find(game.GenreId),
+                GenreId = game.GenreId,
                 GenreName = game.GenreName,
-                Console = _context.Consoles.Find(game.ConsoleId),
+                ConsoleId = game.ConsoleId,
                 ConsoleName = game.ConsoleName,
                 ExistingPhotoPath = game.PhotoPath
             };
 
-            PopulateChoices(model);
+            PopulateEditChoices(model);
 
             return View(model);
         }
@@ -150,16 +151,15 @@ namespace GameSite.Controllers
                 try
                 {
                     Game game = _gameRepository.GetGameByID(model.Id);
-                    // Update the game object with the data in the model object
                     game.GameName = model.GameName;
                     game.GameCreator = model.GameCreator;
                     game.Price = model.Price;
                     game.Description = model.Description;
                     game.IsOnSale = model.IsOnSale;
                     game.IsInStock = model.IsInStock;
-                    game.Genre = _context.Genres.Find(game.GenreId);
+                    game.GenreId = model.GenreId;
                     game.GenreName = model.GenreName;
-                    game.Console = _context.Consoles.Find(game.ConsoleId);
+                    game.ConsoleId = model.ConsoleId;
                     game.ConsoleName = model.ConsoleName;
 
                     if (model.Photo != null)
@@ -277,6 +277,22 @@ namespace GameSite.Controllers
                 Value = m.ConsoleId.ToString(),
                 Text = m.ConsoleName
             });
+
+
+        }
+        protected void PopulateEditChoices(GameEditViewModel model)
+        {
+            model.Genres = _context.Genres.Select(m => new SelectListItem
+            {
+                Value = m.GenreId.ToString(),
+                Text = m.GenreName
+            });
+            model.Consoles = _context.Consoles.Select(m => new SelectListItem
+            {
+                Value = m.ConsoleId.ToString(),
+                Text = m.ConsoleName
+            });
+
 
         }
     }

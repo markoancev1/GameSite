@@ -12,20 +12,113 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <input asp-for="Email" id="email" class="form-control" />
+                <span id="emailMsg"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <input asp-for="Password" id="pass" class="form-control" />
+                <span id="passMsg"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ConfirmPassword"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                <input asp-for="ConfirmPassword" id="passconf" class="form-control" />
+                <span id="passCMsg"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" id="btn" class="btn btn-primary">Register</button>
         </form>
     </div>
 </div>
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+	$(document).ready(function(){
+		// set initially button state hidden
+		$("#btn").hide();
+		// use keyup event on email field
+		$("#email").keyup(function(){
+			if(validateEmail()){
+				// if the email is validated
+				// set input email border green
+				$("#email").css("border","2px solid green");
+				// and set label
+				$("#emailMsg").html("<p class='text-success'>Validated</p>");
+			}else{
+				// if the email is not validated
+				// set border red
+				$("#email").css("border","2px solid red");
+				$("#emailMsg").html("<p class='text-danger'>Email not valid</p>");
+			}
+			buttonState();
+		});
+		// use keyup event on password
+		$("#pass").keyup(function(){
+			// check
+			if(validatePassword()){
+				$("#pass").css("border","2px solid green");
+				//set passMsg
+				$("#passMsg").html("<p class='text-success'>Password validated</p>");
+			}else{
+				$("#pass").css("border","2px solid red");
+				$("#passMsg").html("<p class='text-danger'>Password not valid</p>");
+			}
+			buttonState();
+		});
+        $("#passconf").keyup(function () {
+            // check
+            if (validatePasswordConfirmation()) {
+                $("#passconf").css("border", "2px solid green");
+                //set passMsg
+                $("#passCMsg").html("<p class='text-success'>Password validated</p>");
+            } else {
+                $("#passconf").css("border", "2px solid red");
+                $("#passCMsg").html("<p class='text-danger'>Password not valid</p>");
+            }
+            buttonState();
+        });
+	});
+
+	function buttonState(){
+        if (validateEmail() && validatePassword() && validatePasswordConfirmation()){
+			$("#btn").show();
+		}else{
+			$("#btn").hide();
+		}
+	}
+	function validateEmail(){
+		var email=$("#email").val();
+		 var reg = /^\w+([-+.']\w+)*@@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+		 if(reg.test(email)){
+		 	return true;
+		 }else{
+		 	return false;
+		 }
+
+	}
+	function validatePassword(){
+		var pass = $("#pass").val();
+        var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/
+		if(reg.test(pass) && pass.length > 7){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+    function validatePasswordConfirmation() {
+		var passconf = $("#passconf").val();
+        var pass = $("#pass").val();
+        if (passconf == pass) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    </script>
+
+
+}
+
