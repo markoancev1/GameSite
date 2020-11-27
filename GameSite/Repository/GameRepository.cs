@@ -60,11 +60,5 @@ namespace GameSite.Repository
             _context.Games.Update(game);
             _context.SaveChanges();
         }
-
-        public IEnumerable<Game> GetAllGamesByConsoleId(int ConsoleId)
-        {
-            var result = _context.Games.Where(x => x.ConsoleId == ConsoleId).AsEnumerable();
-            return result;
-        }
     }
 }

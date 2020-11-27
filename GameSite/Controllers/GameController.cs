@@ -49,8 +49,10 @@ namespace GameSite.Controllers
         public IActionResult Index()
         {
             var gameList = _gameRepository.GetAllGames();
+            
             if (gameList != null)
             {
+                
                 _logger.LogInformation(LoggerMessageDisplay.GamesListed);
             }
             else

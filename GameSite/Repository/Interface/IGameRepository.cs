@@ -12,7 +12,6 @@ namespace GameSite.Repository.Interface
         void Delete(int gameId);
         void Edit(Game game);
         IEnumerable<Game> GetAllGames();
-        IEnumerable<Game> GetAllGamesByConsoleId(int ConsoleId);
         IEnumerable<Game> GetGamesOnSale();
         IEnumerable<Game> GetGamesInStock();
         IEnumerable<Game> GetGamesNotOnSale();

@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Index";
 }
+<button id="myBtn" title="Go to top"><span class="fa fa-arrow-up"></span></button>
 <h4 class="text-center text-uppercase mt-5">List of Consoles</h4>
 @if (ViewContext.HttpContext.User.IsInRole("admin"))
 {
@@ -9,6 +10,8 @@
         <a asp-action="Create" class=" float-right btn-sm btn-primary rounded-0 text-uppercase"><i class="fas fa-plus-circle"></i> Add New Console</a>
     </p>
 }
+
+<input id="myInput" type="text" class="float-left mb-2" placeholder="Search..">
 <table class="table table-bordered mt-5">
     <thead>
         <tr>
@@ -17,7 +20,7 @@
             <th>Action</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="myTable">
         @foreach (var console in Model)
         {
             <tr>
@@ -32,3 +35,34 @@
         }
     </tbody>
 </table>
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+
+        jQuery(document).ready(function ($) {
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 50) {
+                    $('#myBtn').fadeIn('slow');
+                } else {
+                    $('#myBtn').fadeOut('slow');
+                }
+            });
+            $('#myBtn').click(function () {
+                $("html, body").animate({ scrollTop: 0 }, 500);
+                return false;
+            });
+        });
+
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
+    </script>
+}

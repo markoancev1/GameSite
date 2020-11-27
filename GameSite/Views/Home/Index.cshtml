@@ -2,20 +2,19 @@
 
 
 <div class="container mt-5">
-    <partial name="_Carousel" class=""/>
+    <partial name="_Carousel" class="" />
 
 
     <button id="myBtn" title="Go to top"><span class="fa fa-arrow-up"></span></button>
-
     <div class="pt-5">
         <h2 class="text-center">Popular Games!</h2>
         <h6 class="text-center"><em>Some of our most sold games!</em></h6>
+        <input id="myInput1" type="text" class="mb-2 mt-4" placeholder="Search Popular Games!">
         <div class="row">
-
             @foreach (var item in Model.GamesOnSale.Intersect(Model.GamesInStock))
             {
 
-                <div class="col-12 col-md-6 col-lg-3 mt-5">
+                <div class="col-12 col-md-6 col-lg-3 mt-5 gm1">
                     <div class="card h-100">
                         <img src="~/images/@item.PhotoPath" class=" card-img-top" />
                         <div class="card-body" style="background-color: #222;">
@@ -44,43 +43,46 @@
                 </div>
             }
         </div>
-        <div class="pt-5">
-            <h2 class="text-center">Unavailable Games!</h2>
-            <h6 class="text-center"><em>Games that are not in stock or on sale!</em></h6>
-            <div class="row">
-                @if (ViewContext.HttpContext.User.IsInRole("admin"))
-                {
-                    @foreach (var item in Model.GamesNotOnSale.Union(Model.GamesNotInStock))
-                    {
 
-                        <div class="col-12 col-md-6 col-lg-3 mt-5">
-                            <div class="card h-100">
-                                <img src="~/images/@item.PhotoPath" class=" card-img-top" />
-                                <div class="card-body" style="background-color: #222;">
-                                    <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
-                                    <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
-                                    <hr style="background-color:white;" />
-                                    <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
-                                    <p class="card-text">Console: @Html.DisplayFor(modelItem => item.ConsoleName)</p>
-                                    <hr style="background-color:white;" />
-                                    <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
-                                    <hr style="background-color:white;" />
+        @if (ViewContext.HttpContext.User.IsInRole("admin"))
+        {
+    <div class="pt-5">
+        <h2 class="text-center">Unavailable Games!</h2>
+        <h6 class="text-center"><em>Games that are not in stock or on sale!</em></h6>
+        <input id="myInput2" type="text" class="mb-2 mt-4" placeholder="Search Unavailable Games!">
+        <div class="row">
+            @foreach (var item in Model.GamesNotOnSale.Union(Model.GamesNotInStock))
+            {
 
-                                    @using (Html.BeginForm("Edit", "Game", new { Id = item.GameId }, FormMethod.Get))
-                                    {
-                                        <button class="btn btn-info btn-block">
-                                            <i class="fas fa-edit"></i> &nbsp; Edit
-                                        </button>
-                                    }
+                <div class="col-12 col-md-6 col-lg-3 mt-5 gm2">
+                    <div class="card h-100">
+                        <img src="~/images/@item.PhotoPath" class=" card-img-top" />
+                        <div class="card-body" style="background-color: #222;">
+                            <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
+                            <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
+                            <hr style="background-color:white;" />
+                            <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
+                            <p class="card-text">Console: @Html.DisplayFor(modelItem => item.ConsoleName)</p>
+                            <hr style="background-color:white;" />
+                            <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
+                            <hr style="background-color:white;" />
+
+                            @using (Html.BeginForm("Edit", "Game", new { Id = item.GameId }, FormMethod.Get))
+                            {
+                                <button class="btn btn-info btn-block">
+                                    <i class="fas fa-edit"></i> &nbsp; Edit
+                                </button>
+                            }
 
 
-                                </div>
-                            </div>
                         </div>
-                    }
-                }
-            </div>
+                    </div>
+                </div>
+            }
+
         </div>
+    </div>
+        }
     </div>
 </div>
 @section Scripts {
@@ -100,7 +102,6 @@
                         text: 'Added To Cart',
                         theme: 'sunset'
                     }).show();
-                    setTimeout(function () { location.reload(); }, 4000);
                 },
                 error: function () {
                     alert("error");
@@ -122,5 +123,25 @@
                 return false;
             });
         });
+
+
+
+        $(document).ready(function () {
+            $("#myInput1").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("div.gm1").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        $(document).ready(function () {
+            $("#myInput2").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("div.gm2").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
     </script>
 }

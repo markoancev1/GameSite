@@ -65,14 +65,8 @@ namespace GameSite.Controllers
 
                 var shoppingCartItems = _shoppingCartRepository.GetAllItemsInCartByUserId(userId);
 
-                var TotalPriceCount = Math.Round(shoppingCartItems.Sum(x => x.Price));
-                //foreach (var item in shoppingCartItems)
-                //{
-                //    var finalPrice = item.Price;
-                //    finalPrice += finalPrice;
+                var TotalPriceCount = Math.Round(shoppingCartItems.Sum(x => x.Price), 2);
 
-
-                //}
                 order.UserId = userId;
                 order.Price = TotalPriceCount;
                 order.OrderPlaced = DateTime.Now;

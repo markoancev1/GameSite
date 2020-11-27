@@ -2,31 +2,69 @@
 @{
     ViewData["Title"] = "Index";
 }
+
+
+<button id="myBtn" title="Go to top"><span class="fa fa-arrow-up"></span></button>
 <h4 class="text-center text-uppercase mt-5">List of Genres</h4>
 
-<p class="mt-5">
-    <a asp-action="Create" class=" float-right btn-sm btn-primary rounded-0 text-uppercase"><i class="fas fa-plus-circle"></i> Add New Genre</a>
-</p>
-<table class="table table-bordered mt-5">
-    <thead>
-        <tr>
-            <th class="text-center">@Html.DisplayNameFor(model => model.GenreName)</th>
-            <th class="text-center">@Html.DisplayNameFor(model => model.GenreDescription)</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var genre in Model)
-        {
+@if (ViewContext.HttpContext.User.IsInRole("admin"))
+{
+    <p class="mt-5">
+        <a asp-action="Create" class=" float-right btn-sm btn-primary rounded-0 text-uppercase"><i class="fas fa-plus-circle"></i> Add New Genre</a>
+    </p>
+}
+    <input id="myInput" type="text" class="float-left mb-2" placeholder="Search..">
+    <table class="table table-bordered mt-5">
+        <thead>
             <tr>
-                <td class="text-center"> @Html.DisplayFor(modelitem => genre.GenreName)</td>
-                <td class="text-center"> @Html.DisplayFor(modelitem => genre.GenreDescription)</td>
-                <td>
-                    <a class="btn btn-block btn-primary" asp-action="Edit" asp-route-id="@genre.GenreId">Edit</a>
-                    <a class="btn btn-block btn-info" asp-action="Details" asp-route-id="@genre.GenreId">Details</a>
-                    <a class="btn btn-block btn-danger" asp-action="Delete" asp-route-id="@genre.GenreId">Delete</a>
-                </td>
+                <th class="text-center">@Html.DisplayNameFor(model => model.GenreName)</th>
+                <th class="text-center">@Html.DisplayNameFor(model => model.GenreDescription)</th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var genre in Model)
+            {
+                <tr>
+                    <td class="text-center"> @Html.DisplayFor(modelitem => genre.GenreName)</td>
+                    <td class="text-center"> @Html.DisplayFor(modelitem => genre.GenreDescription)</td>
+                    <td>
+                        <a class="btn btn-block btn-primary" asp-action="Edit" asp-route-id="@genre.GenreId">Edit</a>
+                        <a class="btn btn-block btn-info" asp-action="Details" asp-route-id="@genre.GenreId">Details</a>
+                        <a class="btn btn-block btn-danger" asp-action="Delete" asp-route-id="@genre.GenreId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+    @section Scripts{
+        <script type="text/javascript">
+
+            jQuery(document).ready(function ($) {
+                $(window).scroll(function () {
+                    if ($(this).scrollTop() > 50) {
+                        $('#myBtn').fadeIn('slow');
+                    } else {
+                        $('#myBtn').fadeOut('slow');
+                    }
+                });
+                $('#myBtn').click(function () {
+                    $("html, body").animate({ scrollTop: 0 }, 500);
+                    return false;
+                });
+            });
+
+            $(document).ready(function () {
+                $("#myInput").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#myTable tr").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+
+        </script>
+    }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using GameSite.Data;
 using GameSite.Data.Entities;
 using GameSite.Logger;
 using GameSite.Models;
@@ -18,23 +19,23 @@ namespace GameSite.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly IGameRepository _gameRepository;
-        private readonly IGenreRepository _genreRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly ILogger<ShoppingCartController> _logger;
+        private readonly DataContext _context;
 
         public ShoppingCartController(
             IGameRepository gameRepository,
-            IGenreRepository genreRepository,
             IHttpContextAccessor httpContextAccessor,
             IShoppingCartRepository shoppingCartRepository,
-            ILogger<ShoppingCartController> logger)
+            ILogger<ShoppingCartController> logger,
+            DataContext context)
         {
             _gameRepository = gameRepository;
-            _genreRepository = genreRepository;
             _httpContextAccessor = httpContextAccessor;
             _shoppingCartRepository = shoppingCartRepository;
             _logger = logger;
+            _context = context;
         }
 
         // GET: ShopCart
@@ -54,7 +55,9 @@ namespace GameSite.Controllers
                 var game = _gameRepository.GetGameByID(item.GameId);
                 if (game != null)
                 {
+                    
                     AllGamesListFromCartByLoggedInUser.Add(game);
+                    
                 }
             }
 
