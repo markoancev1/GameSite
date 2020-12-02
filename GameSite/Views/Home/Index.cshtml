@@ -1,31 +1,33 @@
 ﻿@model GameViewModel
 
 
-<div class="container mt-5">
-    <partial name="_Carousel" class="" />
-
-
+<div class="container-fluid mt-5">
+    <partial name="_Carousel" class="w-100 h-100" />
+</div>
+<div class="container-fluid pt-5">
     <button id="myBtn" title="Go to top"><span class="fa fa-arrow-up"></span></button>
-    <div class="pt-5">
-        <h2 class="text-center">Popular Games!</h2>
-        <h6 class="text-center"><em>Some of our most sold games!</em></h6>
-        <input id="myInput1" type="text" class="mb-2 mt-4" placeholder="Search Popular Games!">
-        <div class="row">
-            @foreach (var item in Model.GamesOnSale.Intersect(Model.GamesInStock))
-            {
+    <h2 class="text-center">Popular Games!</h2>
+    <h6 class="text-center"><em>Some of our most sold games!</em></h6>
+    <input id="myInput1" type="text" class="mb-2 mt-4" placeholder="Search Popular Games!">
+    <div class="row">
+        @foreach (var item in Model.GamesOnSale.Intersect(Model.GamesInStock))
+        {
 
-                <div class="col-12 col-md-6 col-lg-3 mt-5 gm1">
-                    <div class="card h-100">
-                        <img src="~/images/@item.PhotoPath" class=" card-img-top" />
-                        <div class="card-body" style="background-color: #222;">
-                            <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
-                            <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
-                            <hr style="background-color:white;" />
-                            <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
-                            <p class="card-text">Console: @Html.DisplayFor(modelItem => item.ConsoleName)</p>
-                            <hr style="background-color:white;" />
-                            <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
-                            <hr style="background-color:white;" />
+            <div class="col-12 col-md-6 col-lg-3 mt-5 gm1">
+                <div class="card h-100">
+                    <img src="~/images/@item.PhotoPath" class=" card-img-top" />
+                    <div class="card-body" style="background-color: #222;">
+                        <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
+                        <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
+                        <hr style="background-color:white;" />
+                        <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
+                        <p class="card-text">Console: @Html.DisplayFor(modelItem => item.ConsoleName)</p>
+                        <hr style="background-color:white;" />
+                        <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
+                        <hr style="background-color:white;" />
+
+                        @if (ViewContext.HttpContext.User.IsInRole("admin") || ViewContext.HttpContext.User.IsInRole("guest"))
+                        {
                             <button class="btn btn-success btn-block" id="addToCart" onclick="AddToCart(@item.GameId)">
                                 <i class="fas fa-cart-plus"></i> &nbsp; Add To Cart
                             </button>
@@ -38,52 +40,177 @@
                                     </button>
                                 }
                             }
-                        </div>
+
+                        }
+
+
+                        @if (!ViewContext.HttpContext.User.IsInRole("admin") && !ViewContext.HttpContext.User.IsInRole("guest"))
+                        {
+                            <a class="btn btn-success btn-block" asp-action="Register" asp-controller="Account">Register</a>
+                            <a class="btn btn-primary btn-block" asp-action="Login" asp-controller="Account">Log in</a>
+                        }
+
                     </div>
                 </div>
-            }
-        </div>
-
-        @if (ViewContext.HttpContext.User.IsInRole("admin"))
-        {
-    <div class="pt-5">
-        <h2 class="text-center">Unavailable Games!</h2>
-        <h6 class="text-center"><em>Games that are not in stock or on sale!</em></h6>
-        <input id="myInput2" type="text" class="mb-2 mt-4" placeholder="Search Unavailable Games!">
-        <div class="row">
-            @foreach (var item in Model.GamesNotOnSale.Union(Model.GamesNotInStock))
-            {
-
-                <div class="col-12 col-md-6 col-lg-3 mt-5 gm2">
-                    <div class="card h-100">
-                        <img src="~/images/@item.PhotoPath" class=" card-img-top" />
-                        <div class="card-body" style="background-color: #222;">
-                            <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
-                            <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
-                            <hr style="background-color:white;" />
-                            <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
-                            <p class="card-text">Console: @Html.DisplayFor(modelItem => item.ConsoleName)</p>
-                            <hr style="background-color:white;" />
-                            <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
-                            <hr style="background-color:white;" />
-
-                            @using (Html.BeginForm("Edit", "Game", new { Id = item.GameId }, FormMethod.Get))
-                            {
-                                <button class="btn btn-info btn-block">
-                                    <i class="fas fa-edit"></i> &nbsp; Edit
-                                </button>
-                            }
-
-
-                        </div>
-                    </div>
-                </div>
-            }
-
-        </div>
-    </div>
+            </div>
         }
     </div>
+</div>
+
+<div class="container-fluid pt-5">
+    <h2 class="text-center">Computer Games!</h2>
+    <h6 class="text-center"><em>Some of our most sold PC games!</em></h6>
+    <input id="myInput3" type="text" class="mb-2 mt-4" placeholder="Search Computer Games!">
+    <div class="row">
+        @foreach (var item in Model.GamesOnSale.Intersect(Model.GamesInStock.Intersect(Model.GetAllGamesOnPc)))
+        {
+
+            <div class="col-12 col-md-6 col-lg-3 mt-5 gm3">
+                <div class="card h-100">
+                    <img src="~/images/@item.PhotoPath" class=" card-img-top" />
+                    <div class="card-body" style="background-color: #222;">
+                        <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
+                        <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
+                        <hr style="background-color:white;" />
+                        <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
+                        <p class="card-text">Console: @Html.DisplayFor(modelItem => item.ConsoleName)</p>
+                        <hr style="background-color:white;" />
+                        <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
+                        <hr style="background-color:white;" />
+
+                        @if (ViewContext.HttpContext.User.IsInRole("admin") || ViewContext.HttpContext.User.IsInRole("guest"))
+                        {
+                            <button class="btn btn-success btn-block" id="addToCart" onclick="AddToCart(@item.GameId)">
+                                <i class="fas fa-cart-plus"></i> &nbsp; Add To Cart
+                            </button>
+                            @if (ViewContext.HttpContext.User.IsInRole("admin"))
+                            {
+                                @using (Html.BeginForm("Edit", "Game", new { Id = item.GameId }, FormMethod.Get))
+                                {
+                                    <button class="btn btn-info btn-block mt-2">
+                                        <i class="fas fa-edit"></i> &nbsp; Edit
+                                    </button>
+                                }
+                            }
+
+                        }
+
+
+                        @if (!ViewContext.HttpContext.User.IsInRole("admin") && !ViewContext.HttpContext.User.IsInRole("guest"))
+                        {
+                            <a class="btn btn-success btn-block" asp-action="Register" asp-controller="Account">Register</a>
+                            <a class="btn btn-primary btn-block" asp-action="Login" asp-controller="Account">Log in</a>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="container-fluid pt-5">
+    <h2 class="text-center mt-5">Console Games!</h2>
+    <h6 class="text-center"><em>Some of our most sold Console games!</em></h6>
+    <input id="myInput4" type="text" class="mb-2 mt-4" placeholder="Search Console Games!">
+    <div class="row">
+        @foreach (var item in Model.GamesOnSale.Intersect(Model.GamesInStock.Intersect(Model.GetAllGamesOnConsole)))
+        {
+
+            <div class="col-12 col-md-6 col-lg-3 mt-5 gm4">
+                <div class="card h-100">
+                    <img src="~/images/@item.PhotoPath" class=" card-img-top" />
+                    <div class="card-body" style="background-color: #222;">
+                        <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
+                        <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
+                        <hr style="background-color:white;" />
+                        <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
+                        <p class="card-text">Console: @Html.DisplayFor(modelItem => item.ConsoleName)</p>
+                        <hr style="background-color:white;" />
+                        <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
+                        <hr style="background-color:white;" />
+
+                        @if (ViewContext.HttpContext.User.IsInRole("admin") || ViewContext.HttpContext.User.IsInRole("guest"))
+                        {
+                            <button class="btn btn-success btn-block" id="addToCart" onclick="AddToCart(@item.GameId)">
+                                <i class="fas fa-cart-plus"></i> &nbsp; Add To Cart
+                            </button>
+                            @if (ViewContext.HttpContext.User.IsInRole("admin"))
+                            {
+                                @using (Html.BeginForm("Edit", "Game", new { Id = item.GameId }, FormMethod.Get))
+                                {
+                                    <button class="btn btn-info btn-block mt-2">
+                                        <i class="fas fa-edit"></i> &nbsp; Edit
+                                    </button>
+                                }
+                            }
+
+                        }
+
+
+                        @if (!ViewContext.HttpContext.User.IsInRole("admin") && !ViewContext.HttpContext.User.IsInRole("guest"))
+                        {
+                            <a class="btn btn-success btn-block" asp-action="Register" asp-controller="Account">Register</a>
+                            <a class="btn btn-primary btn-block" asp-action="Login" asp-controller="Account">Log in</a>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="container-fluid pt-5">
+    @if (ViewContext.HttpContext.User.IsInRole("admin"))
+    {
+        <div class="pt-5">
+            <h2 class="text-center">Unavailable Games!</h2>
+            <h6 class="text-center"><em>Games that are not in stock or on sale!</em></h6>
+            <input id="myInput2" type="text" class="mb-2 mt-4" placeholder="Search Unavailable Games!">
+            <div class="row">
+                @foreach (var item in Model.GamesNotOnSale.Union(Model.GamesNotInStock))
+                {
+
+                    <div class="col-12 col-md-6 col-lg-3 mt-5 gm2">
+                        <div class="card h-100">
+                            <img src="~/images/@item.PhotoPath" class=" card-img-top" />
+                            <div class="card-body" style="background-color: #222;">
+                                <h5 class="card-title"> @Html.DisplayFor(modelItem => item.GameName) </h5>
+                                <h6 class=""><em>Genre:</em> @Html.DisplayFor(modelItem => item.GenreName)</h6>
+                                <hr style="background-color:white;" />
+                                <p class="card-text">Studio: @Html.DisplayFor(modelItem => item.GameCreator)</p>
+                                <p class="card-text">Console: @Html.DisplayFor(modelItem => item.ConsoleName)</p>
+                                <hr style="background-color:white;" />
+                                <p class="card-text">Price: $@Html.DisplayFor(modelItem => item.Price)</p>
+                                <hr style="background-color:white;" />
+
+                                @if (ViewContext.HttpContext.User.IsInRole("admin") || ViewContext.HttpContext.User.IsInRole("guest"))
+                                {
+                                    <button class="btn btn-success btn-block" id="addToCart" onclick="AddToCart(@item.GameId)">
+                                        <i class="fas fa-cart-plus"></i> &nbsp; Add To Cart
+                                    </button>
+                                    @if (ViewContext.HttpContext.User.IsInRole("admin"))
+                                    {
+                                        @using (Html.BeginForm("Edit", "Game", new { Id = item.GameId }, FormMethod.Get))
+                                        {
+                                            <button class="btn btn-info btn-block mt-2">
+                                                <i class="fas fa-edit"></i> &nbsp; Edit
+                                            </button>
+                                        }
+                                    }
+
+                                }
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    }
 </div>
 @section Scripts {
 
@@ -138,6 +265,22 @@
             $("#myInput2").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
                 $("div.gm2").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        $(document).ready(function () {
+            $("#myInput3").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("div.gm3").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        $(document).ready(function () {
+            $("#myInput4").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("div.gm4").filter(function () {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });

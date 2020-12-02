@@ -60,7 +60,7 @@ namespace GameSite.Controllers
             }
             else
             {
-                _logger.LogInformation(LoggerMessageDisplay.ConsoleNotCreatedModelStateInvalid);
+                _logger.LogWarning(LoggerMessageDisplay.ConsoleNotCreatedModelStateInvalid);
             }
             return View();
         }
@@ -68,12 +68,22 @@ namespace GameSite.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
-            var console = _consoleRepository.GetConsoleById(id);
-            if (console == null)
+            try
             {
-                return NotFound();
+                var console = _consoleRepository.GetConsoleById(id);
+                if (console == null)
+                {
+                    throw new NullReferenceException();
+                }
+                _logger.LogInformation(LoggerMessageDisplay.ConsoleFoundDisplayDetails);
+                return View(console);
             }
-            return View(console);
+            catch (Exception ex)
+            {
+                _logger.LogError(LoggerMessageDisplay.NoConsoleFound + "--->" + ex);
+                return View("Error");
+            }
+
         }
 
         [Authorize(Roles = "admin")]
@@ -81,10 +91,6 @@ namespace GameSite.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, ConsoleUnit console)
         {
-            if (id != console.ConsoleId)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -95,7 +101,7 @@ namespace GameSite.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogInformation(LoggerMessageDisplay.ConsoleEditErrorModelStateInvalid + "---->" + ex);
+                    _logger.LogWarning(LoggerMessageDisplay.ConsoleEditErrorModelStateInvalid + "---->" + ex);
                     throw;
                 }
                 return RedirectToAction(nameof(Index));
@@ -106,23 +112,43 @@ namespace GameSite.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Details(int id)
         {
-            var console = _consoleRepository.GetConsoleById(id);
-
-            if (console == null)
+            
+            try
             {
-                _logger.LogWarning(LoggerMessageDisplay.NoConsoleFound);
-                return NotFound();
+                var console = _consoleRepository.GetConsoleById(id);
+                if (console == null)
+                {
+                    throw new NullReferenceException();
+                }
+                _logger.LogInformation(LoggerMessageDisplay.ConsoleFoundDisplayDetails);
+                return View(console);
             }
-            _logger.LogInformation(LoggerMessageDisplay.ConsoleFoundDisplayDetails);
-            return View(console);
+            catch (Exception ex)
+            {
+                _logger.LogError(LoggerMessageDisplay.NoConsoleFound + "--->" + ex);
+                return View("Error");
+            }
+
         }
 
         [Authorize(Roles = "admin")]
         public ActionResult Delete(int id)
         {
-            ConsoleUnit console = _consoleRepository.GetConsoleById(id);
+            try
+            {
+                ConsoleUnit console = _consoleRepository.GetConsoleById(id);
+                if (console == null)
+                {
+                    throw new NullReferenceException();
+                }
+                return View(console);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(LoggerMessageDisplay.NoConsoleFound + "--->" + ex);
+                return View("Error");
+            }
 
-            return View(console);
         }
 
         [Authorize(Roles = "admin")]
@@ -140,7 +166,7 @@ namespace GameSite.Controllers
             }
             catch (DbUpdateException ex)
             {
-                _logger.LogError($"Exception Occured : {ex}");
+                _logger.LogError(LoggerMessageDisplay.ConsoleDeletedError + "--->" + ex);
                 ViewBag.ErrorTitle = "Console is in use";
                 ViewBag.ErrorMessage = " Console cannot be deleted as there are games using this console. If you want to delete this console, please remove the games using this console and then try to delete";
                 return View("Error");

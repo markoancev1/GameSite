@@ -68,9 +68,8 @@ namespace GameSite.Controllers
         public IActionResult Add()
         {
             var model = new GameViewModel();
-
             PopulateChoices(model);
-
+            _logger.LogInformation(LoggerMessageDisplay.GameFoundDisplayDetails);
             return View(model);
         }
 
@@ -78,10 +77,10 @@ namespace GameSite.Controllers
         [HttpPost]
         public IActionResult Add(GameViewModel model)
         {
+
             if (ModelState.IsValid)
             {
                 string uniqueFileName = UploadedFile(model);
-                // map the data from model to your entity
                 var game = new Game
                 {
                     GameName = model.GameName,
@@ -99,13 +98,13 @@ namespace GameSite.Controllers
                 };
         
                 _context.Games.Add(game);
-                _context.SaveChanges();
                 _logger.LogInformation(LoggerMessageDisplay.GameCreated);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             else
             {
-                _logger.LogInformation(LoggerMessageDisplay.GamesNotCreatedModelStateInvalid);
+                _logger.LogError(LoggerMessageDisplay.GamesNotCreatedModelStateInvalid);
 
             }
             PopulateChoices(model);
@@ -118,30 +117,39 @@ namespace GameSite.Controllers
         public IActionResult Edit(int id)
         {
             var game = _gameRepository.GetGameByID(id);
-           
-            if (game == null)
+            try
             {
-                return NotFound();
+
+                if (game == null)
+                {
+                    throw new NullReferenceException();
+                }
+
+                var model = new GameEditViewModel
+                {
+                    GameName = game.GameName,
+                    GameCreator = game.GameCreator,
+                    Price = game.Price,
+                    Description = game.Description,
+                    IsOnSale = game.IsOnSale,
+                    IsInStock = game.IsInStock,
+                    GenreId = game.GenreId,
+                    GenreName = game.GenreName,
+                    ConsoleId = game.ConsoleId,
+                    ConsoleName = game.ConsoleName,
+                    ExistingPhotoPath = game.PhotoPath
+                };
+
+                PopulateEditChoices(model);
+                _logger.LogInformation(LoggerMessageDisplay.GameFoundDisplayDetails);
+                return View(model);
             }
-
-            var model = new GameEditViewModel
+            catch (Exception ex)
             {
-                GameName = game.GameName,
-                GameCreator = game.GameCreator,
-                Price = game.Price,
-                Description = game.Description,
-                IsOnSale = game.IsOnSale,
-                IsInStock = game.IsInStock,
-                GenreId = game.GenreId,
-                GenreName = game.GenreName,
-                ConsoleId = game.ConsoleId,
-                ConsoleName = game.ConsoleName,
-                ExistingPhotoPath = game.PhotoPath
-            };
-
-            PopulateEditChoices(model);
-
-            return View(model);
+                _logger.LogError(LoggerMessageDisplay.NoGameFound + "--->" + ex);
+                return View("Error");
+            }
+            
         }
 
         [Authorize(Roles = "admin")]
@@ -190,8 +198,8 @@ namespace GameSite.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogInformation(LoggerMessageDisplay.GameEditErrorModelStateInvalid + "---> " + ex);
-                    throw;
+                    _logger.LogWarning(LoggerMessageDisplay.GameEditErrorModelStateInvalid + "--->" + ex);
+                    return View("Error");
                 }
 
             }
@@ -204,26 +212,43 @@ namespace GameSite.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Details(int id)
         {
-            var game = _gameRepository.GetGameByID(id);
-            _logger.LogInformation(LoggerMessageDisplay.GameFoundDisplayDetails);
-            if (game == null)
-            {
-                _logger.LogWarning(LoggerMessageDisplay.NoGameFound);
-                return NotFound();
-            }
+            try {
+                var game = _gameRepository.GetGameByID(id);
+                if (game == null)
+                {
+                    throw new NullReferenceException();
+                }
+                _logger.LogInformation(LoggerMessageDisplay.GameFoundDisplayDetails);
 
-            return View(game);
+                return View(game);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(LoggerMessageDisplay.NoGameFound + "--->" + ex);
+                return View("Error");
+            }
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet]
         public ActionResult Delete(int id)
         {
+            try
+            {
+                Game game = _gameRepository.GetGameByID(id);
 
-            Game game = _gameRepository.GetGameByID(id);
-
-
-            return View(game);
+                if (game == null)
+                {
+                    throw new NullReferenceException();
+                }
+                _logger.LogInformation(LoggerMessageDisplay.GameFoundDisplayDetails);
+                return View(game);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(LoggerMessageDisplay.NoGameFound + "--->" + ex);
+                return View("Error");
+            }
         }
 
         [Authorize(Roles = "admin")]
@@ -238,7 +263,7 @@ namespace GameSite.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(LoggerMessageDisplay.GameDeletedError + "---> " + ex);
+                _logger.LogWarning(LoggerMessageDisplay.GameDeletedError + "---> " + ex);
                 throw;
             }
             return RedirectToAction(nameof(Index));

@@ -11,7 +11,7 @@ namespace GameSite.Logger
         public const string GamesListed = "All games listed successfully!";
         public const string NoGamesInDB = "There is no games in the DB!";
         public const string GameFoundDisplayDetails = "Game was found in the DB, show the details of the game";
-        public const string NoGameFound = "This is no game found in the DB!";
+        public const string NoGameFound = "No game was found in the DB!";
         public const string GameCreated = "New game is created in the DB";
         public const string GameNotCreated = "New game is not created in the DB";
         public const string GamesNotCreatedModelStateInvalid = "New game is NOT created in the DB, ModelState is not valid";
@@ -89,6 +89,7 @@ namespace GameSite.Logger
         public const string ShoppingCartListed = "All games in the shopping cart listed successfully!";
         public const string GameAddedToShoppingCart = "A game has been added to your Shopping Cart";
         public const string GameDeletedFromShoppingCart = "The game has been deleted from the shopping cart";
+        public const string GameDeletedFromShoppingCartError = "Error white deleting the game from the shopping cart";
 
         // Order Messages
 

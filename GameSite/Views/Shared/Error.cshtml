@@ -1,10 +1,15 @@
 ﻿@if (ViewBag.ErrorTitle == null)
 {
-    <h3 class="mt-5">
+    <h3 class="mt-5 text-danger">
         An occured while processing your request.
         The support team is notified and we are working on the fix
     </h3>
-    <h5>Please contact us on admin@gamestore.com</h5>
+    <h5 class="text-danger">Please contact us on admin@gamestore.com</h5>
+
+    <a asp-action="Index" asp-controller="Home" class="btn btn-success">
+        Back to home page
+    </a>
+
 }
 else
 {

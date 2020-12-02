@@ -41,14 +41,19 @@ namespace GameSite.Controllers
             var getGameInStock = _gameRepository.GetGamesInStock();
             var getGameNotInStock = _gameRepository.GetGamesNotInStock();
             var getGameNotOnSale = _gameRepository.GetGamesNotOnSale();
-
+            var getIsTheGameOnPc = _consoleRepository.IsTheGameOnPC();
+            var GetAllGamesOnPc = _gameRepository.GetAllGamesOnPc(getIsTheGameOnPc.ConsoleId);
+            var GetAllGamesOnConsole = _gameRepository.GetAllGamesOnConsole();
 
             var gameViewModel = new GameViewModel
             {
                 GamesInStock = getGameInStock,
                 GamesOnSale = getGamesOnSale,
                 GamesNotInStock = getGameNotInStock,
-                GamesNotOnSale = getGameNotOnSale
+                GamesNotOnSale = getGameNotOnSale,
+                IsTheGameOnPC = getIsTheGameOnPc,
+                GetAllGamesOnPc = GetAllGamesOnPc,
+                GetAllGamesOnConsole = GetAllGamesOnConsole,
             };
             return View(gameViewModel);
         }

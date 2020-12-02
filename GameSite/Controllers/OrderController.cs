@@ -85,9 +85,21 @@ namespace GameSite.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Delete(int id)
         {
-            Order order = _orderRepository.GetOrderById(id);
+            try
+            {
+                Order order = _orderRepository.GetOrderById(id);
+                if (order == null)
+                {
+                    throw new NullReferenceException();
+                }
+                return View(order);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(LoggerMessageDisplay.NoConsoleFound + "--->" + ex);
+                return View("Error");
+            }
 
-            return View(order);
         }
 
         [Authorize(Roles = "admin")]

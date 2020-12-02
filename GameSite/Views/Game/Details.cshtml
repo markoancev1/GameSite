@@ -1,7 +1,7 @@
 ﻿@model GameSite.Data.Entities.Game
 
 
-<h1>Game Details</h1>
+<h1 class="mt-5">Game Details</h1>
 
 <div>
     <hr />
@@ -28,7 +28,7 @@
             @Html.DisplayNameFor(model => model.Price)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
+            $@Html.DisplayFor(model => model.Price)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.GenreName)

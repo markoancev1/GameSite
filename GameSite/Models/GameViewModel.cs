@@ -37,6 +37,8 @@ namespace GameSite.Models
         public IEnumerable<Game> GamesInStock { get; set; }
         public IEnumerable<Game> GamesNotOnSale { get; set; }
         public IEnumerable<Game> GamesNotInStock { get; set; }
-
+        public IEnumerable<Game> GetAllGamesOnPc { get; set; }
+        public IEnumerable<Game> GetAllGamesOnConsole { get; set; }
+        public ConsoleUnit IsTheGameOnPC { get; set; }
     }
 }

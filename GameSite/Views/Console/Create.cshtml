@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Create";
 }
-<h1>Create</h1>
+<h1 class="mt-5">Create</h1>
 <div class="container">
     <h3 class="crud-title">Add a new Console</h3>
     <hr />
@@ -11,19 +11,30 @@
             <div class="col-12 col-md-12">
                 <form asp-action="Create" name="consolecreate">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="ConsoleName" class="control-label">Name</label>
-                        <input asp-for="ConsoleName" class="form-control" placeholder="Enter Name" />
-                        <span asp-validation-for="ConsoleName" class="text-danger"></span>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ConsoleName" class="control-label">Console Name</label>
+                                <input asp-for="ConsoleName" class="form-control" placeholder="Enter Console Name" />
+                                <span asp-validation-for="ConsoleName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group text-center">
+                                <label asp-for="IsItOnPc" class="control-label text-center">PC?</label>
+                                @Html.CheckBoxFor(m => m.IsItOnPc, new { @checked = "checked", @class = "form-control" })
+                                <span asp-validation-for="IsItOnPc" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="Description" class="control-label">Short Description</label>
-                        <input asp-for="Description" class="form-control" placeholder="Enter short description" />
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-block btn-primary" />
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label">Description</label>
+                            <textarea asp-for="Description" rows="12" class="form-control" placeholder="Enter Console description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-block btn-primary" />
+                        </div>
                 </form>
             </div>
         </div>

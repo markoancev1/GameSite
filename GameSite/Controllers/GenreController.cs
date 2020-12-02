@@ -57,7 +57,7 @@ namespace GameSite.Controllers
             }
             else
             {
-                _logger.LogInformation(LoggerMessageDisplay.GenreNotCreatedModelStateInvalid);
+                _logger.LogWarning(LoggerMessageDisplay.GenreNotCreatedModelStateInvalid);
             }
             return View();
         }
@@ -66,16 +66,23 @@ namespace GameSite.Controllers
         public IActionResult Edit(int id)
         {
             var genre= _genreRepository.GetGenreById(id);
-            if (genre == null)
+            try
             {
-                return NotFound();
+                if (genre == null)
+                {
+                    throw new NullReferenceException();
+                }
+                _logger.LogInformation(LoggerMessageDisplay.GenreFoundDisplayDetails);
+                return View(genre);
+            }catch(Exception ex)
+            {
+                _logger.LogError(LoggerMessageDisplay.NoGenreFound + "---> " + ex);
+                return View("Error");
             }
-            return View(genre);
         }
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Genre genre)
         {
             if (ModelState.IsValid)
@@ -88,7 +95,7 @@ namespace GameSite.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(LoggerMessageDisplay.GenreEditErrorModelStateInvalid + "---> " + ex);
-                    throw;
+                    return View("Error"); 
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -100,22 +107,43 @@ namespace GameSite.Controllers
         public IActionResult Details(int id)
         {
             var genre = _genreRepository.GetGenreById(id);
-
-            if (genre == null)
+            try
             {
-                _logger.LogWarning(LoggerMessageDisplay.NoGameFound);
-                return NotFound();
+                if (genre == null)
+                {
+                    throw new NullReferenceException();
+                }
+
+                _logger.LogInformation(LoggerMessageDisplay.GenreFoundDisplayDetails);
+                return View(genre);
+            }catch(Exception ex)
+            {
+                _logger.LogError(LoggerMessageDisplay.NoGenreFound + "--->" + ex);
+                return View("Error");
             }
-            _logger.LogInformation(LoggerMessageDisplay.GenreFoundDisplayDetails);
-            return View(genre);
+           
         }
 
         [Authorize(Roles = "admin")]
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             Genre genre = _genreRepository.GetGenreById(id);
 
-            return View(genre);
+            try
+            {
+                if (genre == null)
+                {
+                    throw new NullReferenceException();
+                }
+
+                _logger.LogInformation(LoggerMessageDisplay.GenreFoundDisplayDetails);
+                return View(genre);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(LoggerMessageDisplay.NoGenreFound + "--->" + ex);
+                return View("Error");
+            }
         }
 
         [Authorize(Roles = "admin")]
@@ -133,7 +161,7 @@ namespace GameSite.Controllers
             }
             catch(DbUpdateException ex)
             {
-                _logger.LogError($"Exception Occured : {ex}");
+                _logger.LogError(LoggerMessageDisplay.GenreDeletedError + "--->" + ex);
                 ViewBag.ErrorTitle = "Genre is in use";
                 ViewBag.ErrorMessage = " Genre cannot be deleted as there are games using this genre. If you want to delete this genre, please remove the games using this genre";
                 return View("Error");

@@ -9,10 +9,10 @@ namespace GameSite.Repository.Interface
     public interface IConsoleRepository
     {
         IEnumerable<ConsoleUnit> GetAllConsoles();
-
         void Add(ConsoleUnit console);
         void Edit(ConsoleUnit console);
         void Delete(int ConsoleID);
         ConsoleUnit GetConsoleById(int id);
+        ConsoleUnit IsTheGameOnPC();
     }
 }

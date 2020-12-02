@@ -49,5 +49,11 @@ namespace GameSite.Repository
             var result = _context.Consoles.FirstOrDefault(x => x.ConsoleId == id);
             return result;
         }
+
+        public ConsoleUnit IsTheGameOnPC()
+        {
+            var result = _context.Consoles.Where(x => x.IsItOnPc == true).FirstOrDefault();
+            return result;
+        }
     }
 }

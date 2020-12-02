@@ -60,5 +60,17 @@ namespace GameSite.Repository
             _context.Games.Update(game);
             _context.SaveChanges();
         }
+
+        public IEnumerable<Game> GetAllGamesOnPc(int consoleId)
+        {
+            var result = _context.Games.AsEnumerable().Where(x => x.ConsoleId == consoleId);
+            return result;
+        }
+
+        public IEnumerable<Game> GetAllGamesOnConsole()
+        {
+            var result = _context.Games.AsEnumerable().Where(x => x.ConsoleId != 4);
+            return result;
+        }
     }
 }

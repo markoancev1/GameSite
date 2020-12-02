@@ -123,8 +123,6 @@ namespace GameSite.Controllers
             var user = await _userManager.FindByIdAsync(id);
             try
             {
-                
-
                 var result = await _userManager.DeleteAsync(user);
 
                 if (result.Succeeded)
