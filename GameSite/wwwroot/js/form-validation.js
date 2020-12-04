@@ -372,3 +372,51 @@ $(function () {
         }
     });
 });
+
+$(function () {
+    // Initialize form validation on the book create form.
+    // It has the name attribute "bookcreate"
+    $("form[name='roleadd']").validate({
+        success: "valid",
+        // validation as we type data in the fields
+        onkeyup: false,
+        // add css error class
+        errorClass: "error",
+        errorElement: 'div',
+        // focus field when invalid
+        focusInvalid: true,
+        // highlight filds when error
+        highlight: function (element, errorClass) {
+            $(element).fadeOut(function () {
+                $(element).fadeIn();
+                $(element).addClass(errorClass);
+            });
+        },
+        // Specify validation rules
+        rules: {
+            // The key name on the left side is the name attribute
+            // of an input field. Validation rules are defined
+            // on the right side
+            RoleName: {
+                required: true,
+                minlength: 2
+            }
+
+        },
+
+        // Specify validation error messages
+        messages: {
+            RoleName: {
+                required: "Please enter your role name",
+                minlength: jQuery.validator.format("At least {0} characters required!")
+            }
+
+        },
+
+        // Make sure the form is submitted to the destination defined
+        // in the "action" attribute of the form when valid
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+});

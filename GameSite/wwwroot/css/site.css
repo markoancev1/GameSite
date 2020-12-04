@@ -209,3 +209,36 @@ a.my-class, a.my-class:hover {
     border: 1px solid #ddd;
     margin-bottom: 12px;
 }
+
+.quick-btn{
+    margin: 0 0 5px 0 !important;
+}
+
+    .quick-btn a {
+        width: 100%;
+        color: #fff !important;
+        text-transform: uppercase;
+        text-decoration: none;
+        background: #375a7f;
+        padding: 20px;
+        display: inline-block;
+        border: 4px solid #375a7f !important;
+        border-radius: 5px;
+        transition: all 0.4s ease 0s;
+    }
+
+.quick-btn a:hover {
+    background: #222;
+    letter-spacing: 1px;
+    border: 4px solid #375a7f !important;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.4s ease 0s;
+}
+
+@media(max-width: 768px){
+    .quick-btn a {
+        margin-bottom: 10px;
+    }
+}

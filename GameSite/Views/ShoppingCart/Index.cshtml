@@ -3,6 +3,7 @@
 
 
 <div class="custom-container mt-4">
+    <button id="myBtn" title="Go to top"><span class="fa fa-arrow-up"></span></button>
     <h1>Shopping Cart</h1>
     <div class="row">
         <div class="col-12 col-lg-8">
@@ -111,6 +112,19 @@
                 }
             });
         };
+        jQuery(document).ready(function ($) {
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 50) {
+                    $('#myBtn').fadeIn('slow');
+                } else {
+                    $('#myBtn').fadeOut('slow');
+                }
+            });
+            $('#myBtn').click(function () {
+                $("html, body").animate({ scrollTop: 0 }, 500);
+                return false;
+            });
+        });
     </script>
 
 }

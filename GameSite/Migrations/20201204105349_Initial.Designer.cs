@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameSite.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201202213257_Initial")]
+    [Migration("20201204105349_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,9 @@ namespace GameSite.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsItOnPc")
+                        .HasColumnType("bit");
+
                     b.HasKey("ConsoleId");
 
                     b.ToTable("Consoles");
@@ -43,37 +46,43 @@ namespace GameSite.Migrations
                         {
                             ConsoleId = 1,
                             ConsoleName = "Playstation",
-                            Description = "PlayStation (Japanese: プレイステーション, Hepburn: Pureisutēshon, officially abbreviated as PS) is a Japanese video game brand that consists of five home video game consoles, as well as a media center, an online service, a line of controllers, two handhelds and a phone, as well as multiple magazines. The brand is produced by Sony Interactive Entertainment,a division of Sony; the first PlayStation console was released in Japan in December 1994, and worldwide the following year."
+                            Description = "PlayStation (Japanese: プレイステーション, Hepburn: Pureisutēshon, officially abbreviated as PS) is a Japanese video game brand that consists of five home video game consoles, as well as a media center, an online service, a line of controllers, two handhelds and a phone, as well as multiple magazines. The brand is produced by Sony Interactive Entertainment,a division of Sony; the first PlayStation console was released in Japan in December 1994, and worldwide the following year.",
+                            IsItOnPc = false
                         },
                         new
                         {
                             ConsoleId = 2,
                             ConsoleName = "XBOX",
-                            Description = "Xbox is a video gaming brand created and owned by Microsoft. The brand consists of five video game consoles,as well as applications (games), streaming services, an online service by the name of Xbox Live,and the development arm by the name of Xbox Game Studios. The brand was first introduced in the United States in November 2001,with the launch of the original Xbox console. "
+                            Description = "Xbox is a video gaming brand created and owned by Microsoft. The brand consists of five video game consoles,as well as applications (games), streaming services, an online service by the name of Xbox Live,and the development arm by the name of Xbox Game Studios. The brand was first introduced in the United States in November 2001,with the launch of the original Xbox console. ",
+                            IsItOnPc = false
                         },
                         new
                         {
                             ConsoleId = 3,
                             ConsoleName = "Nintendo",
-                            Description = "Nintendo Co., Ltd. is a Japanese multinational consumer electronics and video game company headquartered in Kyoto.The company was founded in 1889 as Nintendo Karuta[c] by craftsman Fusajiro Yamauchi and originally produced handmade hanafuda playingcards. After venturing into various lines of business during the 1960s and acquiring a legal status as a public company under the currentcompany name, Nintendo distributed its first video game console, the Color TV-Game, in 1977. It gained international recognition with therelease of the Nintendo Entertainment System in 1985. "
+                            Description = "Nintendo Co., Ltd. is a Japanese multinational consumer electronics and video game company headquartered in Kyoto.The company was founded in 1889 as Nintendo Karuta[c] by craftsman Fusajiro Yamauchi and originally produced handmade hanafuda playingcards. After venturing into various lines of business during the 1960s and acquiring a legal status as a public company under the currentcompany name, Nintendo distributed its first video game console, the Color TV-Game, in 1977. It gained international recognition with therelease of the Nintendo Entertainment System in 1985. ",
+                            IsItOnPc = false
                         },
                         new
                         {
                             ConsoleId = 4,
                             ConsoleName = "Personal Computer",
-                            Description = "A personal computer (PC) is a multi-purpose computer whose size, capabilities, and price make it feasible for individual use.Personal computers are intended to be operated directly by an end user, rather than by a computer expert or technician. Unlike large, costly minicomputers and mainframes, time-sharing by many people at the same time is not used with personal computers. "
+                            Description = "A personal computer (PC) is a multi-purpose computer whose size, capabilities, and price make it feasible for individual use.Personal computers are intended to be operated directly by an end user, rather than by a computer expert or technician. Unlike large, costly minicomputers and mainframes, time-sharing by many people at the same time is not used with personal computers. ",
+                            IsItOnPc = true
                         },
                         new
                         {
                             ConsoleId = 5,
                             ConsoleName = "Atari",
-                            Description = "Atari (/əˈtɑːri/) is a brand name owned by several entities since its inception in 1972, currently by Atari Interactive,a subsidiary of the French publisher Atari, SA. The original Atari, Inc., founded in Sunnyvale, California in 1972 by Nolan Bushnell andTed Dabney, was a pioneer in arcade games, home video game consoles, and home computers. The company's products,such as Pong and the Atari 2600, helped define the electronic entertainment industry from the 1970s to the mid-1980s."
+                            Description = "Atari (/əˈtɑːri/) is a brand name owned by several entities since its inception in 1972, currently by Atari Interactive,a subsidiary of the French publisher Atari, SA. The original Atari, Inc., founded in Sunnyvale, California in 1972 by Nolan Bushnell andTed Dabney, was a pioneer in arcade games, home video game consoles, and home computers. The company's products,such as Pong and the Atari 2600, helped define the electronic entertainment industry from the 1970s to the mid-1980s.",
+                            IsItOnPc = false
                         },
                         new
                         {
                             ConsoleId = 6,
                             ConsoleName = "SEGA",
-                            Description = "Sega Corporation[a] is a Japanese multinational video game developer and publisher headquartered in Shinagawa, Tokyo.Its international branches, Sega of America and Sega Europe, are respectively headquartered in Irvine, California, and London.Sega's arcade division existed as Sega Interactive Co., Ltd. from 2015 to 2020 before it merged with Sega Games to createSega Corporation with Sega Games as the surviving entity. Sega is a subsidiary of Sega Group Corporation, which is, in turn,a part of Sega Sammy Holdings. From 1983 until 2002, Sega also developed video game consoles. "
+                            Description = "Sega Corporation[a] is a Japanese multinational video game developer and publisher headquartered in Shinagawa, Tokyo.Its international branches, Sega of America and Sega Europe, are respectively headquartered in Irvine, California, and London.Sega's arcade division existed as Sega Interactive Co., Ltd. from 2015 to 2020 before it merged with Sega Games to createSega Corporation with Sega Games as the surviving entity. Sega is a subsidiary of Sega Group Corporation, which is, in turn,a part of Sega Sammy Holdings. From 1983 until 2002, Sega also developed video game consoles. ",
+                            IsItOnPc = false
                         });
                 });
 
@@ -148,7 +157,7 @@ namespace GameSite.Migrations
                             ConsoleName = "Personal Computer",
                             Description = "The Witcher 3: Wild Hunt is a 2015 action role-playing game developed and published by Polish developer CD Projekt Red and is based on The Witcher series of fantasy novels written by Andrzej Sapkowski.",
                             GameCreator = "City Project Red",
-                            GameName = "Witcher 3: Game of The Year Edition",
+                            GameName = "Witcher 3: GOTY",
                             GenreId = 3,
                             GenreName = "Role-playing",
                             IsInStock = false,
@@ -163,13 +172,178 @@ namespace GameSite.Migrations
                             ConsoleName = "Playstation",
                             Description = "Bloodborne is an action role-playing game developed by FromSoftware and published by Sony Computer Entertainment,which released for the PlayStation 4 in March 2015.",
                             GameCreator = "FromSoftware",
-                            GameName = "Bloodborne",
+                            GameName = "Bloodborne: GOTY",
                             GenreId = 1,
                             GenreName = "Action",
                             IsInStock = true,
                             IsOnSale = true,
                             PhotoPath = "Bloodborne.jpg",
                             Price = 19.989999999999998
+                        },
+                        new
+                        {
+                            GameId = 4,
+                            ConsoleId = 1,
+                            ConsoleName = "Playstation",
+                            Description = "God of War is an action-adventure game developed by Santa Monica Studio and published by Sony Interactive Entertainment (SIE).Released on April 20, 2018, for the PlayStation 4 (PS4), it is the eighth installment in the God of War series,and the sequel to 2010's God of War III. Unlike previous games, which were loosely based on Greek mythology, this installment is rooted in Norse mythology, with the majority of it set in ancient Norway in the realm of Midgard. For the first time in the series, there are two protagonists: Kratos, the former Greek God of War who remains the only playable character, and his young son Atreus. Following the death of Kratos' second wife and Atreus' mother, they journey to fulfill her request that her ashes be spread at the highest peak of the nine realms. Kratos keeps his troubled past a secret from Atreus, who is unaware of his divine nature. Along their journey, they encounter monsters and gods of the Norse world. ",
+                            GameCreator = "SIE Santa Monica Studio",
+                            GameName = "God of War 2018",
+                            GenreId = 2,
+                            GenreName = "Adventure",
+                            IsInStock = false,
+                            IsOnSale = false,
+                            PhotoPath = "GodOfWar.jpg",
+                            Price = 14.99
+                        },
+                        new
+                        {
+                            GameId = 5,
+                            ConsoleId = 1,
+                            ConsoleName = "Playstation",
+                            Description = "God of War is an action-adventure game developed by Santa Monica Studio and published by Sony Interactive Entertainment (SIE).Released on April 20, 2018, for the PlayStation 4 (PS4), it is the eighth installment in the God of War series,and the sequel to 2010's God of War III. Unlike previous games, which were loosely based on Greek mythology, this installment is rooted in Norse mythology, with the majority of it set in ancient Norway in the realm of Midgard. For the first time in the series, there are two protagonists: Kratos, the former Greek God of War who remains the only playable character, and his young son Atreus. Following the death of Kratos' second wife and Atreus' mother, they journey to fulfill her request that her ashes be spread at the highest peak of the nine realms. Kratos keeps his troubled past a secret from Atreus, who is unaware of his divine nature. Along their journey, they encounter monsters and gods of the Norse world. ",
+                            GameCreator = "Insomniac",
+                            GameName = "Spider-Man: GOTY",
+                            GenreId = 2,
+                            GenreName = "Adventure",
+                            IsInStock = true,
+                            IsOnSale = true,
+                            PhotoPath = "Spider-Man.jpg",
+                            Price = 24.989999999999998
+                        },
+                        new
+                        {
+                            GameId = 6,
+                            ConsoleId = 1,
+                            ConsoleName = "Playstation",
+                            Description = "Ghost of Tsushima is a 2020 action-adventure game developed by Sucker Punch Productions and published bySony Interactive Entertainment. Featuring an open world, it follows Jin Sakai, a samurai on a quest to protect Tsushima Island during the first Mongol invasion of Japan. The game was released on July 17, 2020 for PlayStation 4. Ghost of Tsushima received praise for its visuals and combat but was criticized for its open world activities. ",
+                            GameCreator = "Sucker Punch Productions",
+                            GameName = "Ghost of Tsushima",
+                            GenreId = 3,
+                            GenreName = "Role-playing",
+                            IsInStock = true,
+                            IsOnSale = true,
+                            PhotoPath = "GhostOfTsushima.webp",
+                            Price = 34.990000000000002
+                        },
+                        new
+                        {
+                            GameId = 7,
+                            ConsoleId = 2,
+                            ConsoleName = "XBOX",
+                            Description = "Cuphead is a 2017 run and gun video game developed and published by Studio MDHR. The game was inspired by the rubber hose style of animation used in cartoons of the 1930s, such as the work of Fleischer Studios and Walt Disney Animation Studios, and sought to emulate their subversive and surrealist qualities. ",
+                            GameCreator = "	Studio MDHR",
+                            GameName = "Cuphead",
+                            GenreId = 10,
+                            GenreName = "Platforming",
+                            IsInStock = true,
+                            IsOnSale = true,
+                            PhotoPath = "Cuphead.jpg",
+                            Price = 4.9900000000000002
+                        },
+                        new
+                        {
+                            GameId = 8,
+                            ConsoleId = 2,
+                            ConsoleName = "XBOX",
+                            Description = "Forza Horizon 4 is a 2018 racing video game developed by Playground Games and published by Microsoft Studios. It was released on 2 October 2018 on Xbox One and Microsoft Windows after being announced at Xbox's E3 2018 conference.An enhanced version of the game was released on Xbox Series X/S on 10 November 2020. The game is set in a fictionalised representation of areas of Great Britain.It is the fourth Forza Horizon title and eleventh instalment in the Forza series. The game is noted for its introduction of changing seasons to the series.  ",
+                            GameCreator = "Playground Games",
+                            GameName = "Forza Horizon 4",
+                            GenreId = 6,
+                            GenreName = "Sports",
+                            IsInStock = false,
+                            IsOnSale = false,
+                            PhotoPath = "Forza.jpg",
+                            Price = 24.989999999999998
+                        },
+                        new
+                        {
+                            GameId = 9,
+                            ConsoleId = 2,
+                            ConsoleName = "XBOX",
+                            Description = "Halo: The Master Chief Collection is a compilation of first-person shooter video games in the Halo series, originally released in November 2014 for the Xbox One, and later on Microsoft Windows through 2019 and 2020. The enhanced version was released for the Xbox Series X|S in November 2020. The collection was developed by 343 Industries in partnership with other studios and was published by Xbox Game Studios. The collection consists of Halo: Combat Evolved Anniversary, Halo 2: Anniversary, Halo 3, Halo 3: ODST, Halo: Reach, and Halo 4, which were originally released on earlier Xbox platforms. ",
+                            GameCreator = "343 Industries",
+                            GameName = "Halo: The Master Chief Collection",
+                            GenreId = 1,
+                            GenreName = "Action",
+                            IsInStock = true,
+                            IsOnSale = true,
+                            PhotoPath = "Halo.jpg",
+                            Price = 34.990000000000002
+                        },
+                        new
+                        {
+                            GameId = 10,
+                            ConsoleId = 2,
+                            ConsoleName = "XBOX",
+                            Description = "Sea of Thieves is a 2018 action-adventure game developed by Rare and published by Xbox Game Studios. The player assumes the role of a pirate who completes voyages from different trading companies in order to become the ultimate pirate legend. Sea of Thieves is a first-person multiplayer video game in which players cooperate with each other to explore an open world via a pirate ship. The game is described as a 'shared world adventure game', which means groups of players will encounter each other regularly during their adventures, sometimes forming alliances, sometimes going head-to-head. ",
+                            GameCreator = "Rare",
+                            GameName = "Sea of Thieves",
+                            GenreId = 2,
+                            GenreName = "Adventure",
+                            IsInStock = false,
+                            IsOnSale = false,
+                            PhotoPath = "SeaOfThieves.jpg",
+                            Price = 44.990000000000002
+                        },
+                        new
+                        {
+                            GameId = 11,
+                            ConsoleId = 4,
+                            ConsoleName = "Personal Computer",
+                            Description = "Euro Truck Simulator 2 is a truck simulator game developed and published by SCS Software for Microsoft Windows, Linux, and macOS and was initially released as open development on 19 October 2012. The game is a direct sequel to the 2008 game Euro Truck Simulator and it is the second video game in the Truck Simulator series. The basic premise of the game is that the player can drive one of a choice of articulated trucks across a condensed depiction of Europe, picking up cargo from various locations and delivering it. As the game progresses, it is possible for the player to buy more vehicles and depots, as well as hire other drivers to work for them. ",
+                            GameCreator = "SCS Software",
+                            GameName = "Euro Truck Simulator 2",
+                            GenreId = 4,
+                            GenreName = "Simulation",
+                            IsInStock = true,
+                            IsOnSale = true,
+                            PhotoPath = "ETS2.jpg",
+                            Price = 9.9900000000000002
+                        },
+                        new
+                        {
+                            GameId = 12,
+                            ConsoleId = 4,
+                            ConsoleName = "Personal Computer",
+                            Description = "Outlast 2 (stylized as OU⸸LASTII) is a first-person psychological horror survival video game developed and published by Red Barrels. It is the sequel to the 2013 video game Outlast, and features a journalist named Blake Langermann, along with his wife Lynn, roaming the Arizona desert to explore the murder of a pregnant woman only known as Jane Doe. Blake and Lynn get separated in a helicopter crash, and Blake has to find his wife while traveling through a village inhabited by a sderanged sect that believes the end of days are upon them. ",
+                            GameCreator = "Red Barrels",
+                            GameName = "Outlast 2",
+                            GenreId = 8,
+                            GenreName = "Horror",
+                            IsInStock = false,
+                            IsOnSale = true,
+                            PhotoPath = "outlast2.jpg",
+                            Price = 19.989999999999998
+                        },
+                        new
+                        {
+                            GameId = 13,
+                            ConsoleId = 3,
+                            ConsoleName = "Nintendo",
+                            Description = "Super Mario Odyssey is a platform game developed and published by Nintendo for the Nintendo Switch on October 27, 2017. An entry in the Super Mario series, it follows Mario and Cappy, a sentient hat that allows Mario to control other characters and objects, as they journey across various worlds to save Princess Peach from his nemesis Bowser, who plans to forcibly marry her. In contrast to the linear gameplay of prior entries, the game returns to the primarily open-ended, 3D platform gameplay featured in Super Mario 64 and Super Mario Sunshine.",
+                            GameCreator = "Nintendo EPD",
+                            GameName = "Super Mario Odyssey",
+                            GenreId = 10,
+                            GenreName = "Platforming",
+                            IsInStock = true,
+                            IsOnSale = true,
+                            PhotoPath = "Mario.jpg",
+                            Price = 19.989999999999998
+                        },
+                        new
+                        {
+                            GameId = 14,
+                            ConsoleId = 3,
+                            ConsoleName = "Nintendo",
+                            Description = "The Legend of Zelda: Breath of the Wild is a 2017 action-adventure game developed and published by Nintendo for the Nintendo Switch and Wii U consoles. Breath of the Wild is part of the Legend of Zelda franchise and is set at the end of the Zelda timeline; the player controls Link, who awakens from a hundred-year slumber to defeat Calamity Ganon and save the kingdom of Hyrule. ",
+                            GameCreator = "Nintendo EPD",
+                            GameName = "The Legend of Zelda: Breath of the Wild",
+                            GenreId = 3,
+                            GenreName = "Role-playing",
+                            IsInStock = false,
+                            IsOnSale = true,
+                            PhotoPath = "Zelda.jpg",
+                            Price = 29.989999999999998
                         });
                 });
 
@@ -244,6 +418,12 @@ namespace GameSite.Migrations
                             GenreId = 9,
                             GenreDescription = "A massively multiplayer online game (also called MMO and MMOG) is a multiplayer online video game which is capable of supporting large numbers of players simultaneously. By necessity, they are played on the Internet.",
                             GenreName = "MMO"
+                        },
+                        new
+                        {
+                            GenreId = 10,
+                            GenreDescription = "Platform games (often simplified as platformer, or jump 'n' run) is a video game genre and subgenre of action games. Platformers are characterized by their heavy use of jumping and climbing to navigate the player's environment and reach their goal. Levels and environments tend to feature uneven terrain and suspended platforms of varying height that requires use of the player character's abilities in order to traverse.",
+                            GenreName = "Platforming"
                         });
                 });
 
@@ -367,14 +547,14 @@ namespace GameSite.Migrations
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e73",
-                            ConcurrencyStamp = "265c4545-4f46-4411-be54-817fcf2a5770",
+                            ConcurrencyStamp = "c45e3593-07df-4b47-a7d8-fcf2f5d5b607",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "b4280b6a-0613-4cbd-a9e6-f1701e926e75",
-                            ConcurrencyStamp = "81ef8722-0642-4405-8744-76b05f33f3b6",
+                            ConcurrencyStamp = "f23faf9c-c5ef-49d6-adc6-e2d6c86249a6",
                             Name = "guest",
                             NormalizedName = "GUEST"
                         });
@@ -479,7 +659,7 @@ namespace GameSite.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GAMESTORE.COM",
                             NormalizedUserName = "ADMIN@GAMESTORE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECzczyLw/6bD6ePXU2tMH4p44yVn3WcLDIvt/AgJBGsPreOG/2n0wAnbrHxOiAM82w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOelw7OD696QwJ36AOqNiEJdrlCRzC0TuSmkCxr42TwbekA67RHxij2oWNJrUJr72w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
