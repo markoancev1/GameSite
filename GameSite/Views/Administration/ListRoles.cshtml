@@ -10,7 +10,7 @@
 @if (Model.Any())
 {
     <a class="btn btn-primary float-right" style="width:auto" asp-action="CreateRole"
-       asp-controller="administration">Add new role</a>
+       asp-controller="administration"><i class="fas fa-plus-circle"></i> Add new role</a>
     <input id="myInput" type="text" class="float-left mb-2" placeholder="Search..">
     foreach (var role in Model)
     {
@@ -25,7 +25,7 @@
                     <form asp-action="DeleteRole" asp-route-id="@role.Id" method="post">
                         <a asp-controller="Administration" asp-action="EditRole"
                            asp-route-id="@role.Id" class="btn btn-primary">
-                            Edit
+                            <i class="fas fa-edit"></i> Edit
                         </a>
                         <span id="confirmDeleteSpan_@role.Id" style="display:none">
                             <span>Are you sure you want to delete?</span>
@@ -36,7 +36,7 @@
 
                         <span id="deleteSpan_@role.Id">
                             <a href="#" class="btn btn-danger"
-                               onclick="confirmDelete('@role.Id', true)">Delete</a>
+                               onclick="confirmDelete('@role.Id', true)"><i class="fas fa-minus-circle"></i> Delete</a>
                         </span>
                     </form>
                 </div>

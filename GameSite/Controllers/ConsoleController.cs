@@ -18,13 +18,11 @@ namespace GameSite.Controllers
     {
         private readonly IConsoleRepository _consoleRepository;
         private readonly ILogger<ConsoleController> _logger;
-        private readonly DataContext _context;
 
         public ConsoleController(IConsoleRepository consoleRepository, ILogger<ConsoleController> logger, DataContext context)
         {
             _consoleRepository= consoleRepository;
             _logger = logger;
-            _context = context;
         }
         public IActionResult Index()
         {

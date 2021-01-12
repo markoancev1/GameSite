@@ -29,9 +29,9 @@
                     <td class="text-center"> @Html.DisplayFor(modelitem => genre.GenreName)</td>
                     <td class="text-center"> @Html.DisplayFor(modelitem => genre.GenreDescription)</td>
                     <td>
-                        <a class="btn btn-block btn-primary" asp-action="Edit" asp-route-id="@genre.GenreId">Edit</a>
-                        <a class="btn btn-block btn-info" asp-action="Details" asp-route-id="@genre.GenreId">Details</a>
-                        <a class="btn btn-block btn-danger" asp-action="Delete" asp-route-id="@genre.GenreId">Delete</a>
+                        <a class="btn btn-block btn-primary" asp-action="Edit" asp-route-id="@genre.GenreId"><i class="fas fa-edit"></i>Edit</a>
+                        <a class="btn btn-block btn-info" asp-action="Details" asp-route-id="@genre.GenreId"><i class="fas fa-info-square"></i>Details</a>
+                        <a class="btn btn-block btn-danger" asp-action="Delete" asp-route-id="@genre.GenreId"><i class="fas fa-minus-circle"></i>Delete</a>
                     </td>
                 </tr>
             }
